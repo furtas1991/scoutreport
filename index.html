@@ -92,6 +92,42 @@ header{
 .empty .et{font-size:16px;font-weight:600;color:var(--txt);margin-bottom:5px}
 .newbtn{margin-top:18px}
 
+/* folders & organisation */
+.home-bar{display:flex;gap:9px;margin-bottom:18px}
+.home-bar .btn{flex:1;justify-content:center}
+.backrow{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.backbtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);background:var(--surf2);
+  display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--txt);cursor:pointer;flex-shrink:0}
+.backbtn:active{background:var(--line2)}
+.section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mut2);margin:16px 2px 9px}
+.section-lbl:first-child{margin-top:0}
+.fcard{
+  background:var(--surf);border:1px solid var(--line);border-radius:14px;
+  padding:14px 15px;cursor:pointer;transition:border-color .12s;display:flex;align-items:center;gap:12px;
+}
+.fcard:active{border-color:var(--line2)}
+.ficon{width:40px;height:40px;border-radius:10px;background:var(--accent-d);color:#c4830c;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mcard-menu{color:var(--mut2);font-size:20px;padding:4px 8px;border-radius:8px;font-weight:700;line-height:1}
+.mcard-menu:active{background:var(--surf2);color:var(--txt)}
+
+/* action sheet rows */
+.act-btn{
+  width:100%;text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--line2);
+  background:var(--surf2);color:var(--txt);font-size:15px;font-weight:600;cursor:pointer;
+  margin-bottom:9px;display:flex;align-items:center;gap:11px;transition:background .12s;
+}
+.act-btn:active{background:var(--line2)}
+.act-btn.danger{color:var(--danger);border-color:#f3c2c4}
+.act-btn .ai{font-size:17px;width:20px;text-align:center}
+.move-folder{
+  width:100%;text-align:left;padding:13px 15px;border-radius:11px;border:1px solid var(--line2);
+  background:var(--surf2);color:var(--txt);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;
+  display:flex;align-items:center;gap:10px;
+}
+.move-folder:active{border-color:var(--accent)}
+.move-folder.cur{border-color:var(--accent);color:var(--accent)}
+
 /* ============ MATCH VIEW ============ */
 #match{flex:1;display:none;flex-direction:column;overflow:hidden}
 #match.show{display:flex}
@@ -160,7 +196,53 @@ header{
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#15181c;
   box-shadow:0 1px 3px rgba(0,0,0,.18);
 }
+.tyear{
+  font-size:9px;font-weight:700;text-align:center;
+  background:rgba(245,166,35,.95);color:#1a1405;padding:0 5px;border-radius:4px;
+  box-shadow:0 1px 2px rgba(0,0,0,.18);letter-spacing:.3px;
+}
 .disc-wrap{position:relative}
+.rbadge-mini{
+  position:absolute;left:-3px;bottom:-3px;
+  min-width:16px;height:16px;border-radius:8px;padding:0 3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:#fff;border:1.5px solid var(--bg);
+  font-variant-numeric:tabular-nums;
+}
+.rbadge-A{background:#2ba96b}
+.rbadge-B{background:#1d6fe0}
+.rbadge-C{background:#f5a623;color:#1a1405}
+.rbadge-D{background:#e5484d}
+
+/* team colour swatch in header */
+.tswatch{
+  width:18px;height:18px;border-radius:50%;flex-shrink:0;cursor:pointer;
+  border:2px solid var(--line2);box-shadow:0 1px 2px rgba(0,0,0,.12);margin:0 2px;
+}
+
+/* rating chips (reuse poschips but coloured when active) */
+.rchip.on[data-r="A"]{background:#2ba96b;border-color:#2ba96b;color:#fff}
+.rchip.on[data-r="B"]{background:#1d6fe0;border-color:#1d6fe0;color:#fff}
+.rchip.on[data-r="C"]{background:#f5a623;border-color:#f5a623;color:#1a1405}
+.rchip.on[data-r="D"]{background:#e5484d;border-color:#e5484d;color:#fff}
+
+/* colour palette grid */
+.palette{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
+.pcolor{aspect-ratio:1;border-radius:10px;cursor:pointer;border:2px solid var(--line2);position:relative}
+.pcolor.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.pcolor.light.on::after{color:#15181c;text-shadow:none}
+
+/* smaller tokens on mobile */
+@media (max-width:600px){
+  .disc{width:30px;height:30px;font-size:13px;border-width:1.5px}
+  .tlabel{font-size:10px;max-width:62px}
+  .tyear{font-size:8px}
+  .rbadge-mini{min-width:14px;height:14px;font-size:9px}
+  .token.hasnote .disc::after{width:9px;height:9px;transform:translate(11px,-11px)}
+}
+@media (max-width:400px){
+  .disc{width:27px;height:27px;font-size:12px}
+}
 
 /* bench */
 .bench{flex-shrink:0;padding:9px 10px;border-top:1px solid var(--line);background:var(--surf)}
@@ -258,6 +340,43 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
 .report-pre{white-space:pre-wrap;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12.5px;line-height:1.55;color:var(--txt);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:13px}
 .modal-foot{padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px}
 .modal-foot .btn{flex:1;justify-content:center}
+
+/* ============ PRINT / PDF REPORT ============ */
+#printRoot{display:none}
+@media print{
+  @page{ size:A4 portrait; margin:12mm; }
+  html,body{height:auto;overflow:visible;background:#fff}
+  body>*{display:none !important}
+  #printRoot{display:block !important;color:#15181c;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pr-head{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #15181c;padding-bottom:8px;margin-bottom:14px}
+  .pr-brand{font-size:13px;font-weight:800;letter-spacing:.16em}
+  .pr-brand .thin{font-weight:300;color:#8a9098}
+  .pr-kind{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8a9098;font-weight:700}
+  .pr-title{text-align:center;margin-bottom:16px}
+  .pr-teams{font-size:22px;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:12px}
+  .pr-teams .sq{width:16px;height:16px;border-radius:4px;display:inline-block}
+  .pr-vs{color:#b4bac1;font-size:14px;font-weight:700}
+  .pr-date{font-size:12px;color:#8a9098;margin-top:4px}
+  .pr-pitch{position:relative;width:100%;aspect-ratio:1050/680;border-radius:8px;overflow:hidden;
+    background:repeating-linear-gradient(90deg,#2e7d46 0 8.5%,#329149 8.5% 17%);margin-bottom:18px;border:1px solid #d9dce0}
+  .pr-pitch svg{position:absolute;inset:0;width:100%;height:100%}
+  .pr-tok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:1px}
+  .pr-disc{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .pr-tlabel{font-size:8px;font-weight:600;background:rgba(255,255,255,.94);padding:0 4px;border-radius:3px;color:#15181c;max-width:60px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pr-cols{display:flex;gap:18px}
+  .pr-col{flex:1;min-width:0}
+  .pr-teamhdr{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;padding:7px 10px;border-radius:7px;color:#fff;margin-bottom:10px}
+  .pr-sub{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8a9098;margin:12px 0 6px}
+  .pr-p{padding:7px 0;border-bottom:1px solid #e8eaec;break-inside:avoid}
+  .pr-prow{display:flex;align-items:center;gap:8px}
+  .pr-pnum{font-weight:800;font-variant-numeric:tabular-nums;min-width:26px;text-align:center;font-size:13px}
+  .pr-pname{font-weight:700;font-size:13px;flex:1}
+  .pr-ppos{font-size:10px;color:#8a9098;font-weight:600}
+  .pr-rate{min-width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;padding:0 4px}
+  .pr-rate.A{background:#2ba96b}.pr-rate.B{background:#1d6fe0}.pr-rate.C{background:#f5a623;color:#1a1405}.pr-rate.D{background:#e5484d}
+  .pr-pnotes{font-size:11px;color:#3a4048;margin-top:3px;padding-left:34px;line-height:1.45;white-space:pre-wrap}
+  .pr-foot{margin-top:18px;padding-top:8px;border-top:1px solid #e8eaec;font-size:10px;color:#b4bac1;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -275,9 +394,7 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
   </div>
   <span id="match-back" style="display:none" class="brand"></span>
   <div class="spacer"></div>
-  <div id="home-actions">
-    <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> Novo jogo</button>
-  </div>
+  <div id="home-actions"></div>
   <div id="match-actions" style="display:none;gap:8px" >
     <button class="iconbtn" title="Voltar" onclick="goHome()">‹</button>
   </div>
@@ -285,17 +402,18 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
 
 <!-- ====== HOME ====== -->
 <div id="home" class="show">
-  <div class="home-title">Os meus relatórios</div>
-  <div class="home-sub">Toca num jogo para abrir, ou cria um novo.</div>
+  <div id="home-top"></div>
   <div id="matchlist" class="matchlist"></div>
 </div>
 
 <!-- ====== MATCH ====== -->
 <div id="match">
   <div class="teamhead">
+    <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
     <input class="tname" id="home-name" placeholder="Equipa casa" oninput="renameTeam('home',this.value)">
     <span class="vs">VS</span>
     <input class="tname" id="away-name" placeholder="Equipa fora" oninput="renameTeam('away',this.value)">
+    <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
   </div>
 
   <div class="tabs">
@@ -353,9 +471,13 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
 <div class="sheet" id="sheet">
   <div class="grip"></div>
   <div class="sheet-row">
-    <div class="field num">
+    <div class="field num" style="flex:0 0 66px">
       <label class="flbl">Nº</label>
       <input class="inp numinp" id="ed-num" inputmode="numeric" maxlength="3" placeholder="—" oninput="edChange()">
+    </div>
+    <div class="field" style="flex:0 0 88px">
+      <label class="flbl">Ano</label>
+      <input class="inp numinp" id="ed-birth" inputmode="numeric" maxlength="4" placeholder="—" oninput="edChange()" style="font-size:17px">
     </div>
     <div class="field">
       <label class="flbl">Nome</label>
@@ -369,6 +491,15 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
       <div class="pchip" data-p="DEF" onclick="setPos('DEF')">DEF</div>
       <div class="pchip" data-p="MÉD" onclick="setPos('MÉD')">MÉD</div>
       <div class="pchip" data-p="AV" onclick="setPos('AV')">AV</div>
+    </div>
+  </div>
+  <div class="field" style="margin-bottom:13px">
+    <label class="flbl">Avaliação</label>
+    <div class="poschips" id="ed-rate">
+      <div class="pchip rchip" data-r="A" onclick="setRate('A')">A</div>
+      <div class="pchip rchip" data-r="B" onclick="setRate('B')">B</div>
+      <div class="pchip rchip" data-r="C" onclick="setRate('C')">C</div>
+      <div class="pchip rchip" data-r="D" onclick="setRate('D')">D</div>
     </div>
   </div>
   <div class="field" style="margin-bottom:13px">
@@ -395,7 +526,7 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
     <div class="modal-body"><pre class="report-pre" id="report-text"></pre></div>
     <div class="modal-foot">
       <button class="btn" onclick="copyReport()">Copiar</button>
-      <button class="btn" onclick="downloadReport()">.txt</button>
+      <button class="btn" onclick="printPDF()">PDF</button>
       <button class="btn primary" id="share-btn" onclick="shareReport()">Partilhar → Notas</button>
     </div>
   </div>
@@ -407,10 +538,13 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
   <div class="grip"></div>
   <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Onze inicial</div>
   <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Escolhe um sistema. Os jogadores reposicionam-se; o número, nome e notas mantêm-se sempre que possível.</div>
-  <div class="poschips" id="form-chips" style="margin-bottom:16px;flex-wrap:wrap">
+  <div class="poschips" id="form-chips" style="margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
     <div class="pchip" data-f="4-3-3" onclick="applyFormation('4-3-3')">4-3-3</div>
     <div class="pchip" data-f="4-4-2" onclick="applyFormation('4-4-2')">4-4-2</div>
     <div class="pchip" data-f="4-2-3-1" onclick="applyFormation('4-2-3-1')">4-2-3-1</div>
+    <div class="pchip" data-f="3-4-3" onclick="applyFormation('3-4-3')">3-4-3</div>
+    <div class="pchip" data-f="3-5-2" onclick="applyFormation('3-5-2')">3-5-2</div>
+    <div class="pchip" data-f="4-1-2-1-2" onclick="applyFormation('4-1-2-1-2')">4-1-2-1-2</div>
   </div>
   <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin-bottom:14px">
     Tens <b id="form-current-count" style="color:var(--txt)">0</b> jogadores em campo nesta equipa.
@@ -421,6 +555,43 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ====== COLOUR SHEET ====== -->
+<div class="sheet-bg" id="color-bg" onclick="closeColor()"></div>
+<div class="sheet" id="color-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:14px" id="color-team-lbl">Cor da equipa</div>
+  <div class="palette" id="palette"></div>
+  <div class="sheet-actions">
+    <button class="btn" onclick="closeColor()">Fechar</button>
+  </div>
+</div>
+
+<!-- ====== ITEM ACTIONS SHEET ====== -->
+<div class="sheet-bg" id="item-bg" onclick="closeItemActions()"></div>
+<div class="sheet" id="item-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:14px" id="item-title">Ações</div>
+  <div id="item-actions-list"></div>
+  <div class="sheet-actions">
+    <button class="btn" onclick="closeItemActions()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ====== MOVE SHEET ====== -->
+<div class="sheet-bg" id="move-bg" onclick="closeMove()"></div>
+<div class="sheet" id="move-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Mover para…</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Escolhe a pasta de destino.</div>
+  <div id="move-list" style="max-height:50dvh;overflow-y:auto"></div>
+  <div class="sheet-actions">
+    <button class="btn" onclick="closeMove()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ====== PRINT ROOT (PDF) ====== -->
+<div id="printRoot"></div>
 
 <script>
 "use strict";
@@ -452,6 +623,26 @@ const FORMATIONS = {
     {x:38,y:60,pos:'MÉD'},{x:62,y:60,pos:'MÉD'},
     {x:22,y:40,pos:'MÉD'},{x:50,y:38,pos:'MÉD'},{x:78,y:40,pos:'MÉD'},
     {x:50,y:22,pos:'AV'}
+  ],
+  '3-4-3': [
+    {x:50,y:90,pos:'GR'},
+    {x:28,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:72,y:76,pos:'DEF'},
+    {x:15,y:52,pos:'MÉD'},{x:39,y:55,pos:'MÉD'},{x:61,y:55,pos:'MÉD'},{x:85,y:52,pos:'MÉD'},
+    {x:24,y:28,pos:'AV'},{x:50,y:24,pos:'AV'},{x:76,y:28,pos:'AV'}
+  ],
+  '3-5-2': [
+    {x:50,y:90,pos:'GR'},
+    {x:28,y:77,pos:'DEF'},{x:50,y:79,pos:'DEF'},{x:72,y:77,pos:'DEF'},
+    {x:13,y:54,pos:'MÉD'},{x:35,y:57,pos:'MÉD'},{x:50,y:50,pos:'MÉD'},{x:65,y:57,pos:'MÉD'},{x:87,y:54,pos:'MÉD'},
+    {x:40,y:26,pos:'AV'},{x:60,y:26,pos:'AV'}
+  ],
+  '4-1-2-1-2': [
+    {x:50,y:90,pos:'GR'},
+    {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
+    {x:50,y:60,pos:'MÉD'},
+    {x:30,y:48,pos:'MÉD'},{x:70,y:48,pos:'MÉD'},
+    {x:50,y:36,pos:'MÉD'},
+    {x:40,y:24,pos:'AV'},{x:60,y:24,pos:'AV'}
   ]
 };
 const DEFAULT_FORMATION = '4-3-3';
@@ -475,18 +666,52 @@ function buildEleven(formation, team){
   const f = FORMATIONS[formation] || FORMATIONS[DEFAULT_FORMATION];
   return f.map(slot => {
     const xy = slotToXY(slot, team);
-    return { id: uid(), num:'', name:'', pos:slot.pos, notes:'', sub:false, x:xy.x, y:xy.y };
+    return { id: uid(), num:'', name:'', pos:slot.pos, notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:'' };
   });
 }
+
+/* ---------- Colours ---------- */
+const PALETTE = ['#1d6fe0','#0a3d91','#e5484d','#9b1c1c','#2ba96b','#0f5132',
+                 '#f5a623','#f2c200','#7c3aed','#15181c','#5b6470','#ffffff'];
+const DEFAULT_HOME_COLOR = '#1d6fe0';
+const DEFAULT_AWAY_COLOR = '#15181c';
+let colorTeam = 'home';
+
+function teamColor(tk){
+  const c = activeMatch && activeMatch[tk] && activeMatch[tk].color;
+  return c || (tk==='home' ? DEFAULT_HOME_COLOR : DEFAULT_AWAY_COLOR);
+}
+/* pick black/white text for contrast against a hex bg */
+function numColor(hex){
+  const h = hex.replace('#',''); if(h.length<6) return '#fff';
+  const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
+  const lum = (0.299*r + 0.587*g + 0.114*b)/255;
+  return lum > 0.62 ? '#15181c' : '#ffffff';
+}
+function isLight(hex){ return numColor(hex)==='#15181c'; }
 
 let DB = load();
 let activeMatch = null;   // match object
 let activeTeam = 'home';  // 'home' | 'away'
 let editingId = null;     // player id being edited
+let currentFolder = null; // folder id we are browsing, or null = root
+let actionTarget = null;  // {type:'folder'|'match', id} for the action sheet
 
 function load(){
-  try{ const r = localStorage.getItem(LS_KEY); if(r) return JSON.parse(r); }catch(e){}
-  return { matches: [] };
+  try{
+    const r = localStorage.getItem(LS_KEY);
+    if(r){
+      const d = JSON.parse(r);
+      if(!d.folders) d.folders = [];
+      d.matches = d.matches || [];
+      d.matches.forEach(m=>{
+        if(m.folderId === undefined) m.folderId = null;
+        if(m.title === undefined) m.title = '';
+      });
+      return d;
+    }
+  }catch(e){}
+  return { folders: [], matches: [] };
 }
 function save(){
   try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ toast('Erro ao guardar'); }
@@ -496,8 +721,9 @@ function save(){
 function newMatch(){
   const m = {
     id: uid(), createdAt: new Date().toISOString(), h:true,
-    home:{ name:'', players:buildEleven(DEFAULT_FORMATION,'home') },
-    away:{ name:'', players:buildEleven(DEFAULT_FORMATION,'away') }
+    title:'', folderId: currentFolder,
+    home:{ name:'', color:DEFAULT_HOME_COLOR, players:buildEleven(DEFAULT_FORMATION,'home') },
+    away:{ name:'', color:DEFAULT_AWAY_COLOR, players:buildEleven(DEFAULT_FORMATION,'away') }
   };
   DB.matches.unshift(m); save();
   openMatch(m.id);
@@ -525,12 +751,188 @@ function goHome(){
   renderHome();
 }
 function deleteMatch(id, ev){
-  ev.stopPropagation();
+  if(ev) ev.stopPropagation();
   if(!confirm('Eliminar este relatório? Esta ação não pode ser desfeita.')) return;
   DB.matches = DB.matches.filter(m=>m.id!==id); save(); renderHome();
 }
 
+function matchLabel(m){
+  return (m.title && m.title.trim()) ? m.title.trim()
+    : `${m.home.name||'Casa'} vs ${m.away.name||'Fora'}`;
+}
+
+function renderHome(){
+  const top = document.getElementById('home-top');
+  const list = document.getElementById('matchlist');
+
+  if(currentFolder){
+    const f = DB.folders.find(x=>x.id===currentFolder);
+    if(!f){ currentFolder=null; return renderHome(); }
+    top.innerHTML = `
+      <div class="backrow">
+        <div class="backbtn" onclick="exitFolder()">‹</div>
+        <div class="home-title" style="font-size:21px">${esc(f.name)}</div>
+      </div>
+      <div class="home-sub">Relatórios desta pasta.</div>
+      <div class="home-bar">
+        <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Editar pasta</button>
+        <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> Novo jogo</button>
+      </div>`;
+    const inside = DB.matches.filter(m=>m.folderId===currentFolder);
+    list.innerHTML = inside.length ? inside.map(matchCard).join('')
+      : `<div class="empty"><div class="big">📋</div><div class="et">Pasta vazia</div><div>Cria um relatório aqui.</div></div>`;
+    return;
+  }
+
+  // ROOT
+  top.innerHTML = `
+    <div class="home-title">Os meus relatórios</div>
+    <div class="home-sub">Organiza por pastas (ex: torneios) ou cria um relatório solto.</div>
+    <div class="home-bar">
+      <button class="btn" onclick="newFolder()"><span style="font-size:17px;line-height:1">＋</span> Nova pasta</button>
+      <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> Novo jogo</button>
+    </div>`;
+
+  const loose = DB.matches.filter(m=>!m.folderId);
+  if(!DB.folders.length && !loose.length){
+    list.innerHTML = `<div class="empty"><div class="big">📋</div><div class="et">Ainda sem relatórios</div><div>Cria uma pasta para um torneio, ou um relatório solto.</div></div>`;
+    return;
+  }
+  let html = '';
+  if(DB.folders.length){
+    html += `<div class="section-lbl">Pastas</div>`;
+    html += DB.folders.map(folderCard).join('');
+  }
+  if(loose.length){
+    html += `<div class="section-lbl">Relatórios soltos</div>`;
+    html += loose.map(matchCard).join('');
+  }
+  list.innerHTML = html;
+}
+
+function folderCard(f){
+  const n = DB.matches.filter(m=>m.folderId===f.id).length;
+  return `<div class="fcard" onclick="openFolder('${f.id}')">
+    <div class="ficon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+        <path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+      </svg>
+    </div>
+    <div class="mcard-main">
+      <div class="mcard-teams">${esc(f.name)}</div>
+      <div class="mcard-meta">${n} relatório${n!==1?'s':''}</div>
+    </div>
+    <div class="mcard-menu" onclick="openItemActions('folder','${f.id}',event)">⋯</div>
+  </div>`;
+}
+
+function matchCard(m){
+  const tot = m.home.players.length + m.away.players.length;
+  const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'});
+  return `<div class="mcard" onclick="openMatch('${m.id}')">
+    <div class="mcard-main">
+      <div class="mcard-teams">${esc(matchLabel(m))}</div>
+      <div class="mcard-meta">${d} · ${tot} jogador${tot!==1?'es':''}</div>
+    </div>
+    <div class="mcard-menu" onclick="openItemActions('match','${m.id}',event)">⋯</div>
+  </div>`;
+}
+
+/* ---------- Folders ---------- */
+function newFolder(){
+  const name = (prompt('Nome da pasta (ex: Torneio do Algarve):')||'').trim();
+  if(!name) return;
+  DB.folders.unshift({ id:uid(), name, createdAt:new Date().toISOString() });
+  save(); renderHome();
+}
+function openFolder(id){ currentFolder = id; renderHome(); }
+function exitFolder(){ currentFolder = null; renderHome(); }
+function renameFolder(id){
+  const f = DB.folders.find(x=>x.id===id); if(!f) return;
+  const name = (prompt('Novo nome da pasta:', f.name)||'').trim();
+  if(name){ f.name = name; save(); renderHome(); }
+}
+function deleteFolder(id){
+  const f = DB.folders.find(x=>x.id===id); if(!f) return;
+  const n = DB.matches.filter(m=>m.folderId===id).length;
+  const msg = n>0
+    ? `Eliminar a pasta "${f.name}"? Os ${n} relatório(s) lá dentro NÃO são apagados — voltam para "Relatórios soltos".`
+    : `Eliminar a pasta "${f.name}"?`;
+  if(!confirm(msg)) return;
+  DB.matches.forEach(m=>{ if(m.folderId===id) m.folderId=null; });
+  DB.folders = DB.folders.filter(x=>x.id!==id);
+  if(currentFolder===id) currentFolder=null;
+  save(); renderHome();
+}
+
+/* ---------- Rename match ---------- */
+function renameMatch(id){
+  const m = DB.matches.find(x=>x.id===id); if(!m) return;
+  const cur = m.title && m.title.trim() ? m.title : matchLabel(m);
+  const name = prompt('Nome do relatório:', cur);
+  if(name!==null){ m.title = name.trim(); save(); renderHome(); }
+}
+
+/* ---------- Item action sheet ---------- */
+function openItemActions(type, id, ev){
+  if(ev) ev.stopPropagation();
+  actionTarget = { type, id };
+  const listEl = document.getElementById('item-actions-list');
+  if(type==='folder'){
+    const f = DB.folders.find(x=>x.id===id);
+    document.getElementById('item-title').textContent = f? f.name : 'Pasta';
+    listEl.innerHTML = `
+      <button class="act-btn" onclick="doRenameFolder()"><span class="ai">✎</span> Renomear pasta</button>
+      <button class="act-btn danger" onclick="doDeleteFolder()"><span class="ai">🗑</span> Eliminar pasta</button>`;
+  } else {
+    const m = DB.matches.find(x=>x.id===id);
+    document.getElementById('item-title').textContent = m? matchLabel(m) : 'Relatório';
+    listEl.innerHTML = `
+      <button class="act-btn" onclick="doRenameMatch()"><span class="ai">✎</span> Renomear relatório</button>
+      <button class="act-btn" onclick="openMove()"><span class="ai">🗂</span> Mover para pasta</button>
+      <button class="act-btn danger" onclick="doDeleteMatch()"><span class="ai">🗑</span> Eliminar relatório</button>`;
+  }
+  document.getElementById('item-bg').classList.add('show');
+  document.getElementById('item-sheet').classList.add('show');
+}
+function closeItemActions(){
+  document.getElementById('item-bg').classList.remove('show');
+  document.getElementById('item-sheet').classList.remove('show');
+}
+function doRenameFolder(){ const id=actionTarget.id; closeItemActions(); renameFolder(id); }
+function doDeleteFolder(){ const id=actionTarget.id; closeItemActions(); deleteFolder(id); }
+function doRenameMatch(){ const id=actionTarget.id; closeItemActions(); renameMatch(id); }
+function doDeleteMatch(){ const id=actionTarget.id; closeItemActions(); deleteMatch(id,null); }
+
+/* ---------- Move to folder ---------- */
+function openMove(){
+  const id = actionTarget.id;
+  const m = DB.matches.find(x=>x.id===id); if(!m) return;
+  closeItemActions();
+  const listEl = document.getElementById('move-list');
+  let html = `<button class="move-folder ${!m.folderId?'cur':''}" onclick="moveMatchTo('${id}', null)">
+      <span>📂</span> Sem pasta (soltos)</button>`;
+  html += DB.folders.map(f=>`
+    <button class="move-folder ${m.folderId===f.id?'cur':''}" onclick="moveMatchTo('${id}','${f.id}')">
+      <span>🗂</span> ${esc(f.name)}</button>`).join('');
+  if(!DB.folders.length) html += `<div style="color:var(--mut);font-size:13px;padding:6px 2px">Ainda não tens pastas. Cria uma no ecrã inicial.</div>`;
+  listEl.innerHTML = html;
+  document.getElementById('move-bg').classList.add('show');
+  document.getElementById('move-sheet').classList.add('show');
+}
+function closeMove(){
+  document.getElementById('move-bg').classList.remove('show');
+  document.getElementById('move-sheet').classList.remove('show');
+}
+function moveMatchTo(id, folderId){
+  const m = DB.matches.find(x=>x.id===id); if(m){ m.folderId = folderId; save(); }
+  closeMove(); renderHome();
+  toast('Relatório movido');
+}
+
 function migrate(m){
+  if(!m.home.color) m.home.color = DEFAULT_HOME_COLOR;
+  if(!m.away.color) m.away.color = DEFAULT_AWAY_COLOR;
   if(m.h) return; // already horizontal layout
   ['home','away'].forEach(tk=>{
     const field = m[tk].players.filter(p=>!p.sub);
@@ -542,31 +944,6 @@ function migrate(m){
     });
   });
   m.h = true; save();
-}
-
-function renderHome(){
-  const list = document.getElementById('matchlist');
-  if(!DB.matches.length){
-    list.innerHTML = `<div class="empty">
-      <div class="big">📋</div>
-      <div class="et">Ainda sem relatórios</div>
-      <div>Cria o teu primeiro relatório de jogo.</div>
-      <button class="btn primary newbtn" onclick="newMatch()"><span style="font-size:18px">+</span> Novo jogo</button>
-    </div>`;
-    return;
-  }
-  list.innerHTML = DB.matches.map(m=>{
-    const h = m.home.name || 'Casa', a = m.away.name || 'Fora';
-    const tot = m.home.players.length + m.away.players.length;
-    const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'});
-    return `<div class="mcard" onclick="openMatch('${m.id}')">
-      <div class="mcard-main">
-        <div class="mcard-teams">${esc(h)} <span style="color:var(--mut2)">vs</span> ${esc(a)}</div>
-        <div class="mcard-meta">${d} · ${tot} jogador${tot!==1?'es':''}</div>
-      </div>
-      <div class="mcard-del" onclick="deleteMatch('${m.id}',event)">🗑</div>
-    </div>`;
-  }).join('');
 }
 
 /* ---------- Team / tabs ---------- */
@@ -586,6 +963,13 @@ function renderTabs(){
   document.getElementById('tab-away-lbl').textContent = a.length>14? a.slice(0,13)+'…':a;
   document.getElementById('cnt-home').textContent = activeMatch.home.players.length || '';
   document.getElementById('cnt-away').textContent = activeMatch.away.players.length || '';
+  // colour the swatches and tab dots
+  const ch = teamColor('home'), ca = teamColor('away');
+  document.getElementById('sw-home').style.background = ch;
+  document.getElementById('sw-away').style.background = ca;
+  const dh = document.querySelector('#tab-home .dot'), da = document.querySelector('#tab-away .dot');
+  if(dh){ dh.style.background = ch; }
+  if(da){ da.style.background = ca; }
 }
 
 /* ---------- Players ---------- */
@@ -593,7 +977,7 @@ function team(){ return activeMatch[activeTeam]; }
 
 function addPlayer(toBench){
   const p = {
-    id: uid(), num:'', name:'', pos:'', notes:'',
+    id: uid(), num:'', name:'', pos:'', notes:'', rate:'', birth:'',
     sub: !!toBench,
     x: 50, y: 50
   };
@@ -611,13 +995,17 @@ function renderPitch(){
   const pitch = document.getElementById('pitch');
   pitch.querySelectorAll('.token').forEach(t=>t.remove());
   ['home','away'].forEach(tk=>{
+    const col = teamColor(tk), nc = numColor(col);
     activeMatch[tk].players.filter(p=>!p.sub).forEach(p=>{
       const el = document.createElement('div');
-      el.className = `token ${tk}` + (p.notes.trim()?' hasnote':'');
+      el.className = `token ${tk}` + (p.notes.trim()?' hasnote':'') + (p.id===editingId?' sel':'');
       el.style.left = p.x+'%'; el.style.top = p.y+'%';
       el.dataset.id = p.id;
-      el.innerHTML = `<div class="disc-wrap"><div class="disc">${p.num||'?'}</div></div>`+
-                     (p.name? `<div class="tlabel">${esc(shortName(p.name))}</div>`:'');
+      const badge = p.rate? `<span class="rbadge-mini rbadge-${p.rate}">${p.rate}</span>`:'';
+      let labels = '';
+      if(p.name) labels += `<div class="tlabel">${esc(shortName(p.name))}</div>`;
+      if(p.birth) labels += `<div class="tyear">${esc(p.birth)}</div>`;
+      el.innerHTML = `<div class="disc-wrap"><div class="disc" style="background:${col};color:${nc}">${p.num||'?'}</div>${badge}</div>`+labels;
       attachDrag(el, p);
       pitch.appendChild(el);
     });
@@ -629,12 +1017,16 @@ function renderBench(){
   const bt = document.querySelector('.bench-title');
   const tname = (activeTeam==='home'? (activeMatch.home.name||'Casa') : (activeMatch.away.name||'Fora'));
   if(bt) bt.textContent = 'Suplentes · ' + tname;
+  const col = teamColor(activeTeam), nc = numColor(col);
   const subs = team().players.filter(p=>p.sub);
-  let html = subs.map(p=>`
+  let html = subs.map(p=>{
+    const badge = p.rate? `<span class="rbadge-mini rbadge-${p.rate}" style="position:static;border:none;margin-left:4px">${p.rate}</span>`:'';
+    return `
     <div class="bplayer ${activeTeam}${p.notes.trim()?' hasnote':''}" onclick="openEditor('${p.id}',false)">
-      <div class="bdisc">${p.num||'?'}</div>
-      <div class="bname">${esc(p.name||'Sem nome')}</div>
-    </div>`).join('');
+      <div class="bdisc" style="background:${col};color:${nc}">${p.num||'?'}</div>
+      <div class="bname">${esc(p.name||'Sem nome')}${p.birth?` · ${esc(p.birth)}`:''}</div>${badge}
+    </div>`;
+  }).join('');
   html += `<button class="addbench" onclick="addPlayer(true)" title="Adicionar ao banco">+</button>`;
   if(!subs.length) html = `<span class="bench-empty">Sem suplentes.</span>` + html;
   strip.innerHTML = html;
@@ -685,10 +1077,13 @@ function openEditor(id, focusNum){
   editingId = id;
   const p = findPlayer(id); if(!p) return;
   document.getElementById('ed-num').value = p.num;
+  document.getElementById('ed-birth').value = p.birth||'';
   document.getElementById('ed-name').value = p.name;
   document.getElementById('ed-notes').value = p.notes;
   document.querySelectorAll('#ed-pos .pchip').forEach(c=>c.classList.toggle('on', c.dataset.p===p.pos));
+  document.querySelectorAll('#ed-rate .rchip').forEach(c=>c.classList.toggle('on', c.dataset.r===(p.rate||'')));
   setSubSwitch(p.sub);
+  renderPitch();
   document.getElementById('sheet-bg').classList.add('show');
   document.getElementById('sheet').classList.add('show');
   if(focusNum){ setTimeout(()=>{ const n=document.getElementById('ed-num'); n.focus(); }, 250); }
@@ -703,6 +1098,8 @@ function edChange(){
   const p = findPlayer(editingId); if(!p) return;
   p.num = document.getElementById('ed-num').value.replace(/[^0-9]/g,'').slice(0,3);
   document.getElementById('ed-num').value = p.num;
+  p.birth = document.getElementById('ed-birth').value.replace(/[^0-9]/g,'').slice(0,4);
+  document.getElementById('ed-birth').value = p.birth;
   p.name = document.getElementById('ed-name').value;
   p.notes = document.getElementById('ed-notes').value;
   save();
@@ -711,6 +1108,12 @@ function setPos(pos){
   const p = findPlayer(editingId); if(!p) return;
   p.pos = (p.pos===pos)? '' : pos;
   document.querySelectorAll('#ed-pos .pchip').forEach(c=>c.classList.toggle('on', c.dataset.p===p.pos));
+  save();
+}
+function setRate(r){
+  const p = findPlayer(editingId); if(!p) return;
+  p.rate = (p.rate===r)? '' : r;
+  document.querySelectorAll('#ed-rate .rchip').forEach(c=>c.classList.toggle('on', c.dataset.r===(p.rate||'')));
   save();
 }
 function toggleSub(){
@@ -771,7 +1174,9 @@ function buildReport(){
 function fmtP(p){
   const num = p.num? `#${p.num}` : '#?';
   const pos = p.pos? ` (${p.pos})` : '';
-  let s = `    ${num} ${p.name||'Sem nome'}${pos}\n`;
+  const yr = p.birth? ` · ${p.birth}` : '';
+  const rate = p.rate? `  [${p.rate}]` : '';
+  let s = `    ${num} ${p.name||'Sem nome'}${pos}${yr}${rate}\n`;
   if(p.notes.trim()){
     s += p.notes.trim().split('\n').map(l=>`        › ${l}`).join('\n')+'\n';
   }
@@ -792,14 +1197,85 @@ function fallbackCopy(txt){
   try{document.execCommand('copy'); toast('Copiado');}catch(e){toast('Não foi possível copiar');}
   ta.remove();
 }
-function downloadReport(){
-  const m=activeMatch;
-  const fn = `relatorio-${slug(m.home.name||'casa')}-${slug(m.away.name||'fora')}.txt`;
-  const blob = new Blob([buildReport()],{type:'text/plain;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=fn; document.body.appendChild(a); a.click();
-  a.remove(); URL.revokeObjectURL(url);
-  toast('Descarregado');
+function printPDF(){
+  buildPrintReport();
+  closeExport();
+  setTimeout(()=>{ window.print(); }, 120);
+}
+
+function buildPrintReport(){
+  const m = activeMatch;
+  const h = m.home.name || 'Casa', a = m.away.name || 'Fora';
+  const ch = teamColor('home'), ca = teamColor('away');
+  const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
+
+  // pitch tokens (both teams)
+  let toks = '';
+  ['home','away'].forEach(tk=>{
+    const col=teamColor(tk), nc=numColor(col);
+    m[tk].players.filter(p=>!p.sub).forEach(p=>{
+      toks += `<div class="pr-tok" style="left:${p.x}%;top:${p.y}%">
+        <div class="pr-disc" style="background:${col};color:${nc}">${esc(p.num||'?')}</div>
+        ${p.name?`<div class="pr-tlabel">${esc(shortName(p.name))}</div>`:''}
+        ${p.birth?`<div class="pr-tlabel" style="background:rgba(245,166,35,.95);color:#1a1405;margin-top:1px">${esc(p.birth)}</div>`:''}
+      </div>`;
+    });
+  });
+
+  const pitchSVG = `<svg viewBox="0 0 1050 680" preserveAspectRatio="none">
+    <g fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2.5">
+      <rect x="14" y="14" width="1022" height="652" rx="3"/><line x1="525" y1="14" x2="525" y2="666"/>
+      <circle cx="525" cy="340" r="82"/>
+      <rect x="14" y="178" width="150" height="324"/><rect x="14" y="258" width="58" height="164"/><path d="M164 272 A82 82 0 0 1 164 408"/>
+      <rect x="886" y="178" width="150" height="324"/><rect x="978" y="258" width="58" height="164"/><path d="M886 272 A82 82 0 0 0 886 408"/>
+      <rect x="6" y="298" width="9" height="84"/><rect x="1035" y="298" width="9" height="84"/>
+    </g></svg>`;
+
+  const col = (tk)=>{
+    const t=m[tk]; const name=(t.name||(tk==='home'?'Casa':'Fora'));
+    const c=teamColor(tk), nc=numColor(c);
+    const field=t.players.filter(p=>!p.sub), bench=t.players.filter(p=>p.sub);
+    const row = (p)=>{
+      const rate = p.rate? `<span class="pr-rate ${p.rate}">${p.rate}</span>`:'';
+      const notes = p.notes.trim()? `<div class="pr-pnotes">${esc(p.notes.trim())}</div>`:'';
+      return `<div class="pr-p">
+        <div class="pr-prow">
+          <span class="pr-pnum">${esc(p.num||'?')}</span>
+          <span class="pr-pname">${esc(p.name||'—')}</span>
+          ${p.birth?`<span class="pr-ppos">${esc(p.birth)}</span>`:''}
+          ${p.pos?`<span class="pr-ppos">${esc(p.pos)}</span>`:''}
+          ${rate}
+        </div>${notes}
+      </div>`;
+    };
+    return `<div class="pr-col">
+      <div class="pr-teamhdr" style="background:${c};color:${nc}">
+        <span class="sq"></span>${esc(name)}
+      </div>
+      <div class="pr-sub">Onze</div>
+      ${field.length? field.map(row).join('') : '<div class="pr-pnotes" style="padding-left:0">—</div>'}
+      <div class="pr-sub">Suplentes / entradas</div>
+      ${bench.length? bench.map(row).join('') : '<div class="pr-pnotes" style="padding-left:0">—</div>'}
+    </div>`;
+  };
+
+  document.getElementById('printRoot').innerHTML = `
+    <div class="pr-head">
+      <div class="pr-brand">SCOUT<span class="thin">REPORT</span></div>
+      <div class="pr-kind">Relatório de Observação</div>
+    </div>
+    <div class="pr-title">
+      <div class="pr-teams">
+        <span class="sq" style="background:${ch}"></span>${esc(h)}
+        <span class="pr-vs">vs</span>
+        ${esc(a)}<span class="sq" style="background:${ca}"></span>
+      </div>
+      <div class="pr-date">${d}</div>
+    </div>
+    <div class="pr-pitch">${pitchSVG}${toks}</div>
+    <div class="pr-cols">${col('home')}${col('away')}</div>
+    <div class="pr-foot">Gerado com ScoutReport · ${d}</div>
+  `;
 }
 function shareReport(){
   const m = activeMatch;
@@ -813,6 +1289,39 @@ function shareReport(){
     copyReport();
     toast('Copiado — cola no Notas');
   }
+}
+
+/* ---------- Colour chooser ---------- */
+function openColor(tk){
+  colorTeam = tk;
+  const tname = (tk==='home'? (activeMatch.home.name||'Casa') : (activeMatch.away.name||'Fora'));
+  document.getElementById('color-team-lbl').textContent = 'Cor — ' + tname;
+  const cur = teamColor(tk);
+  document.getElementById('palette').innerHTML = PALETTE.map(c=>{
+    const on = (c.toLowerCase()===cur.toLowerCase());
+    return `<div class="pcolor${on?' on':''}${isLight(c)?' light':''}" style="background:${c}" onclick="setColor('${c}')"></div>`;
+  }).join('');
+  document.getElementById('color-bg').classList.add('show');
+  document.getElementById('color-sheet').classList.add('show');
+}
+function closeColor(){
+  document.getElementById('color-bg').classList.remove('show');
+  document.getElementById('color-sheet').classList.remove('show');
+}
+function setColor(c){
+  activeMatch[colorTeam].color = c;
+  save();
+  renderPitch(); renderBench(); renderTabs();
+  // refresh palette ticks
+  document.querySelectorAll('#palette .pcolor').forEach(el=>{
+    el.classList.toggle('on', el.style.background && rgbToHex(el.style.background)===c.toLowerCase());
+  });
+  toast('Cor atualizada');
+}
+function rgbToHex(s){
+  if(s.startsWith('#')) return s.toLowerCase();
+  const m = s.match(/\d+/g); if(!m) return s;
+  return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join('');
 }
 
 /* ---------- Formation ---------- */
@@ -842,7 +1351,7 @@ function applyFormation(formation){
     });
     for(let i=onField.length; i<slots.length; i++){
       const xy=slotToXY(slots[i],activeTeam);
-      t.players.push({ id:uid(), num:'', name:'', pos:slots[i].pos, notes:'', sub:false, x:xy.x, y:xy.y });
+      t.players.push({ id:uid(), num:'', name:'', pos:slots[i].pos, notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:'' });
     }
   }
   save(); renderPitch(); renderBench(); renderTabs();
