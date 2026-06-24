@@ -48,7 +48,9 @@ header{
 }
 .brand{display:flex;align-items:center;gap:9px;white-space:nowrap}
 .bmark{width:28px;height:28px;border-radius:8px;background:var(--accent);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;overflow:hidden;position:relative}
+.bmark img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+.bmark.custom{background:var(--surf2);border:1px solid var(--line2)}
 .wordmark{font-size:15px;font-weight:800;letter-spacing:.14em;color:var(--txt)}
 .wm-thin{font-weight:300;letter-spacing:.14em;color:var(--mut);margin-left:.5px}
 .spacer{flex:1}
@@ -376,6 +378,9 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
   .pr-rate.A{background:#2ba96b}.pr-rate.B{background:#1d6fe0}.pr-rate.C{background:#f5a623;color:#1a1405}.pr-rate.D{background:#e5484d}
   .pr-pnotes{font-size:11px;color:#3a4048;margin-top:3px;padding-left:34px;line-height:1.45;white-space:pre-wrap}
   .pr-foot{margin-top:18px;padding-top:8px;border-top:1px solid #e8eaec;font-size:10px;color:#b4bac1;text-align:center}
+  .pr-gnotes{margin-bottom:16px;break-inside:avoid}
+  .pr-gnotes .h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#8a9098;margin-bottom:6px}
+  .pr-gnotes .body{font-size:12px;line-height:1.5;color:#3a4048;white-space:pre-wrap;background:#f5f6f7;border:1px solid #e8eaec;border-radius:8px;padding:11px 13px}
 }
 </style>
 </head>
@@ -384,14 +389,16 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
 <!-- ====== HEADER ====== -->
 <header>
   <div class="brand" id="brand">
-    <span class="bmark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#1a1405" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <span class="bmark" id="bmark" aria-hidden="true" onclick="logoClick(event)" title="Toca para personalizar o logótipo">
+      <svg id="bmark-default" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#1a1405" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3 L20 8 L17 19 L7 19 L4 8 Z"/>
         <path d="M12 3 L12 9 M12 9 L17 12.5 M12 9 L7 12.5 M17 12.5 L15 19 M7 12.5 L9 19 M17 12.5 L20 8 M7 12.5 L4 8"/>
       </svg>
+      <img id="bmark-img" alt="" style="display:none">
     </span>
     <span class="wordmark">SCOUT<span class="wm-thin">REPORT</span></span>
   </div>
+  <input type="file" id="logo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="logoUpload(event)">
   <span id="match-back" style="display:none" class="brand"></span>
   <div class="spacer"></div>
   <div id="home-actions"></div>
@@ -462,6 +469,7 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
   <div class="mfooter">
     <button class="btn primary" onclick="addPlayer(false)"><span style="font-size:18px;line-height:1">+</span> Jogador</button>
     <button class="btn" onclick="openFormation()">Onze</button>
+    <button class="btn" onclick="openGameNotes()">Notas</button>
     <button class="btn" onclick="openExport()">Exportar</button>
   </div>
 </div>
@@ -564,6 +572,35 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
   <div class="palette" id="palette"></div>
   <div class="sheet-actions">
     <button class="btn" onclick="closeColor()">Fechar</button>
+  </div>
+</div>
+
+<!-- ====== LOGO SHEET ====== -->
+<div class="sheet-bg" id="logo-bg" onclick="closeLogo()"></div>
+<div class="sheet" id="logo-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Logótipo</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Carrega uma imagem (ex: símbolo de um clube). Fica guardada só neste dispositivo.</div>
+  <div id="logo-actions-list">
+    <button class="act-btn" onclick="logoChoose()"><span class="ai">⬆︎</span> Carregar imagem</button>
+    <button class="act-btn danger" id="logo-reset-btn" onclick="logoReset()" style="display:none"><span class="ai">↺</span> Repor logótipo original</button>
+  </div>
+  <div class="sheet-actions">
+    <button class="btn" onclick="closeLogo()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ====== GAME NOTES SHEET ====== -->
+<div class="sheet-bg" id="gnotes-bg" onclick="closeGameNotes()"></div>
+<div class="sheet" id="gnotes-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Notas do jogo</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Leitura geral: sistemas, dinâmica, bola parada, contexto, condições…</div>
+  <div class="field" style="margin-bottom:14px">
+    <textarea class="inp" id="ed-gnotes" placeholder="Escreve aqui a tua análise do jogo…" oninput="gnotesChange()" style="min-height:200px"></textarea>
+  </div>
+  <div class="sheet-actions">
+    <button class="btn primary" onclick="closeGameNotes()">Concluído</button>
   </div>
 </div>
 
@@ -1160,6 +1197,9 @@ function buildReport(){
   const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
   let out = `RELATÓRIO DE JOGO\n${h}  vs  ${a}\n${d}\n`;
   out += '═'.repeat(38)+'\n';
+  if(m.gnotes && m.gnotes.trim()){
+    out += `\nNOTAS DO JOGO\n` + m.gnotes.trim().split('\n').map(l=>`  ${l}`).join('\n') + '\n\n' + '─'.repeat(38)+'\n';
+  }
   ['home','away'].forEach(tk=>{
     const t = m[tk];
     out += `\n${(t.name|| (tk==='home'?'CASA':'FORA')).toUpperCase()}\n`;
@@ -1273,6 +1313,7 @@ function buildPrintReport(){
       <div class="pr-date">${d}</div>
     </div>
     <div class="pr-pitch">${pitchSVG}${toks}</div>
+    ${(m.gnotes && m.gnotes.trim()) ? `<div class="pr-gnotes"><div class="h">Notas do jogo</div><div class="body">${esc(m.gnotes.trim())}</div></div>` : ''}
     <div class="pr-cols">${col('home')}${col('away')}</div>
     <div class="pr-foot">Gerado com ScoutReport · ${d}</div>
   `;
@@ -1324,6 +1365,22 @@ function rgbToHex(s){
   return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join('');
 }
 
+/* ---------- Game notes ---------- */
+function openGameNotes(){
+  document.getElementById('ed-gnotes').value = activeMatch.gnotes || '';
+  document.getElementById('gnotes-bg').classList.add('show');
+  document.getElementById('gnotes-sheet').classList.add('show');
+}
+function closeGameNotes(){
+  document.getElementById('gnotes-bg').classList.remove('show');
+  document.getElementById('gnotes-sheet').classList.remove('show');
+}
+function gnotesChange(){
+  if(!activeMatch) return;
+  activeMatch.gnotes = document.getElementById('ed-gnotes').value;
+  save();
+}
+
 /* ---------- Formation ---------- */
 function openFormation(){
   const t = team();
@@ -1360,6 +1417,65 @@ function applyFormation(formation){
   toast('Sistema ' + formation);
 }
 
+/* ---------- Custom logo ---------- */
+const LOGO_KEY = 'scoutreport_logo';
+
+function applyLogo(){
+  let data = null;
+  try{ data = localStorage.getItem(LOGO_KEY); }catch(e){}
+  const img = document.getElementById('bmark-img');
+  const def = document.getElementById('bmark-default');
+  const mark = document.getElementById('bmark');
+  if(data){
+    img.src = data; img.style.display='block';
+    def.style.display='none'; mark.classList.add('custom');
+  } else {
+    img.style.display='none'; img.removeAttribute('src');
+    def.style.display='block'; mark.classList.remove('custom');
+  }
+}
+function logoClick(ev){
+  if(ev) ev.stopPropagation();
+  let has=false; try{ has=!!localStorage.getItem(LOGO_KEY); }catch(e){}
+  document.getElementById('logo-reset-btn').style.display = has? 'flex':'none';
+  document.getElementById('logo-bg').classList.add('show');
+  document.getElementById('logo-sheet').classList.add('show');
+}
+function closeLogo(){
+  document.getElementById('logo-bg').classList.remove('show');
+  document.getElementById('logo-sheet').classList.remove('show');
+}
+function logoChoose(){ document.getElementById('logo-input').click(); }
+function logoReset(){
+  try{ localStorage.removeItem(LOGO_KEY); }catch(e){}
+  applyLogo(); closeLogo(); toast('Logótipo reposto');
+}
+function logoUpload(ev){
+  const file = ev.target.files && ev.target.files[0];
+  ev.target.value='';
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const tmp = new Image();
+    tmp.onload = ()=>{
+      // resize to max 96px, keep aspect, draw on transparent canvas
+      const max=96; let w=tmp.width, h=tmp.height;
+      if(w>h){ if(w>max){ h=Math.round(h*max/w); w=max; } }
+      else   { if(h>max){ w=Math.round(w*max/h); h=max; } }
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(tmp,0,0,w,h);
+      let out;
+      try{ out = c.toDataURL('image/png'); }catch(err){ toast('Imagem inválida'); return; }
+      try{ localStorage.setItem(LOGO_KEY, out); }catch(err){ toast('Imagem demasiado grande'); return; }
+      applyLogo(); closeLogo(); toast('Logótipo atualizado');
+    };
+    tmp.onerror = ()=>toast('Não foi possível ler a imagem');
+    tmp.src = e.target.result;
+  };
+  reader.onerror = ()=>toast('Não foi possível ler o ficheiro');
+  reader.readAsDataURL(file);
+}
+
 /* ---------- utils ---------- */
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function slug(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'eq'; }
@@ -1373,6 +1489,7 @@ function toast(msg){
 document.getElementById('pitch').addEventListener('touchmove', e=>{ e.preventDefault(); }, {passive:false});
 
 /* ---------- boot ---------- */
+applyLogo();
 renderHome();
 </script>
 </body>
