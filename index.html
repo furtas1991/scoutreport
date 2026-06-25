@@ -486,8 +486,9 @@ body.noTabs .tabbar{display:none}
 .shpitch svg{position:absolute;inset:0;width:100%;height:100%}
 .shtok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;width:84px}
 .shtok .slotpos{font-size:10px;font-weight:800;color:#fff;background:rgba(0,0,0,.35);padding:0 6px;border-radius:4px}
-.shtok .first{background:#fff;border-radius:7px;padding:3px 6px;box-shadow:0 1px 4px rgba(0,0,0,.25);width:100%;text-align:center}
-.shtok .first .nm{font-size:11px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shtok .first{background:#fff;border-radius:9px;padding:5px 6px 4px;box-shadow:0 1px 4px rgba(0,0,0,.25);width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.shtok .first .avatar{width:34px;height:34px}
+.shtok .first .nm{font-size:11px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .shtok .first .meta{font-size:9px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shtok .more{font-size:9px;font-weight:700;color:#1a1405;background:rgba(245,166,35,.95);border-radius:4px;padding:0 5px;margin-top:1px}
 .shtok .empty-slot{width:30px;height:30px;border-radius:50%;border:2px dashed rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
@@ -682,6 +683,21 @@ body.noTabs .tabbar{display:none}
 .team-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
 .team-crest{position:relative;cursor:pointer;flex-shrink:0;display:inline-block}
 .crest-edit{position:absolute;bottom:-2px;right:-2px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+
+/* shadow depth chart */
+.sh-depth{padding:18px 16px 36px}
+.sh-depth-row{display:flex;gap:12px;align-items:flex-start;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px;box-shadow:var(--sh-1);cursor:pointer}
+.sh-depth-row:active{border-color:var(--line2)}
+.sh-depth-pos{width:46px;flex-shrink:0;font-size:13px;font-weight:800;color:var(--accent);background:var(--accent-d);border:1px solid var(--accent);border-radius:9px;padding:7px 0;text-align:center}
+.sh-depth-opts{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.sh-opt{display:flex;align-items:center;gap:10px}
+.sh-opt-ord{width:18px;height:18px;border-radius:50%;background:#15181c;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sh-opt .avatar{width:30px;height:30px;flex-shrink:0}
+.sh-opt-main{flex:1;min-width:0}
+.sh-opt-nm{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-opt-meta{font-size:11.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-opt-r{width:22px;height:22px;border-radius:6px;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sh-opt-r.A{background:#2ba96b}.sh-opt-r.B{background:#1d6fe0}.sh-opt-r.C{background:#f5a623}.sh-opt-r.D{background:#e5484d}
 
 /* ============ PRINT / PDF REPORT ============ */
 #printRoot{display:none}
@@ -916,7 +932,7 @@ body.noTabs .tabbar{display:none}
     <button class="btn" onclick="exportDB()">Export all</button>
     <button class="btn" onclick="importClick()">Import</button>
   </div>
-  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.55">Includes <b>everything</b>: relatórios, jogadores, shadow teams, pastas e logótipos de clube. Guarda o ficheiro no iCloud ou envia por AirDrop. Faz uma cópia antes de cada atualização da app.</div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.55">Includes <b>everything</b>: reports, players, shadow teams, folders and club crests. Save the file to iCloud or send it via AirDrop. Make a copy before each app update.</div>
 
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Done</button>
@@ -1730,7 +1746,7 @@ function deleteProfile(){
 function renderProfile(){
   const p = editingProfile;
   const yr = birthYear(p.birth), age = ageFromBirth(p.birth);
-  const sub = [p.club, p.level, yr?(yr+(age!=null?` · ${age} anos`:'')):''].filter(Boolean).join('  ·  ');
+  const sub = [p.club, p.level, yr?(yr+(age!=null?` · ${age} yrs`:'')):''].filter(Boolean).join('  ·  ');
   const posChip = (slot,val)=>POSITIONS.map(x=>`<button class="pf-chip ${val===x?'on':''}" onclick="setProfilePos('${slot}','${x}')">${x}</button>`).join('');
   const el = document.getElementById('profile');
   const w = isWatch(p), autoW = (p.rating==='A'||p.rating==='B');
@@ -1849,15 +1865,15 @@ function renderProfileView(){
   const w = isWatch(p);
   const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Club por definir';
   const clubLogo = p.club && DB.clubLogos && DB.clubLogos[p.club];
-  const ageStr = yr ? `${yr}${age!=null?` · ${age} anos`:''}` : '';
+  const ageStr = yr ? `${yr}${age!=null?` · ${age} yrs`:''}` : '';
   const natStr = p.nationality ? `${flag?flag+' ':''}${esc(p.nationality)}` : '';
 
   const chips = positions.map((c,i)=>`<span class="pv-pos">${c}</span>`).join('');
   const stat = (l,v)=> v? `<div class="pv-stat"><div class="pv-stat-l">${l}</div><div class="pv-stat-v">${v}</div></div>` : '';
   const stats = [
     stat('Rating', p.rating? `<span class="pc-rate ${p.rating}" style="display:inline-flex;width:30px;height:30px;font-size:15px">${p.rating}</span>` : '—'),
-    stat('Pé', p.foot? esc(p.foot) : '—'),
-    stat('Altura', p.height? esc(p.height)+' cm' : '—'),
+    stat('Foot', p.foot? esc(p.foot) : '—'),
+    stat('Height', p.height? esc(p.height)+' cm' : '—'),
     stat('Body type', p.biotype? esc(p.biotype) : '—')
   ].join('');
 
@@ -1907,7 +1923,7 @@ function toggleWatchView(){
 function pfField(k,v){ editingProfile[k]=v; save(); if(k==='birth'||k==='club'||k==='level') updatePfSub(); }
 function updatePfSub(){
   const p=editingProfile, yr=birthYear(p.birth), age=ageFromBirth(p.birth);
-  const sub=[p.club,p.level,yr?(yr+(age!=null?` · ${age} anos`:'')):''].filter(Boolean).join('  ·  ');
+  const sub=[p.club,p.level,yr?(yr+(age!=null?` · ${age} yrs`:'')):''].filter(Boolean).join('  ·  ');
   document.getElementById('pf-sub').textContent = sub||'Preenche a ficha em baixo';
 }
 function pfNum(inp){ inp.value=inp.value.replace(/[^0-9]/g,'').slice(0,3); editingProfile.number=inp.value; save(); }
@@ -2069,15 +2085,28 @@ function renderShadowView(){
     if(first){
       const r = first.rating;
       const rdot = r? `<span class="rdot" style="background:${r==='A'?'#2ba96b':r==='B'?'#1d6fe0':r==='C'?'#f5a623':'#e5484d'}">${r}</span>`:'';
-      const meta = [first.club, birthYear(first.birth)].filter(Boolean).join(' · ');
       inner = `<div class="slotpos">${slot.pos}</div>
-        <div class="first" style="position:relative">${rdot}<div class="nm">${esc(shortName(first.name)||'—')}</div>${meta?`<div class="meta">${esc(meta)}</div>`:''}</div>
+        <div class="first" style="position:relative">${rdot}${avatarHTML(first,34)}<div class="nm">${esc(shortName(first.name)||'—')}</div></div>
         ${players.length>1?`<div class="more">+${players.length-1}</div>`:''}`;
     } else {
       inner = `<div class="slotpos">${slot.pos}</div><div class="empty-slot">+</div>`;
     }
     toks += `<div class="shtok" style="left:${slot.x}%;top:${slot.y}%" onclick="openSlot(${i})">${inner}</div>`;
   });
+  // depth chart: every position with all options (photos, in order)
+  let depth='';
+  slots.forEach((slot,i)=>{
+    const ids = (s.slots&&s.slots[i])||[];
+    const players = ids.map(id=>DB.players.find(p=>p.id===id)).filter(Boolean);
+    if(!players.length) return;
+    const opts = players.map((p,idx)=>{
+      const meta=[p.club,birthYear(p.birth)].filter(Boolean).join(' · ');
+      const r=p.rating? `<span class="sh-opt-r ${p.rating}">${p.rating}</span>`:'';
+      return `<div class="sh-opt"><span class="sh-opt-ord">${idx+1}</span>${avatarHTML(p,30)}<div class="sh-opt-main"><div class="sh-opt-nm">${esc(p.name||'No name')}</div>${meta?`<div class="sh-opt-meta">${esc(meta)}</div>`:''}</div>${r}</div>`;
+    }).join('');
+    depth += `<div class="sh-depth-row" onclick="openSlot(${i})"><div class="sh-depth-pos">${slot.pos}</div><div class="sh-depth-opts">${opts}</div></div>`;
+  });
+  const depthSection = depth? `<div class="sh-depth"><div class="dash-lbl" style="margin:0 0 10px">All options by position</div>${depth}</div>` : '';
   document.getElementById('shadowview').innerHTML = `
     <div class="pf-hero" style="padding:16px">
       <div class="sec-title" style="font-size:21px">${esc(s.name)}</div>
@@ -2094,7 +2123,8 @@ function renderShadowView(){
         </svg>
         ${toks}
       </div>
-    </div>`;
+    </div>
+    ${depthSection}`;
 }
 
 /* ---------- Slot manager ---------- */
@@ -2120,10 +2150,11 @@ function renderSlotPlayers(){
     const meta=[p.club,birthYear(p.birth)].filter(Boolean).join(' · ');
     return `<div class="slotp">
       <div class="ord">${idx+1}</div>
-      <div style="min-width:0"><div class="nm">${esc(p.name||'No name')}</div><div class="meta">${esc(meta)||'—'}</div></div>
+      ${avatarHTML(p,32)}
+      <div style="min-width:0;flex:1"><div class="nm">${esc(p.name||'No name')}</div><div class="meta">${esc(meta)||'—'}</div></div>
       <div class="acts">
-        ${idx>0?`<span onclick="moveSlotPlayer(${idx},-1)" title="Subir">↑</span>`:''}
-        ${idx<ids.length-1?`<span onclick="moveSlotPlayer(${idx},1)" title="Descer">↓</span>`:''}
+        ${idx>0?`<span onclick="moveSlotPlayer(${idx},-1)" title="Up">↑</span>`:''}
+        ${idx<ids.length-1?`<span onclick="moveSlotPlayer(${idx},1)" title="Down">↓</span>`:''}
         <span onclick="removeSlotPlayer('${id}')" title="Remove" style="color:var(--danger)">✕</span>
       </div>
     </div>`;
