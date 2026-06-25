@@ -630,6 +630,20 @@ body.noTabs .tabbar{display:none}
 .pf-hero{box-shadow:var(--sh-1)}
 .pf-avatar{box-shadow:var(--sh-1)}
 
+/* interactive position field */
+.posfield{position:relative;width:100%;max-width:248px;margin:2px auto 12px;aspect-ratio:66/92;
+  border-radius:13px;border:1px solid var(--line2);background:linear-gradient(0deg,#eaf3ed,#f4f8f5);overflow:hidden;box-shadow:var(--sh-1)}
+.posfield svg{position:absolute;inset:0;width:100%;height:100%}
+.pospt{position:absolute;transform:translate(-50%,-50%);height:25px;padding:0 9px;border-radius:13px;
+  background:var(--surf);border:1.5px solid var(--line2);color:var(--mut);font-size:10.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--sh-1);transition:transform .1s ease;white-space:nowrap}
+.pospt:active{transform:translate(-50%,-50%) scale(.9)}
+.pospt.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pospt .ord{position:absolute;top:-7px;right:-7px;width:16px;height:16px;border-radius:50%;background:#15181c;color:#fff;
+  font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--surf)}
+.posfield-legend{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;font-size:13px;font-weight:600}
+.pl-item b{display:inline-block;min-width:24px;color:var(--accent)}
+
 /* ============ PRINT / PDF REPORT ============ */
 #printRoot{display:none}
 @media print{
@@ -1578,10 +1592,9 @@ function renderProfile(){
     </div>
 
     <div class="pf-group">
-      <div class="pf-glbl">Posição</div>
-      <div class="pf-f" style="margin-bottom:11px"><label>Principal (P1)</label><div class="pf-chips">${posChip('pos1',p.pos1)}</div></div>
-      <div class="pf-f" style="margin-bottom:11px"><label>Secundária (P2)</label><div class="pf-chips">${posChip('pos2',p.pos2)}</div></div>
-      <div class="pf-f" style="margin-bottom:11px"><label>Terciária (P3)</label><div class="pf-chips">${posChip('pos3',p.pos3)}</div></div>
+      <div class="pf-glbl">Posição <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--mut2)">· toca no campo (até 3, por ordem)</span></div>
+      <div class="posfield" id="posfield">${renderPosField(p)}</div>
+      <div class="posfield-legend" id="posfield-legend">${posLegend(p)}</div>
       <div class="pf-f"><label>Pé preferido</label><div class="pf-chips">${FEET.map(f=>`<button class="pf-chip ${p.foot===f?'on':''}" onclick="setProfileFoot('${f}')">${f}</button>`).join('')}</div></div>
     </div>
 
@@ -1627,6 +1640,46 @@ function updatePfSub(){
 function pfNum(inp){ inp.value=inp.value.replace(/[^0-9]/g,'').slice(0,3); editingProfile.number=inp.value; save(); }
 function pfLink(k,v){ editingProfile.links[k]=v.trim(); save(); }
 function setProfilePos(slot,val){ editingProfile[slot]=(editingProfile[slot]===val)?'':val; save(); renderProfile(); }
+
+/* ---------- Interactive pitch position selector ---------- */
+const POS_POINTS = [
+  {c:'GR',x:50,y:90},
+  {c:'DE',x:20,y:75},{c:'DC',x:50,y:78},{c:'DD',x:80,y:75},
+  {c:'MDC',x:50,y:63},
+  {c:'MC',x:50,y:50},
+  {c:'EE',x:16,y:43},{c:'MO',x:50,y:38},{c:'ED',x:84,y:43},
+  {c:'AV',x:50,y:23}
+];
+function posOrder(p,code){ const l=[p.pos1,p.pos2,p.pos3]; const i=l.indexOf(code); return i>=0? i+1 : 0; }
+function renderPosField(p){
+  const lines = `<svg viewBox="0 0 66 92" preserveAspectRatio="none" fill="none" stroke="rgba(45,125,70,.28)" stroke-width="0.6">
+    <rect x="2" y="2" width="62" height="88" rx="1.5"/>
+    <line x1="2" y1="46" x2="64" y2="46"/>
+    <circle cx="33" cy="46" r="11"/>
+    <rect x="18" y="2" width="30" height="13"/>
+    <rect x="18" y="77" width="30" height="13"/>
+  </svg>`;
+  const pts = POS_POINTS.map(pt=>{
+    const ord = posOrder(p,pt.c);
+    return `<div class="pospt ${ord?'on':''}" style="left:${pt.x}%;top:${pt.y}%" onclick="togglePosField('${pt.c}')">${pt.c}${ord?`<span class="ord">${ord}</span>`:''}</div>`;
+  }).join('');
+  return lines + pts;
+}
+function posLegend(p){
+  const l=[p.pos1,p.pos2,p.pos3].filter(Boolean);
+  if(!l.length) return '<span style="color:var(--mut2)">Sem posição definida</span>';
+  return l.map((c,i)=>`<span class="pl-item"><b>P${i+1}</b> ${c}${POS_FULL[c]?` <span style="color:var(--mut2)">· ${POS_FULL[c]}</span>`:''}</span>`).join('');
+}
+function togglePosField(code){
+  const p=editingProfile; let list=[p.pos1,p.pos2,p.pos3].filter(Boolean);
+  const i=list.indexOf(code);
+  if(i>=0) list.splice(i,1);
+  else { if(list.length>=3){ toast('Máximo 3 posições'); return; } list.push(code); }
+  p.pos1=list[0]||''; p.pos2=list[1]||''; p.pos3=list[2]||'';
+  save();
+  document.getElementById('posfield').innerHTML = renderPosField(p);
+  document.getElementById('posfield-legend').innerHTML = posLegend(p);
+}
 function setProfileFoot(f){ editingProfile.foot=(editingProfile.foot===f)?'':f; save(); renderProfile(); }
 function setProfileRating(r){ editingProfile.rating=(editingProfile.rating===r)?'':r; save(); renderProfile(); }
 function setProfileStatus(s){ editingProfile.status=(editingProfile.status===s)?'':s; save(); renderProfile(); }
