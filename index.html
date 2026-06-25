@@ -1364,11 +1364,24 @@ function load(){
         if(m.folderId === undefined) m.folderId = null;
         if(m.title === undefined) m.title = '';
       });
+      migrateMatches(d.matches);
       d.players.forEach(normalizeProfile);
       return d;
     }
   }catch(e){}
   return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
+}
+/* ---- migration: old PT domain values -> EN ---- */
+const POS_MIGRATE = {GR:'GK',DC:'CB',DD:'RB',DE:'LB',LD:'RWB',LE:'LWB',MDC:'DM',MC:'CM',MO:'AM',ED:'RW',EE:'LW',AV:'ST'};
+const CAT_MIGRATE = {'GR':'GK','MÉD':'MID','AV':'FWD'};
+const FOOT_MIGRATE = {'Direito':'Right','Esquerdo':'Left','Ambidextro':'Two-footed'};
+const STATUS_MIGRATE = {'Não observado':'Not scouted','A observar':'To scout','Observado':'Scouted'};
+const BIO_MIGRATE = {'Ectomorfo':'Ectomorph','Mesomorfo':'Mesomorph','Endomorfo':'Endomorph'};
+const LEVEL_MIGRATE = {'Sub-13':'U13','Sub-15':'U15','Sub-16':'U16','Sub-17':'U17','Sub-19':'U19','Sub-23':'U23','Sénior':'Senior'};
+function migrateMatches(matches){
+  (matches||[]).forEach(m=>['home','away'].forEach(side=>{
+    if(m[side] && Array.isArray(m[side].players)) m[side].players.forEach(pl=>{ if(CAT_MIGRATE[pl.pos]) pl.pos = CAT_MIGRATE[pl.pos]; });
+  }));
 }
 function normalizeProfile(p){
   p.name = p.name||''; p.birth = p.birth||''; p.nationality = p.nationality||'';
@@ -1381,6 +1394,16 @@ function normalizeProfile(p){
   p.notes = p.notes||''; if(!Array.isArray(p.obs)) p.obs = [];
   p.photo = p.photo||''; p.watch = !!p.watch;
   if(!p.createdAt) p.createdAt = new Date().toISOString();
+  // migrate old PT values
+  ['pos1','pos2','pos3'].forEach(k=>{ if(POS_MIGRATE[p[k]]) p[k]=POS_MIGRATE[p[k]]; });
+  // collapse any duplicate positions, keep order
+  let _pl=[p.pos1,p.pos2,p.pos3].filter(Boolean);
+  _pl=_pl.filter((v,i)=>_pl.indexOf(v)===i);
+  p.pos1=_pl[0]||''; p.pos2=_pl[1]||''; p.pos3=_pl[2]||'';
+  if(FOOT_MIGRATE[p.foot]) p.foot = FOOT_MIGRATE[p.foot];
+  if(STATUS_MIGRATE[p.status]) p.status = STATUS_MIGRATE[p.status];
+  if(BIO_MIGRATE[p.biotype]) p.biotype = BIO_MIGRATE[p.biotype];
+  if(LEVEL_MIGRATE[p.level]) p.level = LEVEL_MIGRATE[p.level];
   return p;
 }
 function save(){
@@ -2196,6 +2219,7 @@ function normalizeDB(d){
   d.shadows = Array.isArray(d.shadows)? d.shadows : [];
   d.clubLogos = (d.clubLogos && typeof d.clubLogos==='object')? d.clubLogos : {};
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
+  migrateMatches(d.matches);
   d.players.forEach(normalizeProfile);
   return d;
 }
@@ -3079,6 +3103,7 @@ function toast(msg){
 document.getElementById('pitch').addEventListener('touchmove', e=>{ e.preventDefault(); }, {passive:false});
 
 /* ---------- boot ---------- */
+save(); // persist any one-time data migration
 applyTheme(getTheme());
 applyLogo();
 applyHero();
