@@ -407,7 +407,7 @@ body.noTabs .tabbar{display:none}
 .pc-meta{color:var(--mut);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc-pos{display:inline-block;background:var(--surf2);border:1px solid var(--line2);border-radius:5px;padding:0 5px;font-size:11px;font-weight:700;color:var(--mut);margin-left:4px}
 .statusdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.st-seguir{background:#1d6fe0}.st-confirmar{background:#f5a623}.st-recomendado{background:#2ba96b}.st-descartado{background:#b4bac1}
+.st-nao-observado{background:#b4bac1}.st-a-observar{background:#f5a623}.st-observado{background:#2ba96b}
 
 /* team (club) card */
 .tcard{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:14px 15px;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:9px}
@@ -644,6 +644,45 @@ body.noTabs .tabbar{display:none}
 .posfield-legend{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;font-size:13px;font-weight:600}
 .pl-item b{display:inline-block;min-width:24px;color:var(--accent)}
 
+/* profile read view */
+.pv-hero{position:relative;overflow:hidden;padding:22px 18px 18px;background:linear-gradient(160deg,#23262b,#15171b);color:#fff}
+.pv-hero-bg{position:absolute;inset:0;background:radial-gradient(120% 90% at 80% 0%,rgba(255,255,255,.08),transparent 60%)}
+.pv-hero-row{position:relative;display:flex;gap:15px;align-items:center}
+.pv-hero .avatar{border:2px solid rgba(255,255,255,.25);box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.pv-hero-main{flex:1;min-width:0}
+.pv-name{font-size:23px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+.pv-meta{font-size:13.5px;color:rgba(255,255,255,.8);margin-top:5px;font-weight:500}
+.pv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.pv-tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:600}
+.pv-hero-actions{position:relative;display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+.pv-watch{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:8px 13px;font-size:13px;font-weight:700;cursor:pointer}
+.pv-watch.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pv-status{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.9);background:rgba(255,255,255,.1);padding:6px 11px;border-radius:9px}
+.pv-status .statusdot{width:8px;height:8px;border-radius:50%}
+.pv-body{padding:18px 16px 36px}
+.pv-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:18px}
+.pv-stat{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:var(--sh-1)}
+.pv-stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut2);font-weight:700;margin-bottom:6px}
+.pv-stat-v{font-size:15px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;min-height:30px}
+.pv-block{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px;box-shadow:var(--sh-1)}
+.pv-block-t{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut2);font-weight:700;margin-bottom:11px}
+.pv-posrow{display:flex;gap:14px;align-items:flex-start}
+.pv-chips{flex:1;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start}
+.pv-pos{background:var(--accent-d);color:var(--accent-ink);border:1px solid var(--accent);border-radius:8px;padding:5px 11px;font-size:13px;font-weight:800}
+.pv-poslegend{width:100%;font-size:12.5px;color:var(--mut);margin-top:4px;line-height:1.6}
+.pv-pitch{max-width:120px;margin:0;flex-shrink:0}
+.pv-pitch .pospt{font-size:9px;height:20px;padding:0 6px}
+.pv-pitch .pospt .ord{width:13px;height:13px;font-size:8px;top:-5px;right:-5px}
+.pv-links{display:flex;flex-wrap:wrap;gap:9px}
+.pv-link{background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:9px 13px;font-size:13px;font-weight:700;color:var(--txt);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.pv-link span{color:var(--mut2);font-size:12px}
+.pv-notes{font-size:14px;line-height:1.55;white-space:pre-wrap}
+
+/* team crest header */
+.team-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.team-crest{position:relative;cursor:pointer;flex-shrink:0;display:inline-block}
+.crest-edit{position:absolute;bottom:-2px;right:-2px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+
 /* ============ PRINT / PDF REPORT ============ */
 #printRoot{display:none}
 @media print{
@@ -707,8 +746,9 @@ body.noTabs .tabbar{display:none}
     <button class="iconbtn" title="Voltar" onclick="goHome()">‹</button>
   </div>
   <div id="profile-actions" style="display:none;gap:8px">
-    <button class="iconbtn" title="Eliminar" onclick="deleteProfile()">🗑</button>
-    <button class="iconbtn" title="Voltar" onclick="closeProfile()">‹</button>
+    <button class="iconbtn" id="pf-edit-btn" title="Editar" onclick="editProfile()">✎</button>
+    <button class="iconbtn" id="pf-del-btn" title="Eliminar" style="display:none" onclick="deleteProfile()">🗑</button>
+    <button class="iconbtn" title="Voltar" onclick="profileBack()">‹</button>
   </div>
   <div id="shadow-actions" style="display:none;gap:8px">
     <button class="iconbtn" title="Renomear" onclick="renameShadow()">✎</button>
@@ -841,6 +881,7 @@ body.noTabs .tabbar{display:none}
 
 <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="photoUpload(event)">
 <input type="file" id="hero-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="heroUpload(event)">
+<input type="file" id="clublogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="clubLogoUpload(event)">
 
 <!-- ====== SETTINGS SHEET ====== -->
 <div class="sheet-bg" id="settings-bg" onclick="closeSettings()"></div>
@@ -868,7 +909,14 @@ body.noTabs .tabbar{display:none}
       <button class="btn" id="set-hero-remove" onclick="heroRemove()">Remover</button>
     </div>
   </div>
-  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.5">Aparece no topo do Início. Usa imagens tuas ou de uso livre.</div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.5">Aparece no topo do Início. Usa imagens tuas ou de uso livre.</div>
+
+  <div class="pf-glbl">Cópia de segurança — todos os dados</div>
+  <div class="set-actions" style="margin-bottom:8px">
+    <button class="btn" onclick="exportDB()">Exportar tudo</button>
+    <button class="btn" onclick="importClick()">Importar</button>
+  </div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.55">Inclui <b>tudo</b>: relatórios, jogadores, shadow teams, pastas e logótipos de clube. Guarda o ficheiro no iCloud ou envia por AirDrop. Faz uma cópia antes de cada atualização da app.</div>
 
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Concluído</button>
@@ -1026,6 +1074,27 @@ body.noTabs .tabbar{display:none}
   </div>
 </div>
 
+<!-- ====== IMPORT LIST SHEET ====== -->
+<div class="sheet-bg" id="implist-bg" onclick="closeImportList()"></div>
+<div class="sheet" id="implist-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Importar lista</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:12px" id="implist-team">Para a equipa…</div>
+  <div class="field" style="margin-bottom:10px">
+    <textarea class="inp" id="implist-text" placeholder="Cola aqui a lista, um jogador por linha. Ex:
+1. Afonso Meira
+2. Afonso Pereira
+3. Rodrigo Maia" style="min-height:170px"></textarea>
+  </div>
+  <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:11px 13px;font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.55">
+    <b style="color:var(--txt)">Dica:</b> no iPhone, abre a foto da ficha, mantém o dedo sobre os nomes, toca em "Copiar texto" e cola aqui. Os primeiros 11 vão para o campo; os restantes para o banco.
+  </div>
+  <div class="sheet-actions">
+    <button class="btn" onclick="closeImportList()">Cancelar</button>
+    <button class="btn primary" onclick="doImportList()">Importar</button>
+  </div>
+</div>
+
 <!-- ====== FORMATION SHEET ====== -->
 <div class="sheet-bg" id="form-bg" onclick="closeFormation()"></div>
 <div class="sheet" id="form-sheet">
@@ -1043,6 +1112,7 @@ body.noTabs .tabbar{display:none}
   <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin-bottom:14px">
     Tens <b id="form-current-count" style="color:var(--txt)">0</b> jogadores em campo nesta equipa.
   </div>
+  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Importar lista de jogadores (colar)</button>
   <div class="sheet-actions">
     <button class="btn" onclick="closeFormation()">Fechar</button>
   </div>
@@ -1289,6 +1359,7 @@ function load(){
       d.matches = d.matches || [];
       d.players = d.players || [];
       d.shadows = d.shadows || [];
+      if(!d.clubLogos || typeof d.clubLogos!=='object') d.clubLogos = {};
       d.matches.forEach(m=>{
         if(m.folderId === undefined) m.folderId = null;
         if(m.title === undefined) m.title = '';
@@ -1297,13 +1368,14 @@ function load(){
       return d;
     }
   }catch(e){}
-  return { folders: [], matches: [], players: [], shadows: [] };
+  return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
 }
 function normalizeProfile(p){
   p.name = p.name||''; p.birth = p.birth||''; p.nationality = p.nationality||'';
   p.club = p.club||''; p.level = p.level||''; p.number = p.number||'';
   p.pos1 = p.pos1||''; p.pos2 = p.pos2||''; p.pos3 = p.pos3||'';
   p.foot = p.foot||''; p.rating = p.rating||''; p.status = p.status||'';
+  p.height = p.height||''; p.biotype = p.biotype||'';
   if(!p.links) p.links = {}; p.links.zerozero = p.links.zerozero||'';
   p.links.transfermarkt = p.links.transfermarkt||''; p.links.fpf = p.links.fpf||'';
   p.notes = p.notes||''; if(!Array.isArray(p.obs)) p.obs = [];
@@ -1316,10 +1388,27 @@ function save(){
 }
 
 /* ===================== PLAYER DATABASE (Fase 1) ===================== */
-const POSITIONS = ['GR','DC','DD','DE','MDC','MC','MO','ED','EE','AV'];
-const POS_FULL = {GR:'Guarda-redes',DC:'Defesa central',DD:'Defesa direito',DE:'Defesa esquerdo',MDC:'Médio defensivo',MC:'Médio centro',MO:'Médio ofensivo',ED:'Extremo direito',EE:'Extremo esquerdo',AV:'Avançado'};
+const POSITIONS = ['GR','DD','DC','DE','LD','LE','MDC','MC','MO','ED','EE','AV'];
+const POS_FULL = {GR:'Guarda-redes',DC:'Defesa central',DD:'Defesa direito',DE:'Defesa esquerdo',LD:'Lateral direito',LE:'Lateral esquerdo',MDC:'Médio defensivo',MC:'Médio centro',MO:'Médio ofensivo',ED:'Extremo direito',EE:'Extremo esquerdo',AV:'Avançado'};
 const FEET = ['Direito','Esquerdo','Ambidextro'];
-const STATUSES = ['A seguir','A confirmar','Recomendado','Descartado'];
+const STATUSES = ['Não observado','A observar','Observado'];
+const BIOTYPES = ['Longilíneo','Atlético','Robusto'];
+const COUNTRY_ISO = {
+  'portugal':'PT','espanha':'ES','frança':'FR','franca':'FR','inglaterra':'GB','reino unido':'GB','escócia':'GB','escocia':'GB','país de gales':'GB','pais de gales':'GB','irlanda':'IE','irlanda do norte':'GB',
+  'alemanha':'DE','itália':'IT','italia':'IT','holanda':'NL','países baixos':'NL','paises baixos':'NL','bélgica':'BE','belgica':'BE','frança':'FR','suíça':'CH','suica':'CH','áustria':'AT','austria':'AT',
+  'brasil':'BR','argentina':'AR','uruguai':'UY','colômbia':'CO','colombia':'CO','chile':'CL','méxico':'MX','mexico':'MX','peru':'PE','paraguai':'PY','equador':'EC','venezuela':'VE','bolívia':'BO','bolivia':'BO',
+  'cabo verde':'CV','angola':'AO','moçambique':'MZ','mocambique':'MZ','guiné-bissau':'GW','guine-bissau':'GW','guiné':'GW','são tomé e príncipe':'ST','sao tome e principe':'ST',
+  'croácia':'HR','croacia':'HR','sérvia':'RS','servia':'RS','polónia':'PL','polonia':'PL','dinamarca':'DK','suécia':'SE','suecia':'SE','noruega':'NO','finlândia':'FI','finlandia':'FI','grécia':'GR','grecia':'GR','turquia':'TR','rússia':'RU','russia':'RU','ucrânia':'UA','ucrania':'UA',
+  'estados unidos':'US','eua':'US','canadá':'CA','canada':'CA','japão':'JP','japao':'JP','coreia do sul':'KR','austrália':'AU','australia':'AU',
+  'nigéria':'NG','nigeria':'NG','gana':'GH','senegal':'SN','camarões':'CM','camaroes':'CM','costa do marfim':'CI','marrocos':'MA','argélia':'DZ','argelia':'DZ','tunísia':'TN','tunisia':'TN','egito':'EG','áfrica do sul':'ZA','africa do sul':'ZA',
+  'roménia':'RO','romenia':'RO','hungria':'HU','chéquia':'CZ','chequia':'CZ','república checa':'CZ','eslováquia':'SK','eslovaquia':'SK','eslovénia':'SI','eslovenia':'SI','bulgária':'BG','bulgaria':'BG','albânia':'AL','albania':'AL'
+};
+function countryFlag(name){
+  if(!name) return '';
+  const iso = COUNTRY_ISO[name.trim().toLowerCase()];
+  if(!iso) return '';
+  return iso.toUpperCase().replace(/./g, c=>String.fromCodePoint(127397 + c.charCodeAt(0)));
+}
 const LEVELS = ['Sub-13','Sub-15','Sub-16','Sub-17','Sub-19','Sub-23','Sénior'];
 
 let currentSection = 'reports';
@@ -1403,7 +1492,7 @@ function matchesFilters(p, q){
   if(filters.status && p.status!==filters.status) return false;
   return true;
 }
-function isWatch(p){ return p.watch || p.rating==='A' || p.rating==='B'; }
+function isWatch(p){ return !!p.watch; }
 function toggleWatch(id, ev){
   if(ev) ev.stopPropagation();
   const p = DB.players.find(x=>x.id===id); if(!p) return;
@@ -1464,7 +1553,7 @@ function avatarHTML(p, size){
   const ini = (p.name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() || '?';
   return `<span class="avatar" style="${s}">${esc(ini)}</span>`;
 }
-function statusSlug(s){ return {'A seguir':'seguir','A confirmar':'confirmar','Recomendado':'recomendado','Descartado':'descartado'}[s]||''; }
+function statusSlug(s){ return {'Não observado':'nao-observado','A observar':'a-observar','Observado':'observado'}[s]||''; }
 
 /* ---------- Filters ---------- */
 function distinct(key){ return [...new Set(DB.players.map(p=>p[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt')); }
@@ -1494,14 +1583,51 @@ function clearFilter(key){ filters[key]=''; renderDatabase(); }
 function clearFilters(){ Object.keys(filters).forEach(k=>filters[k]=''); openFilters(); renderDatabase(); }
 
 /* ---------- Teams ---------- */
+function clubFromKey(k){ return k.replace(/·.*/,'').trim(); }
+function clubCrest(club, size){
+  const logo = DB.clubLogos && DB.clubLogos[club];
+  const s = `width:${size}px;height:${size}px`;
+  if(logo) return `<span class="tc-badge" style="${s};background:#fff;padding:3px;overflow:hidden"><img src="${logo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
+  const ini = (club||'?').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+  return `<span class="tc-badge" style="${s}">${esc(ini||'?')}</span>`;
+}
+let pendingClubLogo = null;
+function clubLogoChoose(club){ pendingClubLogo = club; document.getElementById('clublogo-input').click(); }
+function clubLogoUpload(ev){
+  const file = ev.target.files && ev.target.files[0]; ev.target.value='';
+  if(!file || !pendingClubLogo) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const tmp=new Image();
+    tmp.onload=()=>{
+      const max=140; let w=tmp.width,h=tmp.height; const sc=Math.min(max/w,max/h,1); w=Math.round(w*sc); h=Math.round(h*sc);
+      const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(tmp,0,0,w,h);
+      let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Imagem inválida'); return; }
+      if(!DB.clubLogos) DB.clubLogos={};
+      DB.clubLogos[pendingClubLogo]=out; save(); renderTeams(); toast('Escudo do clube atualizado');
+    };
+    tmp.onerror=()=>toast('Não foi possível ler a imagem');
+    tmp.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function clubLogoReset(club){ if(DB.clubLogos) delete DB.clubLogos[club]; save(); renderTeams(); }
 function renderTeams(){
   const top = document.getElementById('teams-top');
   const list = document.getElementById('teams-list');
   if(activeTeamKey){
+    const club = clubFromKey(activeTeamKey);
+    const hasLogo = DB.clubLogos && DB.clubLogos[club];
     const players = DB.players.filter(p=>profileTeamKey(p)===activeTeamKey)
       .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
-    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitTeam()">‹</div><div class="sec-title" style="font-size:21px">${esc(activeTeamKey)}</div></div>
-      <div class="sec-sub">${players.length} jogador${players.length!==1?'es':''} observado${players.length!==1?'s':''}.</div>`;
+    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitTeam()">‹</div></div>
+      <div class="team-head">
+        <span class="team-crest" onclick="clubLogoChoose('${esc(club).replace(/'/g,"\\'")}')">${clubCrest(club,64)}<span class="crest-edit">✎</span></span>
+        <div style="flex:1;min-width:0">
+          <div class="sec-title" style="font-size:21px">${esc(activeTeamKey)}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${players.length} jogador${players.length!==1?'es':''}${hasLogo?` · <span onclick="clubLogoReset('${esc(club).replace(/'/g,"\\'")}')" style="color:var(--accent);cursor:pointer">remover escudo</span>`:' · toca no escudo para carregar'}</div>
+        </div>
+      </div>`;
     list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">Sem jogadores</div></div>`;
     return;
   }
@@ -1512,9 +1638,8 @@ function renderTeams(){
   const keys = Object.keys(groups).sort((a,b)=>a.localeCompare(b,'pt'));
   list.innerHTML = keys.map(k=>{
     const n = groups[k].length;
-    const initials = k.replace(/·.*/,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
     return `<div class="tcard" onclick="openTeam('${esc(k).replace(/'/g,"\\'")}')">
-      <div class="tc-badge">${esc(initials||'?')}</div>
+      ${clubCrest(clubFromKey(k),44)}
       <div class="pc-main"><div class="pc-name">${esc(k)}</div><div class="pc-meta">${n} jogador${n!==1?'es':''}</div></div>
     </div>`;
   }).join('');
@@ -1523,23 +1648,50 @@ function openTeam(k){ activeTeamKey = k; renderTeams(); }
 function exitTeam(){ activeTeamKey = null; renderTeams(); }
 
 /* ---------- Profile (ficha) ---------- */
+let profileMode = 'view';
 function newProfile(){
   const p = normalizeProfile({ id:uid(), createdAt:new Date().toISOString() });
   DB.players.unshift(p); save();
-  openProfile(p.id, currentSection==='teams'?'teams':'database');
+  openProfile(p.id, currentSection==='teams'?'teams':'database', 'edit');
 }
-function openProfile(id, from){
+function openProfile(id, from, mode){
   editingProfile = DB.players.find(p=>p.id===id);
   if(!editingProfile) return;
   profileReturn = from || 'database';
+  profileMode = mode || 'view';
   ['dashboard','home','match','teams','database','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
   document.getElementById('profile').classList.add('show');
   document.body.classList.add('noTabs');
   setHeader('profile');
-  renderProfile();
+  renderProfileScreen();
+}
+function renderProfileScreen(){
+  const edit = document.getElementById('pf-edit-btn');
+  const del = document.getElementById('pf-del-btn');
+  if(profileMode==='edit'){
+    if(edit) edit.style.display='none';
+    if(del) del.style.display='flex';
+    renderProfile();
+  } else {
+    if(edit) edit.style.display='flex';
+    if(del) del.style.display='none';
+    renderProfileView();
+  }
+  document.getElementById('profile').scrollTop = 0;
+}
+function editProfile(){ profileMode='edit'; renderProfileScreen(); }
+function profileBack(){
+  if(profileMode==='edit'){
+    // leaving edit: drop empty just-created profile, else return to view
+    if(editingProfile && !editingProfile.name.trim() && !editingProfile.club.trim() && !profilePositions(editingProfile).length && !editingProfile.obs.length){
+      DB.players = DB.players.filter(p=>p.id!==editingProfile.id); save();
+      showSection(profileReturn); return;
+    }
+    profileMode='view'; renderProfileScreen(); return;
+  }
+  showSection(profileReturn);
 }
 function closeProfile(){
-  // drop empty just-created profile
   if(editingProfile && !editingProfile.name.trim() && !editingProfile.club.trim() && !profilePositions(editingProfile).length && !editingProfile.obs.length){
     DB.players = DB.players.filter(p=>p.id!==editingProfile.id); save();
   }
@@ -1568,8 +1720,7 @@ function renderProfile(){
       </div>
     </div>
     <div class="pf-watch-toggle ${w?'on':''}" onclick="toggleWatch('${p.id}',event)">
-      <span class="star">${w?'★':'☆'}</span> Na watchlist
-      <span class="auto">${autoW?'(automático: '+p.rating+')':'manual'}</span>
+      <span class="star">${w?'★':'☆'}</span> ${w?'Na watchlist':'Adicionar à watchlist'}
     </div>
   </div>
   <div class="pf-body">
@@ -1585,10 +1736,15 @@ function renderProfile(){
       </div>
       <div class="pf-row">
         <div class="pf-f"><label>Nacionalidade</label><input class="pf-in" list="dl-nats" placeholder="ex: Portugal" value="${esc(p.nationality)}" oninput="pfField('nationality',this.value)"></div>
+        <div class="pf-f"><label>Altura (cm)</label><input class="pf-in" type="number" inputmode="numeric" placeholder="ex: 178" value="${esc(p.height)}" oninput="pfField('height',this.value)"></div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-f"><label>Biotipo</label><input class="pf-in" list="dl-bio" placeholder="ex: Atlético" value="${esc(p.biotype)}" oninput="pfField('biotype',this.value)"></div>
       </div>
       <datalist id="dl-clubs">${distinct('club').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
       <datalist id="dl-levels">${LEVELS.map(c=>`<option value="${c}">`).join('')}</datalist>
       <datalist id="dl-nats">${distinct('nationality').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+      <datalist id="dl-bio">${BIOTYPES.map(c=>`<option value="${c}">`).join('')}</datalist>
     </div>
 
     <div class="pf-group">
@@ -1634,8 +1790,8 @@ function saveProfileAndClose(){
     return;
   }
   save();
-  toast('Jogador guardado na base de dados');
-  closeProfile();
+  toast('Jogador guardado');
+  profileMode='view'; renderProfileScreen();
 }
 function renderObs(p){
   if(!p.obs.length) return `<div style="color:var(--mut2);font-size:13px;margin-bottom:9px">Sem observações registadas.</div>`;
@@ -1644,6 +1800,85 @@ function renderObs(p){
     const rate = o.rating? `<span class="pc-pos" style="color:#fff;border:none;background:${o.rating==='A'?'#2ba96b':o.rating==='B'?'#1d6fe0':o.rating==='C'?'#f5a623':'#e5484d'}">${o.rating}</span>`:'';
     return `<div class="pf-obs"><div class="pf-obs-top"><span class="pf-obs-date">${d}</span>${rate}${o.context?`<span style="font-size:12px;color:var(--mut)">${esc(o.context)}</span>`:''}<span class="pf-obs-del" onclick="delObs('${o.id}')">✕</span></div>${o.notes?`<div class="pf-obs-notes">${esc(o.notes)}</div>`:''}</div>`;
   }).join('');
+}
+function renderObsRO(p){
+  if(!p.obs.length) return `<div style="color:var(--mut2);font-size:13px">Sem observações registadas.</div>`;
+  return p.obs.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(o=>{
+    const d = o.date? new Date(o.date).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'}) : 'Sem data';
+    const rate = o.rating? `<span class="pc-pos" style="color:#fff;border:none;background:${o.rating==='A'?'#2ba96b':o.rating==='B'?'#1d6fe0':o.rating==='C'?'#f5a623':'#e5484d'}">${o.rating}</span>`:'';
+    return `<div class="pf-obs"><div class="pf-obs-top"><span class="pf-obs-date">${d}</span>${rate}${o.context?`<span style="font-size:12px;color:var(--mut)">${esc(o.context)}</span>`:''}</div>${o.notes?`<div class="pf-obs-notes">${esc(o.notes)}</div>`:''}</div>`;
+  }).join('');
+}
+function renderPosFieldRO(p){
+  const lines = `<svg viewBox="0 0 66 92" preserveAspectRatio="none" fill="none" stroke="rgba(45,125,70,.28)" stroke-width="0.6"><rect x="2" y="2" width="62" height="88" rx="1.5"/><line x1="2" y1="46" x2="64" y2="46"/><circle cx="33" cy="46" r="11"/><rect x="18" y="2" width="30" height="13"/><rect x="18" y="77" width="30" height="13"/></svg>`;
+  const pts = POS_POINTS.filter(pt=>posOrder(p,pt.c)).map(pt=>{
+    const ord = posOrder(p,pt.c);
+    return `<div class="pospt on" style="left:${pt.x}%;top:${pt.y}%">${pt.c}<span class="ord">${ord}</span></div>`;
+  }).join('');
+  return lines + pts;
+}
+function renderProfileView(){
+  const p = editingProfile; if(!p) return;
+  const yr = birthYear(p.birth), age = ageFromBirth(p.birth);
+  const flag = countryFlag(p.nationality);
+  const positions = profilePositions(p);
+  const w = isWatch(p);
+  const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Clube por definir';
+  const clubLogo = p.club && DB.clubLogos && DB.clubLogos[p.club];
+  const ageStr = yr ? `${yr}${age!=null?` · ${age} anos`:''}` : '';
+  const natStr = p.nationality ? `${flag?flag+' ':''}${esc(p.nationality)}` : '';
+
+  const chips = positions.map((c,i)=>`<span class="pv-pos">${c}</span>`).join('');
+  const stat = (l,v)=> v? `<div class="pv-stat"><div class="pv-stat-l">${l}</div><div class="pv-stat-v">${v}</div></div>` : '';
+  const stats = [
+    stat('Avaliação', p.rating? `<span class="pc-rate ${p.rating}" style="display:inline-flex;width:30px;height:30px;font-size:15px">${p.rating}</span>` : '—'),
+    stat('Pé', p.foot? esc(p.foot) : '—'),
+    stat('Altura', p.height? esc(p.height)+' cm' : '—'),
+    stat('Biotipo', p.biotype? esc(p.biotype) : '—')
+  ].join('');
+
+  const links = [['Zerozero',p.links.zerozero],['Transfermarkt',p.links.transfermarkt],['FPF',p.links.fpf]]
+    .filter(x=>x[1]).map(x=>`<a class="pv-link" href="${esc(x[1])}" target="_blank" rel="noopener">${x[0]} <span>↗</span></a>`).join('');
+
+  document.getElementById('profile').innerHTML = `
+    <div class="pv-hero">
+      <div class="pv-hero-bg"></div>
+      <div class="pv-hero-row">
+        ${avatarHTML(p, 86)}
+        <div class="pv-hero-main">
+          <div class="pv-name">${esc(p.name||'Sem nome')}</div>
+          <div class="pv-meta">${meta}</div>
+          <div class="pv-tags">
+            ${ageStr?`<span class="pv-tag">${ageStr}</span>`:''}
+            ${natStr?`<span class="pv-tag">${natStr}</span>`:''}
+            ${p.number?`<span class="pv-tag">Nº ${esc(p.number)}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="pv-hero-actions">
+        <button class="pv-watch ${w?'on':''}" onclick="toggleWatchView()">${w?'★ Na watchlist':'☆ Adicionar à watchlist'}</button>
+        ${p.status?`<span class="pv-status"><span class="statusdot st-${statusSlug(p.status)}"></span>${esc(p.status)}</span>`:''}
+      </div>
+    </div>
+
+    <div class="pv-body">
+      <div class="pv-stats">${stats}</div>
+
+      ${positions.length?`<div class="pv-block"><div class="pv-block-t">Posições</div><div class="pv-posrow"><div class="pv-chips">${chips}<div class="pv-poslegend">${posLegend(p)}</div></div><div class="posfield pv-pitch">${renderPosFieldRO(p)}</div></div></div>`:''}
+
+      ${links?`<div class="pv-block"><div class="pv-block-t">Links</div><div class="pv-links">${links}</div></div>`:''}
+
+      ${p.notes?`<div class="pv-block"><div class="pv-block-t">Notas</div><div class="pv-notes">${esc(p.notes)}</div></div>`:''}
+
+      <div class="pv-block"><div class="pv-block-t">Observações (${p.obs.length})</div>${renderObsRO(p)}</div>
+
+      <button class="btn primary" style="width:100%;justify-content:center;padding:15px;font-size:15px" onclick="editProfile()">Editar ficha</button>
+    </div>`;
+}
+function toggleWatchView(){
+  if(!editingProfile) return;
+  editingProfile.watch = !editingProfile.watch; save();
+  renderProfileView();
 }
 function pfField(k,v){ editingProfile[k]=v; save(); if(k==='birth'||k==='club'||k==='level') updatePfSub(); }
 function updatePfSub(){
@@ -1658,10 +1893,11 @@ function setProfilePos(slot,val){ editingProfile[slot]=(editingProfile[slot]===v
 /* ---------- Interactive pitch position selector ---------- */
 const POS_POINTS = [
   {c:'GR',x:50,y:90},
-  {c:'DE',x:20,y:75},{c:'DC',x:50,y:78},{c:'DD',x:80,y:75},
-  {c:'MDC',x:50,y:63},
-  {c:'MC',x:50,y:50},
-  {c:'EE',x:16,y:43},{c:'MO',x:50,y:38},{c:'ED',x:84,y:43},
+  {c:'DE',x:22,y:77},{c:'DC',x:50,y:79},{c:'DD',x:78,y:77},
+  {c:'LE',x:13,y:61},{c:'LD',x:87,y:61},
+  {c:'MDC',x:50,y:64},
+  {c:'MC',x:50,y:51},
+  {c:'EE',x:15,y:40},{c:'MO',x:50,y:38},{c:'ED',x:85,y:40},
   {c:'AV',x:50,y:23}
 ];
 function posOrder(p,code){ const l=[p.pos1,p.pos2,p.pos3]; const i=l.indexOf(code); return i>=0? i+1 : 0; }
@@ -1915,7 +2151,7 @@ function addToSlot(id){
 /* ===================== EXPORT / IMPORT (cópia de segurança) ===================== */
 function exportDB(){
   const payload = { app:'ScoutReport', version:1, exportedAt:new Date().toISOString(),
-    data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows } };
+    data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows, clubLogos:DB.clubLogos||{} } };
   const json = JSON.stringify(payload);
   const stamp = new Date().toISOString().slice(0,10);
   const fname = `scoutreport-backup-${stamp}.json`;
@@ -1958,6 +2194,7 @@ function normalizeDB(d){
   d.matches = Array.isArray(d.matches)? d.matches : [];
   d.players = Array.isArray(d.players)? d.players : [];
   d.shadows = Array.isArray(d.shadows)? d.shadows : [];
+  d.clubLogos = (d.clubLogos && typeof d.clubLogos==='object')? d.clubLogos : {};
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
   d.players.forEach(normalizeProfile);
   return d;
@@ -1980,6 +2217,7 @@ function doImport(mode){
     // fix orphan folderId
     const allF = new Set(DB.folders.map(f=>f.id));
     DB.matches.forEach(m=>{ if(m.folderId && !allF.has(m.folderId)) m.folderId=null; });
+    if(pendingImport.clubLogos) DB.clubLogos = Object.assign({}, pendingImport.clubLogos, DB.clubLogos);
   }
   pendingImport = null;
   save(); closeImport(); currentFolder=null; activeTeamKey=null;
@@ -2072,15 +2310,6 @@ function renderHome(){
     html += `<div class="section-lbl">Relatórios soltos</div>`;
     html += loose.map(matchCard).join('');
   }
-  html += `
-    <div class="section-lbl">Cópia de segurança / Sincronização</div>
-    <div class="home-bar">
-      <button class="btn" onclick="exportDB()"><span style="font-size:15px">⬇︎</span> Exportar BD</button>
-      <button class="btn" onclick="importClick()"><span style="font-size:15px">⬆︎</span> Importar BD</button>
-    </div>
-    <div style="color:var(--mut2);font-size:11px;margin:-8px 2px 4px;line-height:1.5">
-      Move os teus dados entre dispositivos (ex: AirDrop do iPhone para o Mac). O logótipo não é incluído.
-    </div>`;
   list.innerHTML = html;
 }
 
@@ -2616,6 +2845,45 @@ function gnotesChange(){
   if(!activeMatch) return;
   activeMatch.gnotes = document.getElementById('ed-gnotes').value;
   save();
+}
+
+/* ---------- Import list (paste) ---------- */
+function openImportList(){
+  closeFormation();
+  document.getElementById('implist-text').value='';
+  const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'Casa':'Fora');
+  document.getElementById('implist-team').textContent = 'Para a equipa: ' + tname;
+  document.getElementById('implist-bg').classList.add('show');
+  document.getElementById('implist-sheet').classList.add('show');
+}
+function closeImportList(){
+  document.getElementById('implist-bg').classList.remove('show');
+  document.getElementById('implist-sheet').classList.remove('show');
+}
+function cleanListName(s){
+  return s.replace(/\s*\(\s*(?:c|cap|capit[ãa]o|gr)\s*\)\s*$/i,'').replace(/\s+/g,' ').trim();
+}
+function parseList(text){
+  const lines = (text||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const numbered = lines.map(l=>{ const m=l.match(/^(\d{1,3})\s*[.)\-:º°]?\s+(.+)$/); return m? {num:m[1], name:cleanListName(m[2])} : null; });
+  const hasNum = numbered.some(Boolean);
+  let players = hasNum ? numbered.filter(Boolean) : lines.map(l=>({num:'', name:cleanListName(l)}));
+  return players.filter(p=>p.name && p.name.length>1).slice(0,30);
+}
+function doImportList(){
+  const list = parseList(document.getElementById('implist-text').value);
+  if(!list.length){ toast('Não encontrei nomes na lista'); return; }
+  const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'da casa':'de fora');
+  if(!confirm(`Importar ${list.length} jogador(es) para a equipa ${tname}?\nOs jogadores atuais desta equipa serão substituídos.`)) return;
+  const slots = FORMATIONS[DEFAULT_FORMATION];
+  activeMatch[activeTeam].players = list.map((p,i)=>{
+    const onField = i<11;
+    const base = { id:uid(), num:p.num||'', name:p.name, pos:'', notes:'', rate:'', birth:'', sub:!onField, x:50, y:50 };
+    if(onField){ const xy=slotToXY(slots[i], activeTeam); base.x=xy.x; base.y=xy.y; base.pos=slots[i].pos; }
+    return base;
+  });
+  save(); closeImportList(); switchTeam(activeTeam); renderTabs();
+  toast(`${list.length} jogadores importados`);
 }
 
 /* ---------- Formation ---------- */
