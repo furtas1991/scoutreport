@@ -480,25 +480,40 @@ body.noTabs .tabbar{display:none}
 .sh-form{flex-shrink:0;background:var(--txt);color:#fff;border-radius:9px;padding:7px 9px;font-size:12px;font-weight:800;letter-spacing:.5px}
 
 /* shadow field (vertical, one team) */
-.shwrap{padding:14px}
-.shpitch{position:relative;width:100%;max-width:460px;margin:0 auto;aspect-ratio:60/122;border-radius:14px;overflow:visible;
-  background:repeating-linear-gradient(0deg,var(--grass) 0 10%,var(--grass2) 10% 20%);border:1px solid var(--line2)}
+.shwrap{padding:14px 14px 30px}
+.shpitch{position:relative;width:100%;max-width:540px;margin:0 auto;aspect-ratio:72/100;border-radius:16px;overflow:visible;
+  background:linear-gradient(160deg,#3a9d5d,#2f8a4d 55%,#28793f);border:1px solid rgba(0,0,0,.06);box-shadow:0 8px 24px rgba(20,60,35,.18)}
+.shpitch::before{content:'';position:absolute;inset:0;border-radius:16px;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0 10%,rgba(0,0,0,.015) 10% 20%)}
 .shpitch svg{position:absolute;inset:0;width:100%;height:100%}
-.shtok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;width:96px;z-index:1}
-.shtok.filled{z-index:2}
-.shtok .slotpos{font-size:9.5px;font-weight:800;color:#fff;background:rgba(0,0,0,.45);padding:1px 7px;border-radius:4px}
-.shcard{background:#fff;border-radius:9px;box-shadow:0 1px 6px rgba(0,0,0,.3);width:100%;overflow:hidden;display:flex;flex-direction:column}
-.shcard.empty{align-items:center;justify-content:center;padding:8px}
-.shp-row{display:flex;align-items:center;gap:5px;padding:3px 5px;border-bottom:1px solid #eef0f2}
+.shtok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;width:auto;z-index:1}
+.shtok.filled{width:120px;z-index:2}
+.shtok .slotpos{font-size:9px;font-weight:800;color:#fff;letter-spacing:.04em;background:rgba(0,0,0,.42);padding:1px 8px;border-radius:5px}
+.shcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.22);width:100%;overflow:hidden;display:flex;flex-direction:column}
+.shcard.empty{width:46px;min-height:40px;border-radius:12px;align-items:center;justify-content:center;background:rgba(255,255,255,.78)}
+.shp-row{display:flex;align-items:center;gap:7px;padding:6px 8px;border-bottom:1px solid #eef0f2;border-left:5px solid transparent}
 .shp-row:last-child{border-bottom:none}
-.shp-ord{width:13px;height:13px;border-radius:50%;background:#15181c;color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.shp-row .avatar{width:21px;height:21px;font-size:8px;flex-shrink:0}
-.shp-info{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.15;text-align:left}
-.shp-nm{font-size:9.5px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shp-bd{font-size:8px;color:#8a9098}
-.shp-r{width:13px;height:13px;border-radius:3px;color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.shp-r.A{background:#2ba96b}.shp-r.B{background:#1d6fe0}.shp-r.C{background:#f5a623}.shp-r.D{background:#e5484d}
-.shtok .empty-slot{width:28px;height:28px;border-radius:50%;border:2px dashed #c4cacf;display:flex;align-items:center;justify-content:center;color:#aeb4ba;font-size:15px}
+.shp-ord{width:15px;height:15px;border-radius:50%;background:#15181c;color:#fff;font-size:8.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.shp-info{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.25;text-align:left}
+.shp-nm{font-size:11px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shp-sub{font-size:9px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shtok .empty-slot{width:24px;height:24px;border-radius:50%;border:2px dashed #c4cacf;display:flex;align-items:center;justify-content:center;color:#aeb4ba;font-size:14px}
+/* colour key */
+.sh-legend{max-width:480px;margin:16px auto 0;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--sh-1)}
+.lg-grid{display:flex;flex-wrap:wrap;gap:8px 16px}
+.lg-item{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.lg-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.lg-row{display:flex;align-items:center;gap:11px}
+.lg-row .pf-in{flex:1}
+/* colour swatches in slot manager */
+.slotp{flex-direction:column;align-items:stretch;gap:9px}
+.slotp-top{display:flex;align-items:center;gap:10px}
+.slotp-colors{display:flex;gap:8px;flex-wrap:wrap;padding-left:2px}
+.cdot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid var(--surf);box-shadow:0 0 0 1px var(--line2);position:relative}
+.cdot.on{box-shadow:0 0 0 2px var(--surf),0 0 0 4px currentColor}
+.cdot-clear{background:var(--surf2);color:var(--mut2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+
+/* ============ PRINT / PDF REPORT ============ */
 
 /* slot manager rows */
 .slotp{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1px solid var(--line2);border-radius:11px;padding:9px 11px;margin-bottom:8px}
@@ -1218,6 +1233,18 @@ body.noTabs .tabbar{display:none}
   <div style="color:var(--mut2);font-size:11px;margin:4px 2px 10px">On replace, a copy of this device's current state is saved automatically.</div>
   <div class="sheet-actions">
     <button class="btn" onclick="closeImport()">Cancel</button>
+  </div>
+</div>
+
+<!-- ====== SHADOW: COLOUR LEGEND SHEET ====== -->
+<div class="sheet-bg" id="legend-bg" onclick="closeLegend()"></div>
+<div class="sheet" id="legend-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Colour key</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Give each colour a meaning, then assign colours to players in each position.</div>
+  <div id="legend-body" style="display:flex;flex-direction:column;gap:9px;margin-bottom:14px"></div>
+  <div class="sheet-actions">
+    <button class="btn primary" onclick="closeLegend()">Done</button>
   </div>
 </div>
 
@@ -2046,16 +2073,33 @@ function renderShadow(){
     </div>`;
   }).join('');
 }
+const SHADOW_COLORS = [
+  {key:'gold',hex:'#d4af37'},
+  {key:'silver',hex:'#9aa3ab'},
+  {key:'bronze',hex:'#bd7b43'},
+  {key:'green',hex:'#2ba96b'},
+  {key:'blue',hex:'#1d6fe0'},
+  {key:'red',hex:'#e5484d'},
+  {key:'purple',hex:'#7c3aed'}
+];
+function shColorHex(key){ const c=SHADOW_COLORS.find(x=>x.key===key); return c?c.hex:''; }
+const DEFAULT_LEGEND = {gold:'1st choice', silver:'2nd choice', green:'Ready now', blue:'One to watch'};
+function ensureShadowMeta(s){
+  if(!s) return;
+  if(!s.colors || typeof s.colors!=='object') s.colors = {};
+  if(!s.legend || typeof s.legend!=='object') s.legend = Object.assign({}, DEFAULT_LEGEND);
+}
 function newShadow(){
-  const name = (prompt('Nome da shadow team (ex: Onze-alvo Sub-17):')||'').trim();
+  const name = (prompt('Shadow team name (e.g. U17 target XI):')||'').trim();
   if(!name) return;
-  const s = { id:uid(), name, formation:DEFAULT_FORMATION, createdAt:new Date().toISOString(), slots:{} };
+  const s = { id:uid(), name, formation:DEFAULT_FORMATION, createdAt:new Date().toISOString(), slots:{}, colors:{}, legend:Object.assign({},DEFAULT_LEGEND) };
   DB.shadows.unshift(s); save();
   openShadow(s.id);
 }
 function openShadow(id){
   activeShadow = DB.shadows.find(s=>s.id===id);
   if(!activeShadow) return;
+  ensureShadowMeta(activeShadow);
   ['dashboard','home','match','teams','database','profile','shadow'].forEach(x=>document.getElementById(x).classList.remove('show'));
   document.getElementById('shadowview').classList.add('show');
   document.body.classList.add('noTabs');
@@ -2079,7 +2123,7 @@ function shadowSetFormation(f){
   activeShadow.formation=f; save(); renderShadowView();
 }
 function renderShadowView(){
-  const s = activeShadow; const f = s.formation||DEFAULT_FORMATION;
+  const s = activeShadow; ensureShadowMeta(s); const f = s.formation||DEFAULT_FORMATION;
   const slots = FORMATIONS[f]||FORMATIONS[DEFAULT_FORMATION];
   const chips = Object.keys(FORMATIONS).map(k=>`<button class="pf-chip ${k===f?'on':''}" onclick="shadowSetFormation('${k}')">${k}</button>`).join('');
   let toks='';
@@ -2089,12 +2133,11 @@ function renderShadowView(){
     let inner;
     if(players.length){
       const rows = players.map((p,idx)=>{
-        const r=p.rating? `<span class="shp-r ${p.rating}">${p.rating}</span>`:'';
-        return `<div class="shp-row">
+        const hex = shColorHex(s.colors[p.id]);
+        const sub = [birthYear(p.birth), p.club].filter(Boolean).map(esc).join(' · ');
+        return `<div class="shp-row" style="${hex?`border-left:5px solid ${hex}`:'border-left:5px solid transparent'}">
           <span class="shp-ord">${idx+1}</span>
-          ${avatarHTML(p,22)}
-          <span class="shp-info"><span class="shp-nm">${esc(firstLast(p.name)||'—')}</span>${p.birth?`<span class="shp-bd">${fmtBirth(p.birth)}</span>`:''}</span>
-          ${r}
+          <span class="shp-info"><span class="shp-nm">${esc(firstLast(p.name)||'—')}</span><span class="shp-sub">${sub||'—'}</span></span>
         </div>`;
       }).join('');
       inner = `<div class="slotpos">${slot.pos}</div><div class="shcard">${rows}</div>`;
@@ -2103,22 +2146,30 @@ function renderShadowView(){
     }
     toks += `<div class="shtok ${players.length?'filled':''}" style="left:${slot.x}%;top:${slot.y}%" onclick="openSlot(${i})">${inner}</div>`;
   });
+  // legend (only colours that are in use or have a label)
+  const usedColors = new Set(Object.values(s.colors).filter(Boolean));
+  const legendItems = SHADOW_COLORS.filter(c=>usedColors.has(c.key)||(s.legend[c.key]&&s.legend[c.key].trim()))
+    .map(c=>`<div class="lg-item"><span class="lg-dot" style="background:${c.hex}"></span>${esc(s.legend[c.key]||c.key)}</div>`).join('');
+  const legendBox = legendItems? `<div class="sh-legend"><div class="dash-lbl" style="margin:0 0 9px">Colour key</div><div class="lg-grid">${legendItems}</div></div>` : '';
   document.getElementById('shadowview').innerHTML = `
     <div class="pf-hero" style="padding:16px">
       <div class="sec-title" style="font-size:21px">${esc(s.name)}</div>
       <div class="pf-chips" style="margin-top:12px">${chips}</div>
+      <button class="btn" style="margin-top:12px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff" onclick="openLegend()">Edit colour key</button>
     </div>
     <div class="shwrap">
       <div class="shpitch">
-        <svg viewBox="0 0 680 1000" preserveAspectRatio="none" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2.5">
-          <rect x="12" y="12" width="656" height="976" rx="3"/>
-          <line x1="12" y1="500" x2="668" y2="500"/>
-          <circle cx="340" cy="500" r="78"/>
-          <rect x="190" y="12" width="300" height="150"/><rect x="270" y="12" width="140" height="56"/>
-          <rect x="190" y="838" width="300" height="150"/><rect x="270" y="932" width="140" height="56"/>
+        <svg viewBox="0 0 680 1020" preserveAspectRatio="none" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2">
+          <rect x="14" y="14" width="652" height="992" rx="4"/>
+          <line x1="14" y1="510" x2="666" y2="510"/>
+          <circle cx="340" cy="510" r="74"/>
+          <circle cx="340" cy="510" r="3" fill="rgba(255,255,255,.4)" stroke="none"/>
+          <rect x="200" y="14" width="280" height="132"/><rect x="278" y="14" width="124" height="50"/>
+          <rect x="200" y="874" width="280" height="132"/><rect x="278" y="956" width="124" height="50"/>
         </svg>
         ${toks}
       </div>
+      ${legendBox}
     </div>`;
 }
 
@@ -2142,16 +2193,22 @@ function renderSlotPlayers(){
   if(!ids.length){ wrap.innerHTML = `<div style="color:var(--mut2);font-size:13px">No players in this position.</div>`; return; }
   wrap.innerHTML = ids.map((id,idx)=>{
     const p = DB.players.find(x=>x.id===id); if(!p) return '';
-    const meta=[p.club,birthYear(p.birth)].filter(Boolean).join(' · ');
+    const meta=[birthYear(p.birth),p.club].filter(Boolean).join(' · ');
+    const cur = activeShadow.colors[id]||'';
+    const sw = SHADOW_COLORS.map(c=>`<span class="cdot ${cur===c.key?'on':''}" style="background:${c.hex}" onclick="setSlotColor('${id}','${c.key}')" title="${esc(activeShadow.legend[c.key]||c.key)}"></span>`).join('')
+      + `<span class="cdot cdot-clear ${!cur?'on':''}" onclick="setSlotColor('${id}','')" title="No colour">✕</span>`;
     return `<div class="slotp">
-      <div class="ord">${idx+1}</div>
-      ${avatarHTML(p,32)}
-      <div style="min-width:0;flex:1"><div class="nm">${esc(p.name||'No name')}</div><div class="meta">${esc(meta)||'—'}</div></div>
-      <div class="acts">
-        ${idx>0?`<span onclick="moveSlotPlayer(${idx},-1)" title="Up">↑</span>`:''}
-        ${idx<ids.length-1?`<span onclick="moveSlotPlayer(${idx},1)" title="Down">↓</span>`:''}
-        <span onclick="removeSlotPlayer('${id}')" title="Remove" style="color:var(--danger)">✕</span>
+      <div class="slotp-top">
+        <div class="ord">${idx+1}</div>
+        ${avatarHTML(p,32)}
+        <div style="min-width:0;flex:1"><div class="nm">${esc(p.name||'No name')}</div><div class="meta">${esc(meta)||'—'}</div></div>
+        <div class="acts">
+          ${idx>0?`<span onclick="moveSlotPlayer(${idx},-1)" title="Up">↑</span>`:''}
+          ${idx<ids.length-1?`<span onclick="moveSlotPlayer(${idx},1)" title="Down">↓</span>`:''}
+          <span onclick="removeSlotPlayer('${id}')" title="Remove" style="color:var(--danger)">✕</span>
+        </div>
       </div>
+      <div class="slotp-colors">${sw}</div>
     </div>`;
   }).join('');
 }
@@ -2163,6 +2220,23 @@ function moveSlotPlayer(idx,dir){
 function removeSlotPlayer(id){
   activeShadow.slots[shadowSlotIndex] = slotIds().filter(x=>x!==id); save(); renderSlotPlayers();
 }
+function setSlotColor(id,key){
+  if(!activeShadow.colors) activeShadow.colors={};
+  if(key && activeShadow.colors[id]!==key) activeShadow.colors[id]=key;
+  else delete activeShadow.colors[id];
+  save(); renderSlotPlayers();
+}
+function openLegend(){
+  ensureShadowMeta(activeShadow);
+  document.getElementById('legend-body').innerHTML = SHADOW_COLORS.map(c=>
+    `<div class="lg-row"><span class="lg-dot" style="background:${c.hex}"></span>
+     <input class="pf-in" value="${esc(activeShadow.legend[c.key]||'')}" placeholder="meaning (e.g. 1st choice)" oninput="setLegend('${c.key}',this.value)"></div>`
+  ).join('');
+  document.getElementById('legend-bg').classList.add('show');
+  document.getElementById('legend-sheet').classList.add('show');
+}
+function closeLegend(){ document.getElementById('legend-bg').classList.remove('show'); document.getElementById('legend-sheet').classList.remove('show'); renderShadowView(); }
+function setLegend(key,val){ if(!activeShadow.legend) activeShadow.legend={}; activeShadow.legend[key]=val; save(); }
 
 /* ---------- Player picker ---------- */
 function openPicker(){
