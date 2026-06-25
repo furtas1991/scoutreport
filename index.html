@@ -368,10 +368,10 @@ body.noTabs .tabbar{display:none}
 .tabbar button svg{width:22px;height:22px}
 
 /* ============ TEAMS / DATABASE SECTIONS ============ */
-#teams,#database{flex:1;overflow-y:auto;padding:18px 14px 30px;display:none;flex-direction:column}
-#teams.show,#database.show{display:flex}
-#profile{flex:1;display:none;flex-direction:column;overflow-y:auto;padding:0 0 30px}
-#profile.show{display:flex}
+#teams,#database,#shadow{flex:1;overflow-y:auto;padding:18px 14px 30px;display:none;flex-direction:column}
+#teams.show,#database.show,#shadow.show{display:flex}
+#profile,#shadowview{flex:1;display:none;flex-direction:column;overflow-y:auto;padding:0 0 30px}
+#profile.show,#shadowview.show{display:flex}
 
 .sec-title{font-size:23px;font-weight:800;letter-spacing:-.7px}
 .sec-sub{color:var(--mut);font-size:13px;margin:3px 0 14px}
@@ -505,37 +505,46 @@ body.noTabs .tabbar{display:none}
 /* ============ DASHBOARD (Início) ============ */
 #dashboard{flex:1;overflow-y:auto;display:none;flex-direction:column}
 #dashboard.show{display:flex}
-.dash-hero{position:relative;overflow:hidden;min-height:172px;display:flex;align-items:flex-end}
-.dash-pitch-bg{position:absolute;inset:0;width:100%;height:100%}
+.dash-hero{position:relative;overflow:hidden;min-height:178px;display:flex;align-items:flex-end;
+  background:linear-gradient(150deg,#23262b 0%,#15171b 60%,#0f1114 100%)}
+.dash-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;display:none}
+.dash-hero.has-img .dash-hero-img{display:block}
+.dash-lines{position:absolute;inset:0;width:100%;height:100%}
+.dash-hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.05) 40%,rgba(0,0,0,.55) 100%)}
+.dash-settings{position:absolute;top:calc(14px);right:14px;z-index:2;width:38px;height:38px;border-radius:11px;
+  background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.28);
+  color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s ease}
+.dash-settings:active{transform:scale(.94)}
+.dash-settings svg{width:19px;height:19px}
 .dash-hero-content{position:relative;z-index:1;width:100%;padding:20px 18px 18px}
-.dash-brand{display:flex;align-items:center;gap:12px}
-.dash-mark{width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.dash-mark svg{width:26px;height:26px}
+.dash-brand{display:flex;align-items:center;gap:13px}
+.dash-mark{width:48px;height:48px;border-radius:13px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.dash-mark svg{width:27px;height:27px}
 .dash-mark img{width:100%;height:100%;object-fit:contain}
-.dash-wm{font-size:21px;font-weight:800;letter-spacing:.12em;color:#fff;line-height:1}
+.dash-wm{font-size:22px;font-weight:800;letter-spacing:.13em;color:#fff;line-height:1}
 .dash-wm span{font-weight:300}
-.dash-tag{font-size:12px;color:rgba(255,255,255,.82);letter-spacing:.04em;margin-top:4px;font-weight:500}
-.dash-greet{color:#fff;font-size:15px;font-weight:600;margin-top:16px;letter-spacing:-.01em;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.dash-tag{font-size:12px;color:rgba(255,255,255,.78);letter-spacing:.04em;margin-top:5px;font-weight:500}
 
 .dash-body{padding:20px 16px 36px;flex:1}
 .dash-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mut2);margin:0 2px 11px}
 .dash-lbl:not(:first-child){margin-top:24px}
 .dash-quick{display:flex;gap:9px}
-.qbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--line);
-  border-radius:var(--r-lg);padding:15px 6px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer;box-shadow:var(--sh-1);
+.qbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--surf);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:16px 6px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer;box-shadow:var(--sh-1);
   transition:transform .12s ease,box-shadow .16s ease;letter-spacing:-.01em;text-align:center}
 .qbtn:active{transform:translateY(1px) scale(.985)}
-.qic{font-size:21px;line-height:1}
+.qic{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--accent)}
+.qic svg{width:25px;height:25px}
 
-.watch-hero{display:flex;align-items:center;gap:13px;margin-top:24px;background:linear-gradient(135deg,#fff7e8,#fdeccf);
-  border:1px solid #f3dca6;border-radius:var(--r-lg);padding:15px 16px;cursor:pointer;box-shadow:var(--sh-1);transition:transform .12s ease}
+.watch-hero{display:flex;align-items:center;gap:13px;margin-top:24px;background:var(--accent-d);
+  border:1px solid var(--accent);border-radius:var(--r-lg);padding:15px 16px;cursor:pointer;box-shadow:var(--sh-1);transition:transform .12s ease}
 .watch-hero:active{transform:translateY(1px) scale(.992)}
-.wh-star{width:40px;height:40px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;box-shadow:0 2px 8px rgba(245,166,35,.4)}
+.wh-star{width:40px;height:40px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
 .wh-main{flex:1;min-width:0}
-.wh-title{font-weight:800;font-size:16px;letter-spacing:-.3px;color:#5a3d00}
-.wh-sub{font-size:12.5px;color:#9a6b08;margin-top:2px;font-weight:600}
-.wh-go{color:#c4830c;font-size:24px;font-weight:300}
+.wh-title{font-weight:800;font-size:16px;letter-spacing:-.3px;color:var(--accent-ink)}
+.wh-sub{font-size:12.5px;color:var(--accent-ink);opacity:.8;margin-top:2px;font-weight:600}
+.wh-go{color:var(--accent-ink);opacity:.65;font-size:24px;font-weight:300}
 
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .navcard{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;cursor:pointer;
@@ -550,12 +559,27 @@ body.noTabs .tabbar{display:none}
 .nc-name{font-weight:700;font-size:14.5px;letter-spacing:-.3px;margin-top:12px}
 .nc-count{position:absolute;top:16px;right:16px;font-size:22px;font-weight:800;letter-spacing:-1px;color:var(--txt);font-variant-numeric:tabular-nums}
 
-.dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;box-shadow:var(--sh-1)}
+.rec-ic{width:30px;height:30px;border-radius:9px;background:var(--surf2);display:flex;align-items:center;justify-content:center;color:var(--mut);flex-shrink:0}
+.rec-ic svg{width:17px;height:17px}
+.dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;cursor:pointer;box-shadow:var(--sh-1)}
 .dash-recent-card:active{border-color:var(--line2)}
+
+/* settings */
+.theme-row{display:flex;gap:12px;flex-wrap:wrap}
+.theme-sw{width:40px;height:40px;border-radius:50%;cursor:pointer;position:relative;border:2px solid var(--surf);box-shadow:0 0 0 1px var(--line2)}
+.theme-sw.on{box-shadow:0 0 0 2px var(--surf),0 0 0 4px currentColor}
+.theme-sw.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.set-row{display:flex;align-items:center;gap:14px}
+.set-prev{width:48px;height:48px;border-radius:12px;background:var(--surf2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.set-prev.wide{width:84px;height:48px;border-radius:10px}
+.set-prev img{width:100%;height:100%;object-fit:cover}
+.set-prev svg{width:24px;height:24px}
+.set-actions{display:flex;gap:8px;flex:1}
+.set-actions .btn{flex:1;justify-content:center}
 
 /* ============ PREMIUM REFINEMENTS ============ */
 /* more breathing room + stronger titles */
-#home,#teams,#database{padding:22px 16px 38px}
+#home,#teams,#database,#shadow{padding:22px 16px 38px}
 .home-title,.sec-title{font-size:26px;letter-spacing:-.85px;margin-bottom:5px}
 .home-sub,.sec-sub{margin-bottom:20px;font-size:13.5px}
 
@@ -681,31 +705,19 @@ body.noTabs .tabbar{display:none}
 
 <!-- ====== DASHBOARD (Início) ====== -->
 <div id="dashboard" class="show">
-  <div class="dash-hero">
-    <svg class="dash-pitch-bg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="grassg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#2f8a4d"/><stop offset="1" stop-color="#236b3b"/>
-        </linearGradient>
-        <radialGradient id="vign" cx="50%" cy="30%" r="80%">
-          <stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.28"/>
-        </radialGradient>
-      </defs>
-      <rect width="400" height="220" fill="url(#grassg)"/>
-      <g opacity="0.9">
-        <rect x="0" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
-        <rect x="100" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
-        <rect x="200" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
-        <rect x="300" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
+  <div class="dash-hero" id="dash-hero">
+    <div class="dash-hero-img" id="dash-hero-img"></div>
+    <svg class="dash-lines" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="2">
+        <circle cx="200" cy="230" r="92"/>
+        <line x1="0" y1="138" x2="400" y2="138"/>
+        <rect x="125" y="190" width="150" height="56"/>
       </g>
-      <g fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="2">
-        <circle cx="200" cy="250" r="95"/>
-        <line x1="0" y1="155" x2="400" y2="155"/>
-        <rect x="120" y="208" width="160" height="60"/>
-        <rect x="170" y="240" width="60" height="28"/>
-      </g>
-      <rect width="400" height="220" fill="url(#vign)"/>
     </svg>
+    <div class="dash-hero-shade"></div>
+    <button class="dash-settings" onclick="openSettings()" title="Definições" aria-label="Definições">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
     <div class="dash-hero-content">
       <div class="dash-brand">
         <span class="dash-mark" id="dash-mark"></span>
@@ -714,16 +726,18 @@ body.noTabs .tabbar{display:none}
           <div class="dash-tag">Observação &amp; análise</div>
         </div>
       </div>
-      <div class="dash-greet" id="dash-greet">Bom trabalho.</div>
     </div>
   </div>
 
   <div class="dash-body">
     <div class="dash-lbl">Ações rápidas</div>
     <div class="dash-quick">
-      <button class="qbtn" onclick="dashNewMatch()"><span class="qic">📝</span>Novo relatório</button>
-      <button class="qbtn" onclick="newProfile()"><span class="qic">👤</span>Novo jogador</button>
-      <button class="qbtn" onclick="newShadow()"><span class="qic">🛡️</span>Nova shadow</button>
+      <button class="qbtn" onclick="dashNewMatch()">
+        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span>Novo relatório</button>
+      <button class="qbtn" onclick="newProfile()">
+        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></span>Novo jogador</button>
+      <button class="qbtn" onclick="newShadow()">
+        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6z"/><circle cx="12" cy="10" r="2.2"/><path d="M8.5 16.4c.4-1.7 1.9-2.7 3.5-2.7s3.1 1 3.5 2.7"/></svg></span>Nova shadow</button>
     </div>
 
     <div class="watch-hero" id="watch-hero" onclick="goWatchlist()">
@@ -812,6 +826,40 @@ body.noTabs .tabbar{display:none}
 <div id="shadowview"></div>
 
 <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="photoUpload(event)">
+<input type="file" id="hero-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="heroUpload(event)">
+
+<!-- ====== SETTINGS SHEET ====== -->
+<div class="sheet-bg" id="settings-bg" onclick="closeSettings()"></div>
+<div class="sheet" id="settings-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:17px;margin-bottom:18px">Definições</div>
+
+  <div class="pf-glbl">Tema de cor</div>
+  <div class="theme-row" id="theme-row" style="margin-bottom:22px"></div>
+
+  <div class="pf-glbl">Logótipo da app</div>
+  <div class="set-row" style="margin-bottom:22px">
+    <span class="set-prev" id="set-logo-prev"></span>
+    <div class="set-actions">
+      <button class="btn" onclick="logoChoose()">Carregar</button>
+      <button class="btn" id="set-logo-reset" onclick="logoReset()">Repor</button>
+    </div>
+  </div>
+
+  <div class="pf-glbl">Imagem do cabeçalho</div>
+  <div class="set-row" style="margin-bottom:8px">
+    <span class="set-prev wide" id="set-hero-prev"></span>
+    <div class="set-actions">
+      <button class="btn" onclick="heroChoose()">Carregar</button>
+      <button class="btn" id="set-hero-remove" onclick="heroRemove()">Remover</button>
+    </div>
+  </div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.5">Aparece no topo do Início. Usa imagens tuas ou de uso livre.</div>
+
+  <div class="sheet-actions">
+    <button class="btn primary" onclick="closeSettings()">Concluído</button>
+  </div>
+</div>
 
 <!-- ====== MATCH ====== -->
 <div id="match">
@@ -1309,15 +1357,7 @@ function renderDashboard(){
   document.getElementById('nc-shadow').textContent = DB.shadows.length;
   const watch = DB.players.filter(isWatch).length;
   document.getElementById('wh-sub').textContent = watch? `${watch} jogador${watch!==1?'es':''} a seguir` : 'Nenhum jogador ainda';
-  // greeting by time of day
-  const h = new Date().getHours();
-  const g = h<12? 'Bom dia.' : h<20? 'Boa tarde.' : 'Boa noite.';
-  document.getElementById('dash-greet').textContent = g + ' Pronto para observar?';
-  // logo in hero
-  const mark = document.getElementById('dash-mark');
-  let logo=null; try{ logo=localStorage.getItem(LOGO_KEY); }catch(e){}
-  mark.innerHTML = logo? `<img src="${logo}" alt="">`
-    : `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 8 L17 19 L7 19 L4 8 Z"/><path d="M12 3 L12 9 M12 9 L17 12.5 M12 9 L7 12.5 M17 12.5 L15 19 M7 12.5 L9 19 M17 12.5 L20 8 M7 12.5 L4 8"/></svg>`;
+  applyLogo(); applyHero();
   // recent reports
   const recent = DB.matches.slice(0,3);
   const rc = document.getElementById('dash-recent');
@@ -1325,7 +1365,7 @@ function renderDashboard(){
     rc.innerHTML = `<div class="dash-lbl">Relatórios recentes</div>` + recent.map(m=>{
       const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short'});
       return `<div class="dash-recent-card" onclick="openMatch('${m.id}')">
-        <span class="qic" style="font-size:17px">📝</span>
+        <span class="rec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span>
         <div style="flex:1;min-width:0"><div class="pc-name">${esc(matchLabel(m))}</div><div class="pc-meta">${d}</div></div>
         <span style="color:var(--mut2);font-size:20px">›</span>
       </div>`;
@@ -2549,6 +2589,19 @@ function applyFormation(formation){
 
 /* ---------- Custom logo ---------- */
 const LOGO_KEY = 'scoutreport_logo';
+const HERO_KEY = 'scoutreport_hero';
+const THEME_KEY = 'scoutreport_theme';
+const THEMES = {
+  ambar:   {accent:'#f5a623', ink:'#7a5300', d:'#fdf1d9', name:'Âmbar'},
+  azul:    {accent:'#1d6fe0', ink:'#0a3a7a', d:'#e7f0fe', name:'Azul'},
+  verde:   {accent:'#1f9d57', ink:'#0f5132', d:'#e3f5ec', name:'Verde'},
+  carmim:  {accent:'#e5484d', ink:'#7a1d20', d:'#fdeaea', name:'Carmim'},
+  roxo:    {accent:'#7c3aed', ink:'#3f1d7a', d:'#f1e9fd', name:'Roxo'},
+  grafite: {accent:'#3a3a3c', ink:'#ffffff', d:'#ededee', name:'Grafite'}
+};
+function markSVG(color){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 8 L17 19 L7 19 L4 8 Z"/><path d="M12 3 L12 9 M12 9 L17 12.5 M12 9 L7 12.5 M17 12.5 L15 19 M7 12.5 L9 19 M17 12.5 L20 8 M7 12.5 L4 8"/></svg>`;
+}
 
 function applyLogo(){
   let data = null;
@@ -2556,13 +2609,85 @@ function applyLogo(){
   const img = document.getElementById('bmark-img');
   const def = document.getElementById('bmark-default');
   const mark = document.getElementById('bmark');
-  if(data){
-    img.src = data; img.style.display='block';
-    def.style.display='none'; mark.classList.add('custom');
-  } else {
-    img.style.display='none'; img.removeAttribute('src');
-    def.style.display='block'; mark.classList.remove('custom');
+  if(img && def && mark){
+    if(data){ img.src=data; img.style.display='block'; def.style.display='none'; mark.classList.add('custom'); }
+    else { img.style.display='none'; img.removeAttribute('src'); def.style.display='block'; mark.classList.remove('custom'); }
   }
+  const dm = document.getElementById('dash-mark');
+  if(dm) dm.innerHTML = data? `<img src="${data}" alt="">` : markSVG('#ffffff');
+  const lp = document.getElementById('set-logo-prev');
+  if(lp) lp.innerHTML = data? `<img src="${data}" alt="">` : markSVG('#a6a6ac');
+  const lr = document.getElementById('set-logo-reset');
+  if(lr) lr.style.display = data? '' : 'none';
+}
+
+/* ---------- Theme ---------- */
+function getTheme(){ try{ return localStorage.getItem(THEME_KEY)||'ambar'; }catch(e){ return 'ambar'; } }
+function applyTheme(key){
+  const t = THEMES[key]||THEMES.ambar; const r = document.documentElement.style;
+  r.setProperty('--accent', t.accent); r.setProperty('--accent-ink', t.ink); r.setProperty('--accent-d', t.d);
+}
+function setTheme(key){ try{ localStorage.setItem(THEME_KEY, key); }catch(e){} applyTheme(key); renderThemeRow(); }
+function renderThemeRow(){
+  const cur = getTheme(); const row = document.getElementById('theme-row'); if(!row) return;
+  row.innerHTML = Object.keys(THEMES).map(k=>{
+    const t = THEMES[k];
+    return `<span class="theme-sw ${k===cur?'on':''}" style="background:${t.accent};color:${t.accent}" title="${t.name}" onclick="setTheme('${k}')"></span>`;
+  }).join('');
+}
+
+/* ---------- Hero image ---------- */
+function applyHero(){
+  const el = document.getElementById('dash-hero'); const img = document.getElementById('dash-hero-img');
+  if(!el||!img) return;
+  let data=null; try{ data=localStorage.getItem(HERO_KEY); }catch(e){}
+  if(data){ img.style.backgroundImage=`url(${data})`; el.classList.add('has-img'); }
+  else { img.style.backgroundImage=''; el.classList.remove('has-img'); }
+}
+function heroChoose(){ document.getElementById('hero-input').click(); }
+function heroRemove(){ try{ localStorage.removeItem(HERO_KEY); }catch(e){} applyHero(); renderSettingsPreviews(); toast('Imagem removida'); }
+function heroUpload(ev){
+  const file = ev.target.files && ev.target.files[0]; ev.target.value='';
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const tmp=new Image();
+    tmp.onload=()=>{
+      const maxW=1000; let w=tmp.width,h=tmp.height;
+      if(w>maxW){ h=Math.round(h*maxW/w); w=maxW; }
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(tmp,0,0,w,h);
+      let out; try{ out=c.toDataURL('image/jpeg',0.8); }catch(err){ toast('Imagem inválida'); return; }
+      try{ localStorage.setItem(HERO_KEY,out); }catch(err){ toast('Imagem demasiado grande'); return; }
+      applyHero(); renderSettingsPreviews(); toast('Imagem do cabeçalho atualizada');
+    };
+    tmp.onerror=()=>toast('Não foi possível ler a imagem');
+    tmp.src=e.target.result;
+  };
+  reader.onerror=()=>toast('Não foi possível ler o ficheiro');
+  reader.readAsDataURL(file);
+}
+
+/* ---------- Settings sheet ---------- */
+function openSettings(){
+  renderThemeRow(); renderSettingsPreviews();
+  document.getElementById('settings-bg').classList.add('show');
+  document.getElementById('settings-sheet').classList.add('show');
+}
+function closeSettings(){
+  document.getElementById('settings-bg').classList.remove('show');
+  document.getElementById('settings-sheet').classList.remove('show');
+}
+function renderSettingsPreviews(){
+  let logo=null,hero=null;
+  try{ logo=localStorage.getItem(LOGO_KEY); }catch(e){}
+  try{ hero=localStorage.getItem(HERO_KEY); }catch(e){}
+  const lp=document.getElementById('set-logo-prev');
+  if(lp) lp.innerHTML = logo? `<img src="${logo}" alt="">` : markSVG('#a6a6ac');
+  const lr=document.getElementById('set-logo-reset'); if(lr) lr.style.display = logo? '' : 'none';
+  const hp=document.getElementById('set-hero-prev');
+  if(hp) hp.innerHTML = hero? `<img src="${hero}" alt="">` : `<span style="color:var(--mut2);font-size:10.5px">Sem imagem</span>`;
+  const hr=document.getElementById('set-hero-remove'); if(hr) hr.style.display = hero? '' : 'none';
 }
 function logoClick(ev){
   if(ev) ev.stopPropagation();
@@ -2619,7 +2744,9 @@ function toast(msg){
 document.getElementById('pitch').addEventListener('touchmove', e=>{ e.preventDefault(); }, {passive:false});
 
 /* ---------- boot ---------- */
+applyTheme(getTheme());
 applyLogo();
+applyHero();
 showSection('dashboard');
 </script>
 </body>
