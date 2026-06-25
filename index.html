@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#ffffff">
-<title>Relatório de Jogo</title>
+<title>Match Resett</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -452,7 +452,7 @@ body.noTabs .tabbar{display:none}
 .linkrow input{flex:1}
 .linkrow a.open{flex-shrink:0;color:var(--accent);font-weight:700;font-size:13px;text-decoration:none;padding:6px 8px}
 
-/* segmented control (Todos / Watchlist) */
+/* segmented control (All / Watchlist) */
 .segmented{display:flex;background:var(--surf2);border:1px solid var(--line2);border-radius:11px;padding:3px;margin-bottom:12px}
 .segmented button{flex:1;border:none;background:none;padding:8px;border-radius:8px;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
 .segmented button.on{background:var(--surf);color:var(--txt);box-shadow:0 1px 2px rgba(0,0,0,.08)}
@@ -502,7 +502,7 @@ body.noTabs .tabbar{display:none}
 .slotp .acts span{padding:5px 7px;border-radius:7px;cursor:pointer;color:var(--mut);font-size:14px}
 .slotp .acts span:active{background:var(--line2)}
 
-/* ============ DASHBOARD (Início) ============ */
+/* ============ DASHBOARD (Home) ============ */
 #dashboard{flex:1;overflow-y:auto;display:none;flex-direction:column}
 #dashboard.show{display:flex}
 .dash-hero{position:relative;overflow:hidden;min-height:178px;display:flex;align-items:flex-end;
@@ -747,17 +747,17 @@ body.noTabs .tabbar{display:none}
   </div>
   <div id="profile-actions" style="display:none;gap:8px">
     <button class="iconbtn" id="pf-edit-btn" title="Editar" onclick="editProfile()">✎</button>
-    <button class="iconbtn" id="pf-del-btn" title="Eliminar" style="display:none" onclick="deleteProfile()">🗑</button>
+    <button class="iconbtn" id="pf-del-btn" title="Delete" style="display:none" onclick="deleteProfile()">🗑</button>
     <button class="iconbtn" title="Voltar" onclick="profileBack()">‹</button>
   </div>
   <div id="shadow-actions" style="display:none;gap:8px">
-    <button class="iconbtn" title="Renomear" onclick="renameShadow()">✎</button>
-    <button class="iconbtn" title="Eliminar" onclick="deleteShadow()">🗑</button>
+    <button class="iconbtn" title="Rename" onclick="renameShadow()">✎</button>
+    <button class="iconbtn" title="Delete" onclick="deleteShadow()">🗑</button>
     <button class="iconbtn" title="Voltar" onclick="closeShadow()">‹</button>
   </div>
 </header>
 
-<!-- ====== DASHBOARD (Início) ====== -->
+<!-- ====== DASHBOARD (Home) ====== -->
 <div id="dashboard" class="show">
   <div class="dash-hero" id="dash-hero">
     <div class="dash-hero-img" id="dash-hero-img"></div>
@@ -769,7 +769,7 @@ body.noTabs .tabbar{display:none}
       </g>
     </svg>
     <div class="dash-hero-shade"></div>
-    <button class="dash-settings" onclick="openSettings()" title="Definições" aria-label="Definições">
+    <button class="dash-settings" onclick="openSettings()" title="Settings" aria-label="Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
     <div class="dash-hero-content">
@@ -777,47 +777,47 @@ body.noTabs .tabbar{display:none}
         <span class="dash-mark" id="dash-mark"></span>
         <div>
           <div class="dash-wm">SCOUT<span>REPORT</span></div>
-          <div class="dash-tag">Observação &amp; análise</div>
+          <div class="dash-tag">Scouting &amp; analysis</div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="dash-body">
-    <div class="dash-lbl">Ações rápidas</div>
+    <div class="dash-lbl">Quick actions</div>
     <div class="dash-quick">
       <button class="qbtn" onclick="dashNewMatch()">
-        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span>Novo relatório</button>
+        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span>New report</button>
       <button class="qbtn" onclick="newProfile()">
-        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></span>Novo jogador</button>
+        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></span>New player</button>
       <button class="qbtn" onclick="newShadow()">
-        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6z"/><circle cx="12" cy="10" r="2.2"/><path d="M8.5 16.4c.4-1.7 1.9-2.7 3.5-2.7s3.1 1 3.5 2.7"/></svg></span>Nova shadow</button>
+        <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6z"/><circle cx="12" cy="10" r="2.2"/><path d="M8.5 16.4c.4-1.7 1.9-2.7 3.5-2.7s3.1 1 3.5 2.7"/></svg></span>New shadow</button>
     </div>
 
     <div class="watch-hero" id="watch-hero" onclick="goWatchlist()">
       <div class="wh-star">★</div>
       <div class="wh-main">
         <div class="wh-title">Watchlist</div>
-        <div class="wh-sub" id="wh-sub">— jogadores a seguir</div>
+        <div class="wh-sub" id="wh-sub">— players watched</div>
       </div>
       <div class="wh-go">›</div>
     </div>
 
-    <div class="dash-lbl">Secções</div>
+    <div class="dash-lbl">Sections</div>
     <div class="dash-grid">
       <div class="navcard" onclick="showSection('reports')">
         <div class="nc-ic nc-rep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
-        <div class="nc-name">Relatórios</div>
+        <div class="nc-name">Reports</div>
         <div class="nc-count" id="nc-reports">0</div>
       </div>
       <div class="navcard" onclick="showSection('teams')">
         <div class="nc-ic nc-team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.3"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M15 14.5c2.3.3 4 2.1 4 4.5"/></svg></div>
-        <div class="nc-name">Equipas</div>
+        <div class="nc-name">Teams</div>
         <div class="nc-count" id="nc-teams">0</div>
       </div>
       <div class="navcard" onclick="showSection('database')">
         <div class="nc-ic nc-db"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
-        <div class="nc-name">Base de dados</div>
+        <div class="nc-name">Database</div>
         <div class="nc-count" id="nc-database">0</div>
       </div>
       <div class="navcard" onclick="showSection('shadow')">
@@ -831,29 +831,29 @@ body.noTabs .tabbar{display:none}
   </div>
 </div>
 
-<!-- ====== HOME (Relatórios) ====== -->
+<!-- ====== HOME (Reports) ====== -->
 <div id="home">
   <div id="home-top"></div>
   <div id="matchlist" class="matchlist"></div>
 </div>
 
-<!-- ====== TEAMS (As minhas equipas) ====== -->
+<!-- ====== TEAMS (My teams) ====== -->
 <div id="teams">
   <div id="teams-top"></div>
   <div id="teams-list"></div>
 </div>
 
-<!-- ====== DATABASE (Base de dados) ====== -->
+<!-- ====== DATABASE (Database) ====== -->
 <div id="database">
-  <div class="sec-title">Base de dados</div>
-  <div class="sec-sub">Todos os jogadores observados. Pesquisa e filtra.</div>
+  <div class="sec-title">Database</div>
+  <div class="sec-sub">All scouted players. Search and filter.</div>
   <div class="segmented">
-    <button id="seg-all" class="on" onclick="setDbView('all')">Todos</button>
+    <button id="seg-all" class="on" onclick="setDbView('all')">All</button>
     <button id="seg-watch" onclick="setDbView('watch')">★ Watchlist <span id="watch-count" class="segcount"></span></button>
   </div>
   <div class="searchbar">
-    <div class="si"><input id="db-search" placeholder="Procurar nome ou clube…" oninput="renderDatabase()"></div>
-    <button class="iconbtn filterbtn" onclick="openFilters()" title="Filtros">
+    <div class="si"><input id="db-search" placeholder="Search name or club…" oninput="renderDatabase()"></div>
+    <button class="iconbtn filterbtn" onclick="openFilters()" title="Filters">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
       <span class="filter-dot" id="filter-dot" style="display:none"></span>
     </button>
@@ -869,9 +869,9 @@ body.noTabs .tabbar{display:none}
 <!-- ====== SHADOW (lista) ====== -->
 <div id="shadow">
   <div class="sec-title">Shadow teams</div>
-  <div class="sec-sub">Os teus onzes-alvo. Atribui jogadores da base de dados a cada posição.</div>
+  <div class="sec-sub">Your target line-ups. Assign database players to each position.</div>
   <div class="home-bar" style="margin-bottom:18px">
-    <button class="btn primary" onclick="newShadow()" style="flex:1;justify-content:center"><span style="font-size:18px;line-height:1">+</span> Nova shadow team</button>
+    <button class="btn primary" onclick="newShadow()" style="flex:1;justify-content:center"><span style="font-size:18px;line-height:1">+</span> New shadow team</button>
   </div>
   <div id="shadow-list"></div>
 </div>
@@ -887,39 +887,39 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="settings-bg" onclick="closeSettings()"></div>
 <div class="sheet" id="settings-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:17px;margin-bottom:18px">Definições</div>
+  <div style="font-weight:800;font-size:17px;margin-bottom:18px">Settings</div>
 
-  <div class="pf-glbl">Tema de cor</div>
+  <div class="pf-glbl">Colour theme</div>
   <div class="theme-row" id="theme-row" style="margin-bottom:22px"></div>
 
-  <div class="pf-glbl">Logótipo da app</div>
+  <div class="pf-glbl">App logo</div>
   <div class="set-row" style="margin-bottom:22px">
     <span class="set-prev" id="set-logo-prev"></span>
     <div class="set-actions">
-      <button class="btn" onclick="logoChoose()">Carregar</button>
-      <button class="btn" id="set-logo-reset" onclick="logoReset()">Repor</button>
+      <button class="btn" onclick="logoChoose()">Upload</button>
+      <button class="btn" id="set-logo-reset" onclick="logoReset()">Reset</button>
     </div>
   </div>
 
-  <div class="pf-glbl">Imagem do cabeçalho</div>
+  <div class="pf-glbl">Header image</div>
   <div class="set-row" style="margin-bottom:8px">
     <span class="set-prev wide" id="set-hero-prev"></span>
     <div class="set-actions">
-      <button class="btn" onclick="heroChoose()">Carregar</button>
-      <button class="btn" id="set-hero-remove" onclick="heroRemove()">Remover</button>
+      <button class="btn" onclick="heroChoose()">Upload</button>
+      <button class="btn" id="set-hero-remove" onclick="heroRemove()">Remove</button>
     </div>
   </div>
-  <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.5">Aparece no topo do Início. Usa imagens tuas ou de uso livre.</div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.5">Shown at the top of Home. Use your own or free-to-use images.</div>
 
-  <div class="pf-glbl">Cópia de segurança — todos os dados</div>
+  <div class="pf-glbl">Backup — all data</div>
   <div class="set-actions" style="margin-bottom:8px">
-    <button class="btn" onclick="exportDB()">Exportar tudo</button>
-    <button class="btn" onclick="importClick()">Importar</button>
+    <button class="btn" onclick="exportDB()">Export all</button>
+    <button class="btn" onclick="importClick()">Import</button>
   </div>
-  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.55">Inclui <b>tudo</b>: relatórios, jogadores, shadow teams, pastas e logótipos de clube. Guarda o ficheiro no iCloud ou envia por AirDrop. Faz uma cópia antes de cada atualização da app.</div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.55">Includes <b>everything</b>: relatórios, jogadores, shadow teams, pastas e logótipos de clube. Guarda o ficheiro no iCloud ou envia por AirDrop. Faz uma cópia antes de cada atualização da app.</div>
 
   <div class="sheet-actions">
-    <button class="btn primary" onclick="closeSettings()">Concluído</button>
+    <button class="btn primary" onclick="closeSettings()">Done</button>
   </div>
 </div>
 
@@ -927,9 +927,9 @@ body.noTabs .tabbar{display:none}
 <div id="match">
   <div class="teamhead">
     <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
-    <input class="tname" id="home-name" placeholder="Equipa casa" oninput="renameTeam('home',this.value)">
+    <input class="tname" id="home-name" placeholder="Home team" oninput="renameTeam('home',this.value)">
     <span class="vs">VS</span>
-    <input class="tname" id="away-name" placeholder="Equipa fora" oninput="renameTeam('away',this.value)">
+    <input class="tname" id="away-name" placeholder="Away team" oninput="renameTeam('away',this.value)">
     <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
   </div>
 
@@ -971,16 +971,16 @@ body.noTabs .tabbar{display:none}
 
   <div class="bench">
     <div class="bench-head">
-      <span class="bench-title">Suplentes / entradas</span>
+      <span class="bench-title">Substitutes / subs on</span>
     </div>
     <div class="bench-strip" id="bench-strip"></div>
   </div>
 
   <div class="mfooter">
-    <button class="btn primary" onclick="addPlayer(false)"><span style="font-size:18px;line-height:1">+</span> Jogador</button>
-    <button class="btn" onclick="openFormation()">Onze</button>
-    <button class="btn" onclick="openGameNotes()">Notas</button>
-    <button class="btn" onclick="openExport()">Exportar</button>
+    <button class="btn primary" onclick="addPlayer(false)"><span style="font-size:18px;line-height:1">+</span> Player</button>
+    <button class="btn" onclick="openFormation()">Lineup</button>
+    <button class="btn" onclick="openGameNotes()">Notes</button>
+    <button class="btn" onclick="openExport()">Export</button>
   </div>
 </div>
 
@@ -988,19 +988,19 @@ body.noTabs .tabbar{display:none}
 <nav class="tabbar" id="tabbar">
   <button id="nav-home" class="on" onclick="showSection('dashboard')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/><path d="M9 20v-6h6v6"/></svg>
-    Início
+    Home
   </button>
   <button id="nav-reports" onclick="showSection('reports')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-    Relatórios
+    Reports
   </button>
   <button id="nav-teams" onclick="showSection('teams')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.3"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M15 14.5c2.3.3 4 2.1 4 4.5"/></svg>
-    Equipas
+    Teams
   </button>
   <button id="nav-database" onclick="showSection('database')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
-    Dados
+    Data
   </button>
   <button id="nav-shadow" onclick="showSection('shadow')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6z"/><circle cx="12" cy="10" r="2.3"/><path d="M8.5 16.5c.4-1.8 1.9-2.8 3.5-2.8s3.1 1 3.5 2.8"/></svg>
@@ -1014,29 +1014,29 @@ body.noTabs .tabbar{display:none}
   <div class="grip"></div>
   <div class="sheet-row">
     <div class="field num" style="flex:0 0 66px">
-      <label class="flbl">Nº</label>
+      <label class="flbl">No.</label>
       <input class="inp numinp" id="ed-num" inputmode="numeric" maxlength="3" placeholder="—" oninput="edChange()">
     </div>
     <div class="field" style="flex:0 0 88px">
-      <label class="flbl">Ano</label>
+      <label class="flbl">Year</label>
       <input class="inp numinp" id="ed-birth" inputmode="numeric" maxlength="4" placeholder="—" oninput="edChange()" style="font-size:17px">
     </div>
     <div class="field">
-      <label class="flbl">Nome</label>
-      <input class="inp" id="ed-name" placeholder="Nome do jogador" oninput="edChange()" autocomplete="off">
+      <label class="flbl">Name</label>
+      <input class="inp" id="ed-name" placeholder="Player name" oninput="edChange()" autocomplete="off">
     </div>
   </div>
   <div class="field" style="margin-bottom:13px">
-    <label class="flbl">Posição</label>
+    <label class="flbl">Position</label>
     <div class="poschips" id="ed-pos">
-      <div class="pchip" data-p="GR" onclick="setPos('GR')">GR</div>
+      <div class="pchip" data-p="GK" onclick="setPos('GK')">GK</div>
       <div class="pchip" data-p="DEF" onclick="setPos('DEF')">DEF</div>
-      <div class="pchip" data-p="MÉD" onclick="setPos('MÉD')">MÉD</div>
-      <div class="pchip" data-p="AV" onclick="setPos('AV')">AV</div>
+      <div class="pchip" data-p="MID" onclick="setPos('MID')">MID</div>
+      <div class="pchip" data-p="FWD" onclick="setPos('FWD')">FWD</div>
     </div>
   </div>
   <div class="field" style="margin-bottom:13px">
-    <label class="flbl">Avaliação</label>
+    <label class="flbl">Rating</label>
     <div class="poschips" id="ed-rate">
       <div class="pchip rchip" data-r="A" onclick="setRate('A')">A</div>
       <div class="pchip rchip" data-r="B" onclick="setRate('B')">B</div>
@@ -1045,16 +1045,16 @@ body.noTabs .tabbar{display:none}
     </div>
   </div>
   <div class="field" style="margin-bottom:13px">
-    <label class="flbl">Notas</label>
-    <textarea class="inp" id="ed-notes" placeholder="Observações rápidas sobre o jogador…" oninput="edChange()"></textarea>
+    <label class="flbl">Notes</label>
+    <textarea class="inp" id="ed-notes" placeholder="Quick notes about the player…" oninput="edChange()"></textarea>
   </div>
   <div class="toggle-row" onclick="toggleSub()">
-    <span class="toggle-lbl" id="ed-sub-lbl">No banco</span>
+    <span class="toggle-lbl" id="ed-sub-lbl">On bench</span>
     <div class="switch" id="ed-sub-switch"></div>
   </div>
   <div class="sheet-actions">
-    <button class="btn danger" onclick="deletePlayer()">Eliminar</button>
-    <button class="btn primary" onclick="closeSheet()">Concluído</button>
+    <button class="btn danger" onclick="deletePlayer()">Delete</button>
+    <button class="btn primary" onclick="closeSheet()">Done</button>
   </div>
 </div>
 
@@ -1062,14 +1062,14 @@ body.noTabs .tabbar{display:none}
 <div class="modal-bg" id="export-bg">
   <div class="modal">
     <div class="modal-head">
-      <span class="modal-title">Relatório</span>
+      <span class="modal-title">Report</span>
       <button class="iconbtn" onclick="closeExport()">✕</button>
     </div>
     <div class="modal-body"><pre class="report-pre" id="report-text"></pre></div>
     <div class="modal-foot">
-      <button class="btn" onclick="copyReport()">Copiar</button>
+      <button class="btn" onclick="copyResett()">Copy</button>
       <button class="btn" onclick="printPDF()">PDF</button>
-      <button class="btn primary" id="share-btn" onclick="shareReport()">Partilhar → Notas</button>
+      <button class="btn primary" id="share-btn" onclick="shareResett()">Share → Notes</button>
     </div>
   </div>
 </div>
@@ -1078,20 +1078,20 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="implist-bg" onclick="closeImportList()"></div>
 <div class="sheet" id="implist-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Importar lista</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:12px" id="implist-team">Para a equipa…</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Import list</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:12px" id="implist-team">For the team…</div>
   <div class="field" style="margin-bottom:10px">
-    <textarea class="inp" id="implist-text" placeholder="Cola aqui a lista, um jogador por linha. Ex:
+    <textarea class="inp" id="implist-text" placeholder="Paste the list here, one player per line. E.g.:
 1. Afonso Meira
 2. Afonso Pereira
 3. Rodrigo Maia" style="min-height:170px"></textarea>
   </div>
   <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:11px 13px;font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.55">
-    <b style="color:var(--txt)">Dica:</b> no iPhone, abre a foto da ficha, mantém o dedo sobre os nomes, toca em "Copiar texto" e cola aqui. Os primeiros 11 vão para o campo; os restantes para o banco.
+    <b style="color:var(--txt)">Tip:</b> on iPhone, open the photo of the team sheet, press and hold over the names, tap "Copy text" and paste here. The first 11 go on the pitch; the rest to the bench.
   </div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeImportList()">Cancelar</button>
-    <button class="btn primary" onclick="doImportList()">Importar</button>
+    <button class="btn" onclick="closeImportList()">Cancel</button>
+    <button class="btn primary" onclick="doImportList()">Import</button>
   </div>
 </div>
 
@@ -1099,8 +1099,8 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="form-bg" onclick="closeFormation()"></div>
 <div class="sheet" id="form-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Onze inicial</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Escolhe um sistema. Os jogadores reposicionam-se; o número, nome e notas mantêm-se sempre que possível.</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Starting eleven</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Pick a system. Players reposition; number, name and notes are kept where possible.</div>
   <div class="poschips" id="form-chips" style="margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
     <div class="pchip" data-f="4-3-3" onclick="applyFormation('4-3-3')">4-3-3</div>
     <div class="pchip" data-f="4-4-2" onclick="applyFormation('4-4-2')">4-4-2</div>
@@ -1110,11 +1110,11 @@ body.noTabs .tabbar{display:none}
     <div class="pchip" data-f="4-1-2-1-2" onclick="applyFormation('4-1-2-1-2')">4-1-2-1-2</div>
   </div>
   <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin-bottom:14px">
-    Tens <b id="form-current-count" style="color:var(--txt)">0</b> jogadores em campo nesta equipa.
+    You have <b id="form-current-count" style="color:var(--txt)">0</b> players on the pitch for this team.
   </div>
-  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Importar lista de jogadores (colar)</button>
+  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Import player list (paste)</button>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeFormation()">Fechar</button>
+    <button class="btn" onclick="closeFormation()">Close</button>
   </div>
 </div>
 
@@ -1124,10 +1124,10 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="color-bg" onclick="closeColor()"></div>
 <div class="sheet" id="color-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:14px" id="color-team-lbl">Cor da equipa</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:14px" id="color-team-lbl">Team colour</div>
   <div class="palette" id="palette"></div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeColor()">Fechar</button>
+    <button class="btn" onclick="closeColor()">Close</button>
   </div>
 </div>
 
@@ -1135,14 +1135,14 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="logo-bg" onclick="closeLogo()"></div>
 <div class="sheet" id="logo-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Logótipo</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Carrega uma imagem (ex: símbolo de um clube). Fica guardada só neste dispositivo.</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Logo</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Upload an image (e.g. a club crest). Stored on this device only.</div>
   <div id="logo-actions-list">
-    <button class="act-btn" onclick="logoChoose()"><span class="ai">⬆︎</span> Carregar imagem</button>
-    <button class="act-btn danger" id="logo-reset-btn" onclick="logoReset()" style="display:none"><span class="ai">↺</span> Repor logótipo original</button>
+    <button class="act-btn" onclick="logoChoose()"><span class="ai">⬆︎</span> Upload image</button>
+    <button class="act-btn danger" id="logo-reset-btn" onclick="logoReset()" style="display:none"><span class="ai">↺</span> Reset to original logo</button>
   </div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeLogo()">Cancelar</button>
+    <button class="btn" onclick="closeLogo()">Cancel</button>
   </div>
 </div>
 
@@ -1150,13 +1150,13 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="gnotes-bg" onclick="closeGameNotes()"></div>
 <div class="sheet" id="gnotes-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Notas do jogo</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Leitura geral: sistemas, dinâmica, bola parada, contexto, condições…</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Match notes</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">General read: systems, dynamics, set pieces, context, conditions…</div>
   <div class="field" style="margin-bottom:14px">
-    <textarea class="inp" id="ed-gnotes" placeholder="Escreve aqui a tua análise do jogo…" oninput="gnotesChange()" style="min-height:200px"></textarea>
+    <textarea class="inp" id="ed-gnotes" placeholder="Write your match analysis here…" oninput="gnotesChange()" style="min-height:200px"></textarea>
   </div>
   <div class="sheet-actions">
-    <button class="btn primary" onclick="closeGameNotes()">Concluído</button>
+    <button class="btn primary" onclick="closeGameNotes()">Done</button>
   </div>
 </div>
 
@@ -1164,10 +1164,10 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="item-bg" onclick="closeItemActions()"></div>
 <div class="sheet" id="item-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:14px" id="item-title">Ações</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:14px" id="item-title">Actions</div>
   <div id="item-actions-list"></div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeItemActions()">Cancelar</button>
+    <button class="btn" onclick="closeItemActions()">Cancel</button>
   </div>
 </div>
 
@@ -1175,11 +1175,11 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="move-bg" onclick="closeMove()"></div>
 <div class="sheet" id="move-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Mover para…</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Escolhe a pasta de destino.</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Move to…</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Choose the destination folder.</div>
   <div id="move-list" style="max-height:50dvh;overflow-y:auto"></div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeMove()">Cancelar</button>
+    <button class="btn" onclick="closeMove()">Cancel</button>
   </div>
 </div>
 
@@ -1188,14 +1188,14 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="import-bg" onclick="closeImport()"></div>
 <div class="sheet" id="import-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Importar dados</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Import data</div>
   <div style="color:var(--mut);font-size:13px;margin-bottom:6px" id="import-info">—</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Como queres importar?</div>
-  <button class="act-btn" onclick="doImport('replace')"><span class="ai">⇄</span> Substituir tudo (este aparelho fica igual ao ficheiro)</button>
-  <button class="act-btn" onclick="doImport('merge')"><span class="ai">＋</span> Juntar (acrescenta sem apagar o que tens)</button>
-  <div style="color:var(--mut2);font-size:11px;margin:4px 2px 10px">Ao substituir, é guardada automaticamente uma cópia do estado atual deste aparelho.</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">How do you want to import?</div>
+  <button class="act-btn" onclick="doImport('replace')"><span class="ai">⇄</span> Replace all (this device becomes the file)</button>
+  <button class="act-btn" onclick="doImport('merge')"><span class="ai">＋</span> Merge (adds without deleting what you have)</button>
+  <div style="color:var(--mut2);font-size:11px;margin:4px 2px 10px">On replace, a copy of this device's current state is saved automatically.</div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closeImport()">Cancelar</button>
+    <button class="btn" onclick="closeImport()">Cancel</button>
   </div>
 </div>
 
@@ -1204,14 +1204,14 @@ body.noTabs .tabbar{display:none}
 <div class="sheet" id="slot-sheet">
   <div class="grip"></div>
   <div style="display:flex;align-items:center;margin-bottom:4px">
-    <div style="font-weight:800;font-size:16px" id="slot-title">Posição</div>
+    <div style="font-weight:800;font-size:16px" id="slot-title">Position</div>
     <span id="slot-count" style="margin-left:auto;color:var(--mut);font-size:13px"></span>
   </div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Até 4 jogadores, por ordem de preferência.</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Up to 4 players, in order of preference.</div>
   <div id="slot-players" style="margin-bottom:12px"></div>
   <div class="sheet-actions">
-    <button class="btn primary" id="slot-add-btn" onclick="openPicker()">＋ Adicionar jogador</button>
-    <button class="btn" onclick="closeSlot()">Concluído</button>
+    <button class="btn primary" id="slot-add-btn" onclick="openPicker()">＋ Add player</button>
+    <button class="btn" onclick="closeSlot()">Done</button>
   </div>
 </div>
 
@@ -1219,13 +1219,13 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="picker-bg" onclick="closePicker()"></div>
 <div class="sheet" id="picker-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:12px">Escolher da base de dados</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:12px">Choose from database</div>
   <div class="searchbar" style="margin-bottom:12px">
-    <div class="si"><input id="picker-search" placeholder="Procurar nome ou clube…" oninput="renderPicker()"></div>
+    <div class="si"><input id="picker-search" placeholder="Search name or club…" oninput="renderPicker()"></div>
   </div>
   <div id="picker-list" style="max-height:48dvh;overflow-y:auto"></div>
   <div class="sheet-actions">
-    <button class="btn" onclick="closePicker()">Fechar</button>
+    <button class="btn" onclick="closePicker()">Close</button>
   </div>
 </div>
 
@@ -1234,12 +1234,12 @@ body.noTabs .tabbar{display:none}
 <div class="sheet" id="filters-sheet">
   <div class="grip"></div>
   <div style="display:flex;align-items:center;margin-bottom:14px">
-    <div style="font-weight:800;font-size:16px">Filtros</div>
-    <button class="btn ghost" style="margin-left:auto;color:var(--accent);border:none;padding:4px" onclick="clearFilters()">Limpar tudo</button>
+    <div style="font-weight:800;font-size:16px">Filters</div>
+    <button class="btn ghost" style="margin-left:auto;color:var(--accent);border:none;padding:4px" onclick="clearFilters()">Clear all</button>
   </div>
   <div id="filters-body" style="max-height:60dvh;overflow-y:auto"></div>
   <div class="sheet-actions">
-    <button class="btn primary" onclick="closeFilters()">Ver resultados</button>
+    <button class="btn primary" onclick="closeFilters()">See results</button>
   </div>
 </div>
 
@@ -1249,7 +1249,7 @@ body.noTabs .tabbar{display:none}
 <script>
 "use strict";
 /* ============================================================
-   Relatório de Jogo — scouting match report (offline)
+   Match Resett — scouting match report (offline)
    ============================================================ */
 
 const LS_KEY = 'scoutreport_v1';
@@ -1259,43 +1259,43 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7
    plus a default position label. Order roughly GK -> defence -> midfield -> attack. */
 const FORMATIONS = {
   '4-3-3': [
-    {x:50,y:90,pos:'GR'},
+    {x:50,y:90,pos:'GK'},
     {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:30,y:54,pos:'MÉD'},{x:50,y:58,pos:'MÉD'},{x:70,y:54,pos:'MÉD'},
-    {x:22,y:30,pos:'AV'},{x:50,y:24,pos:'AV'},{x:78,y:30,pos:'AV'}
+    {x:30,y:54,pos:'MID'},{x:50,y:58,pos:'MID'},{x:70,y:54,pos:'MID'},
+    {x:22,y:30,pos:'FWD'},{x:50,y:24,pos:'FWD'},{x:78,y:30,pos:'FWD'}
   ],
   '4-4-2': [
-    {x:50,y:90,pos:'GR'},
+    {x:50,y:90,pos:'GK'},
     {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:18,y:50,pos:'MÉD'},{x:40,y:53,pos:'MÉD'},{x:60,y:53,pos:'MÉD'},{x:82,y:50,pos:'MÉD'},
-    {x:38,y:26,pos:'AV'},{x:62,y:26,pos:'AV'}
+    {x:18,y:50,pos:'MID'},{x:40,y:53,pos:'MID'},{x:60,y:53,pos:'MID'},{x:82,y:50,pos:'MID'},
+    {x:38,y:26,pos:'FWD'},{x:62,y:26,pos:'FWD'}
   ],
   '4-2-3-1': [
-    {x:50,y:90,pos:'GR'},
+    {x:50,y:90,pos:'GK'},
     {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:38,y:60,pos:'MÉD'},{x:62,y:60,pos:'MÉD'},
-    {x:22,y:40,pos:'MÉD'},{x:50,y:38,pos:'MÉD'},{x:78,y:40,pos:'MÉD'},
-    {x:50,y:22,pos:'AV'}
+    {x:38,y:60,pos:'MID'},{x:62,y:60,pos:'MID'},
+    {x:22,y:40,pos:'MID'},{x:50,y:38,pos:'MID'},{x:78,y:40,pos:'MID'},
+    {x:50,y:22,pos:'FWD'}
   ],
   '3-4-3': [
-    {x:50,y:90,pos:'GR'},
+    {x:50,y:90,pos:'GK'},
     {x:28,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:72,y:76,pos:'DEF'},
-    {x:15,y:52,pos:'MÉD'},{x:39,y:55,pos:'MÉD'},{x:61,y:55,pos:'MÉD'},{x:85,y:52,pos:'MÉD'},
-    {x:24,y:28,pos:'AV'},{x:50,y:24,pos:'AV'},{x:76,y:28,pos:'AV'}
+    {x:15,y:52,pos:'MID'},{x:39,y:55,pos:'MID'},{x:61,y:55,pos:'MID'},{x:85,y:52,pos:'MID'},
+    {x:24,y:28,pos:'FWD'},{x:50,y:24,pos:'FWD'},{x:76,y:28,pos:'FWD'}
   ],
   '3-5-2': [
-    {x:50,y:90,pos:'GR'},
+    {x:50,y:90,pos:'GK'},
     {x:28,y:77,pos:'DEF'},{x:50,y:79,pos:'DEF'},{x:72,y:77,pos:'DEF'},
-    {x:13,y:54,pos:'MÉD'},{x:35,y:57,pos:'MÉD'},{x:50,y:50,pos:'MÉD'},{x:65,y:57,pos:'MÉD'},{x:87,y:54,pos:'MÉD'},
-    {x:40,y:26,pos:'AV'},{x:60,y:26,pos:'AV'}
+    {x:13,y:54,pos:'MID'},{x:35,y:57,pos:'MID'},{x:50,y:50,pos:'MID'},{x:65,y:57,pos:'MID'},{x:87,y:54,pos:'MID'},
+    {x:40,y:26,pos:'FWD'},{x:60,y:26,pos:'FWD'}
   ],
   '4-1-2-1-2': [
-    {x:50,y:90,pos:'GR'},
+    {x:50,y:90,pos:'GK'},
     {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:50,y:60,pos:'MÉD'},
-    {x:30,y:48,pos:'MÉD'},{x:70,y:48,pos:'MÉD'},
-    {x:50,y:36,pos:'MÉD'},
-    {x:40,y:24,pos:'AV'},{x:60,y:24,pos:'AV'}
+    {x:50,y:60,pos:'MID'},
+    {x:30,y:48,pos:'MID'},{x:70,y:48,pos:'MID'},
+    {x:50,y:36,pos:'MID'},
+    {x:40,y:24,pos:'FWD'},{x:60,y:24,pos:'FWD'}
   ]
 };
 const DEFAULT_FORMATION = '4-3-3';
@@ -1384,15 +1384,15 @@ function normalizeProfile(p){
   return p;
 }
 function save(){
-  try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ toast('Erro ao guardar'); }
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ toast('Error saving'); }
 }
 
 /* ===================== PLAYER DATABASE (Fase 1) ===================== */
-const POSITIONS = ['GR','DD','DC','DE','LD','LE','MDC','MC','MO','ED','EE','AV'];
-const POS_FULL = {GR:'Guarda-redes',DC:'Defesa central',DD:'Defesa direito',DE:'Defesa esquerdo',LD:'Lateral direito',LE:'Lateral esquerdo',MDC:'Médio defensivo',MC:'Médio centro',MO:'Médio ofensivo',ED:'Extremo direito',EE:'Extremo esquerdo',AV:'Avançado'};
-const FEET = ['Direito','Esquerdo','Ambidextro'];
-const STATUSES = ['Não observado','A observar','Observado'];
-const BIOTYPES = ['Longilíneo','Atlético','Robusto'];
+const POSITIONS = ['GK','RB','CB','LB','RWB','LWB','DM','CM','AM','RW','LW','ST'];
+const POS_FULL = {GK:'Goalkeeper',CB:'Centre-back',RB:'Right-back',LB:'Left-back',RWB:'Right wing-back',LWB:'Left wing-back',DM:'Defensive midfielder',CM:'Central midfielder',AM:'Attacking midfielder',RW:'Right winger',LW:'Left winger',ST:'Striker'};
+const FEET = ['Right','Left','Two-footed'];
+const STATUSES = ['Not scouted','To scout','Scouted'];
+const BIOTYPES = ['Ectomorph','Mesomorph','Endomorph'];
 const COUNTRY_ISO = {
   'portugal':'PT','espanha':'ES','frança':'FR','franca':'FR','inglaterra':'GB','reino unido':'GB','escócia':'GB','escocia':'GB','país de gales':'GB','pais de gales':'GB','irlanda':'IE','irlanda do norte':'GB',
   'alemanha':'DE','itália':'IT','italia':'IT','holanda':'NL','países baixos':'NL','paises baixos':'NL','bélgica':'BE','belgica':'BE','frança':'FR','suíça':'CH','suica':'CH','áustria':'AT','austria':'AT',
@@ -1409,7 +1409,7 @@ function countryFlag(name){
   if(!iso) return '';
   return iso.toUpperCase().replace(/./g, c=>String.fromCodePoint(127397 + c.charCodeAt(0)));
 }
-const LEVELS = ['Sub-13','Sub-15','Sub-16','Sub-17','Sub-19','Sub-23','Sénior'];
+const LEVELS = ['U13','U15','U16','U17','U19','U23','Senior'];
 
 let currentSection = 'reports';
 let profileReturn = 'database';
@@ -1430,7 +1430,7 @@ function ageFromBirth(b){
 }
 function birthYear(b){ if(!b) return ''; const d=new Date(b); return isNaN(d)?'':d.getFullYear(); }
 function profilePositions(p){ return [p.pos1,p.pos2,p.pos3].filter(Boolean); }
-function profileTeamKey(p){ const c=(p.club||'Sem clube').trim(); const l=(p.level||'').trim(); return l? `${c} · ${l}` : c; }
+function profileTeamKey(p){ const c=(p.club||'No club').trim(); const l=(p.level||'').trim(); return l? `${c} · ${l}` : c; }
 
 /* ---------- Navigation ---------- */
 function setHeader(mode){
@@ -1459,13 +1459,13 @@ function renderDashboard(){
   document.getElementById('nc-database').textContent = DB.players.length;
   document.getElementById('nc-shadow').textContent = DB.shadows.length;
   const watch = DB.players.filter(isWatch).length;
-  document.getElementById('wh-sub').textContent = watch? `${watch} jogador${watch!==1?'es':''} a seguir` : 'Nenhum jogador ainda';
+  document.getElementById('wh-sub').textContent = watch? `${watch} player${watch!==1?'s':''} watched` : 'No players yet';
   applyLogo(); applyHero();
   // recent reports
   const recent = DB.matches.slice(0,3);
   const rc = document.getElementById('dash-recent');
   if(recent.length){
-    rc.innerHTML = `<div class="dash-lbl">Relatórios recentes</div>` + recent.map(m=>{
+    rc.innerHTML = `<div class="dash-lbl">Recent reports</div>` + recent.map(m=>{
       const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short'});
       return `<div class="dash-recent-card" onclick="openMatch('${m.id}')">
         <span class="rec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span>
@@ -1518,12 +1518,12 @@ function renderDatabase(){
   list = list.sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
   const el = document.getElementById('db-list');
   if(!DB.players.length){
-    el.innerHTML = `<div class="empty"><div class="big">🗂</div><div class="et">Base de dados vazia</div><div>Cria o primeiro perfil de jogador.</div><button class="btn primary newbtn" onclick="newProfile()"><span style="font-size:18px">+</span> Novo jogador</button></div>`;
+    el.innerHTML = `<div class="empty"><div class="big">🗂</div><div class="et">Empty database</div><div>Create your first player profile.</div><button class="btn primary newbtn" onclick="newProfile()"><span style="font-size:18px">+</span> New player</button></div>`;
     return;
   }
   if(!list.length){
-    const msg = dbView==='watch' ? 'Sem jogadores na watchlist. Marca com a estrela, ou avalia com A/B.' : 'Ajusta a pesquisa ou os filtros.';
-    el.innerHTML = `<div class="empty"><div class="et">Sem resultados</div><div>${msg}</div></div>`; return;
+    const msg = dbView==='watch' ? 'No players na watchlist. Marca com a estrela, ou avalia com A/B.' : 'Ajusta a pesquisa ou os filtros.';
+    el.innerHTML = `<div class="empty"><div class="et">No results</div><div>${msg}</div></div>`; return;
   }
   el.innerHTML = list.map(playerCard).join('');
 }
@@ -1541,7 +1541,7 @@ function playerCard(p){
     ${avatarHTML(p, 30)}
     <div class="pc-rate ${r}" style="margin-left:-2px">${p.rating||'–'}</div>
     <div class="pc-main">
-      <div class="pc-name">${esc(p.name||'Sem nome')}${pos}</div>
+      <div class="pc-name">${esc(p.name||'No name')}${pos}</div>
       <div class="pc-meta">${bits.join(' · ')||'—'}${st?'  ·  '+st:''}</div>
     </div>
     <span class="pc-star ${w?'on':''}" onclick="toggleWatch('${p.id}',event)" title="Watchlist">${w?'★':'☆'}</span>
@@ -1553,13 +1553,13 @@ function avatarHTML(p, size){
   const ini = (p.name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() || '?';
   return `<span class="avatar" style="${s}">${esc(ini)}</span>`;
 }
-function statusSlug(s){ return {'Não observado':'nao-observado','A observar':'a-observar','Observado':'observado'}[s]||''; }
+function statusSlug(s){ return {'Not scouted':'nao-observado','To scout':'a-observar','Scouted':'observado'}[s]||''; }
 
 /* ---------- Filters ---------- */
 function distinct(key){ return [...new Set(DB.players.map(p=>p[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt')); }
 function renderActiveFilters(){
   const wrap = document.getElementById('active-filters');
-  const labels = {club:'Clube',level:'Escalão',pos:'Posição',foot:'Pé',rating:'Aval.',status:'Estado'};
+  const labels = {club:'Club',level:'Age group',pos:'Position',foot:'Pé',rating:'Aval.',status:'Status'};
   const active = Object.keys(filters).filter(k=>filters[k]);
   document.getElementById('filter-dot').style.display = active.length? 'block':'none';
   wrap.innerHTML = active.map(k=>`<span class="fchip-active"><b>${labels[k]}:</b> ${esc(filters[k])} <span class="x" onclick="clearFilter('${k}')">✕</span></span>`).join('');
@@ -1568,12 +1568,12 @@ function openFilters(){
   const opt = (key,val)=>`<button class="pf-chip ${filters[key]===val?'on':''}" onclick="setFilter('${key}','${esc(val)}')">${esc(val)}</button>`;
   const grp = (title,key,vals)=> vals.length? `<div class="pf-group"><div class="pf-glbl">${title}</div><div class="pf-chips">${vals.map(v=>opt(key,v)).join('')}</div></div>`:'';
   document.getElementById('filters-body').innerHTML =
-    grp('Clube','club',distinct('club')) +
-    grp('Escalão','level',distinct('level')) +
-    `<div class="pf-group"><div class="pf-glbl">Posição</div><div class="pf-chips">${POSITIONS.map(v=>opt('pos',v)).join('')}</div></div>` +
-    `<div class="pf-group"><div class="pf-glbl">Pé</div><div class="pf-chips">${FEET.map(v=>opt('foot',v)).join('')}</div></div>` +
-    `<div class="pf-group"><div class="pf-glbl">Avaliação</div><div class="pf-chips">${['A','B','C','D'].map(v=>opt('rating',v)).join('')}</div></div>` +
-    `<div class="pf-group"><div class="pf-glbl">Estado</div><div class="pf-chips">${STATUSES.map(v=>opt('status',v)).join('')}</div></div>`;
+    grp('Club','club',distinct('club')) +
+    grp('Age group','level',distinct('level')) +
+    `<div class="pf-group"><div class="pf-glbl">Position</div><div class="pf-chips">${POSITIONS.map(v=>opt('pos',v)).join('')}</div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Foot</div><div class="pf-chips">${FEET.map(v=>opt('foot',v)).join('')}</div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Rating</div><div class="pf-chips">${['A','B','C','D'].map(v=>opt('rating',v)).join('')}</div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Status</div><div class="pf-chips">${STATUSES.map(v=>opt('status',v)).join('')}</div></div>`;
   document.getElementById('filters-bg').classList.add('show');
   document.getElementById('filters-sheet').classList.add('show');
 }
@@ -1602,11 +1602,11 @@ function clubLogoUpload(ev){
     tmp.onload=()=>{
       const max=140; let w=tmp.width,h=tmp.height; const sc=Math.min(max/w,max/h,1); w=Math.round(w*sc); h=Math.round(h*sc);
       const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(tmp,0,0,w,h);
-      let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Imagem inválida'); return; }
+      let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Invalid image'); return; }
       if(!DB.clubLogos) DB.clubLogos={};
-      DB.clubLogos[pendingClubLogo]=out; save(); renderTeams(); toast('Escudo do clube atualizado');
+      DB.clubLogos[pendingClubLogo]=out; save(); renderTeams(); toast('Club crest updated');
     };
-    tmp.onerror=()=>toast('Não foi possível ler a imagem');
+    tmp.onerror=()=>toast('Could not read the image');
     tmp.src=e.target.result;
   };
   reader.readAsDataURL(file);
@@ -1625,14 +1625,14 @@ function renderTeams(){
         <span class="team-crest" onclick="clubLogoChoose('${esc(club).replace(/'/g,"\\'")}')">${clubCrest(club,64)}<span class="crest-edit">✎</span></span>
         <div style="flex:1;min-width:0">
           <div class="sec-title" style="font-size:21px">${esc(activeTeamKey)}</div>
-          <div class="sec-sub" style="margin:2px 0 0">${players.length} jogador${players.length!==1?'es':''}${hasLogo?` · <span onclick="clubLogoReset('${esc(club).replace(/'/g,"\\'")}')" style="color:var(--accent);cursor:pointer">remover escudo</span>`:' · toca no escudo para carregar'}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''}${hasLogo?` · <span onclick="clubLogoReset('${esc(club).replace(/'/g,"\\'")}')" style="color:var(--accent);cursor:pointer">remover escudo</span>`:' · toca no escudo para carregar'}</div>
         </div>
       </div>`;
-    list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">Sem jogadores</div></div>`;
+    list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">No players</div></div>`;
     return;
   }
-  top.innerHTML = `<div class="sec-title">As minhas equipas</div><div class="sec-sub">Jogadores agrupados por clube e escalão.</div>`;
-  if(!DB.players.length){ list.innerHTML = `<div class="empty"><div class="big">👥</div><div class="et">Ainda sem equipas</div><div>Cria perfis na Base de dados e eles agrupam-se aqui.</div></div>`; return; }
+  top.innerHTML = `<div class="sec-title">My teams</div><div class="sec-sub">Players grouped by club and age group.</div>`;
+  if(!DB.players.length){ list.innerHTML = `<div class="empty"><div class="big">👥</div><div class="et">No teams yet</div><div>Create profiles in the Database and they group here.</div></div>`; return; }
   const groups = {};
   DB.players.forEach(p=>{ const k=profileTeamKey(p); (groups[k]=groups[k]||[]).push(p); });
   const keys = Object.keys(groups).sort((a,b)=>a.localeCompare(b,'pt'));
@@ -1640,7 +1640,7 @@ function renderTeams(){
     const n = groups[k].length;
     return `<div class="tcard" onclick="openTeam('${esc(k).replace(/'/g,"\\'")}')">
       ${clubCrest(clubFromKey(k),44)}
-      <div class="pc-main"><div class="pc-name">${esc(k)}</div><div class="pc-meta">${n} jogador${n!==1?'es':''}</div></div>
+      <div class="pc-main"><div class="pc-name">${esc(k)}</div><div class="pc-meta">${n} player${n!==1?'s':''}</div></div>
     </div>`;
   }).join('');
 }
@@ -1699,7 +1699,7 @@ function closeProfile(){
 }
 function deleteProfile(){
   if(!editingProfile) return;
-  if(!confirm(`Eliminar o perfil de "${editingProfile.name||'Sem nome'}"? Esta ação não pode ser desfeita.`)) return;
+  if(!confirm(`Delete the profile of "${editingProfile.name||'No name'}"? This action cannot be undone.`)) return;
   DB.players = DB.players.filter(p=>p.id!==editingProfile.id); save();
   showSection(profileReturn);
 }
@@ -1715,31 +1715,31 @@ function renderProfile(){
     <div class="pf-hero-row">
       <div class="pf-avatar avatar" onclick="photoClick()">${p.photo?`<img src="${p.photo}" alt="">`:esc((p.name||'?').trim().split(/\\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?')}<span class="edit">✎</span></div>
       <div class="pf-hero-main">
-        <input class="pf-name-in" id="pf-name" placeholder="Nome do jogador" value="${esc(p.name)}" oninput="pfField('name',this.value)">
+        <input class="pf-name-in" id="pf-name" placeholder="Player name" value="${esc(p.name)}" oninput="pfField('name',this.value)">
         <div class="pf-sub" id="pf-sub">${esc(sub)||'Preenche a ficha em baixo'}</div>
       </div>
     </div>
     <div class="pf-watch-toggle ${w?'on':''}" onclick="toggleWatch('${p.id}',event)">
-      <span class="star">${w?'★':'☆'}</span> ${w?'Na watchlist':'Adicionar à watchlist'}
+      <span class="star">${w?'★':'☆'}</span> ${w?'In watchlist':'Add to watchlist'}
     </div>
   </div>
   <div class="pf-body">
     <div class="pf-group">
-      <div class="pf-glbl">Identificação</div>
+      <div class="pf-glbl">Identification</div>
       <div class="pf-row">
-        <div class="pf-f"><label>Data de nascimento</label><input class="pf-in" type="date" id="pf-birth" value="${esc(p.birth)}" onchange="pfField('birth',this.value)"></div>
-        <div class="pf-f" style="flex:0 0 90px"><label>Número</label><input class="pf-in" inputmode="numeric" maxlength="3" value="${esc(p.number)}" oninput="pfNum(this)"></div>
+        <div class="pf-f"><label>Date of birth</label><input class="pf-in" type="date" id="pf-birth" value="${esc(p.birth)}" onchange="pfField('birth',this.value)"></div>
+        <div class="pf-f" style="flex:0 0 90px"><label>Number</label><input class="pf-in" inputmode="numeric" maxlength="3" value="${esc(p.number)}" oninput="pfNum(this)"></div>
       </div>
       <div class="pf-row">
-        <div class="pf-f"><label>Clube</label><input class="pf-in" id="pf-club" list="dl-clubs" placeholder="ex: Sporting CP" value="${esc(p.club)}" oninput="pfField('club',this.value)"></div>
-        <div class="pf-f"><label>Escalão</label><input class="pf-in" id="pf-level" list="dl-levels" placeholder="ex: Sub-17" value="${esc(p.level)}" oninput="pfField('level',this.value)"></div>
+        <div class="pf-f"><label>Club</label><input class="pf-in" id="pf-club" list="dl-clubs" placeholder="e.g. Sporting CP" value="${esc(p.club)}" oninput="pfField('club',this.value)"></div>
+        <div class="pf-f"><label>Age group</label><input class="pf-in" id="pf-level" list="dl-levels" placeholder="e.g. U17" value="${esc(p.level)}" oninput="pfField('level',this.value)"></div>
       </div>
       <div class="pf-row">
-        <div class="pf-f"><label>Nacionalidade</label><input class="pf-in" list="dl-nats" placeholder="ex: Portugal" value="${esc(p.nationality)}" oninput="pfField('nationality',this.value)"></div>
-        <div class="pf-f"><label>Altura (cm)</label><input class="pf-in" type="number" inputmode="numeric" placeholder="ex: 178" value="${esc(p.height)}" oninput="pfField('height',this.value)"></div>
+        <div class="pf-f"><label>Nationality</label><input class="pf-in" list="dl-nats" placeholder="e.g. Portugal" value="${esc(p.nationality)}" oninput="pfField('nationality',this.value)"></div>
+        <div class="pf-f"><label>Height (cm)</label><input class="pf-in" type="number" inputmode="numeric" placeholder="ex: 178" value="${esc(p.height)}" oninput="pfField('height',this.value)"></div>
       </div>
       <div class="pf-row">
-        <div class="pf-f"><label>Biotipo</label><input class="pf-in" list="dl-bio" placeholder="ex: Atlético" value="${esc(p.biotype)}" oninput="pfField('biotype',this.value)"></div>
+        <div class="pf-f"><label>Body type</label><input class="pf-in" list="dl-bio" placeholder="e.g. Mesomorph" value="${esc(p.biotype)}" oninput="pfField('biotype',this.value)"></div>
       </div>
       <datalist id="dl-clubs">${distinct('club').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
       <datalist id="dl-levels">${LEVELS.map(c=>`<option value="${c}">`).join('')}</datalist>
@@ -1748,53 +1748,53 @@ function renderProfile(){
     </div>
 
     <div class="pf-group">
-      <div class="pf-glbl">Posição <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--mut2)">· toca no campo (até 3, por ordem)</span></div>
+      <div class="pf-glbl">Position <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--mut2)">· tap the pitch (up to 3, in order)</span></div>
       <div class="posfield" id="posfield">${renderPosField(p)}</div>
       <div class="posfield-legend" id="posfield-legend">${posLegend(p)}</div>
-      <div class="pf-f"><label>Pé preferido</label><div class="pf-chips">${FEET.map(f=>`<button class="pf-chip ${p.foot===f?'on':''}" onclick="setProfileFoot('${f}')">${f}</button>`).join('')}</div></div>
+      <div class="pf-f"><label>Preferred foot</label><div class="pf-chips">${FEET.map(f=>`<button class="pf-chip ${p.foot===f?'on':''}" onclick="setProfileFoot('${f}')">${f}</button>`).join('')}</div></div>
     </div>
 
     <div class="pf-group">
-      <div class="pf-glbl">Avaliação & Estado</div>
-      <div class="pf-f" style="margin-bottom:13px"><label>Avaliação global</label><div class="pf-chips">${['A','B','C','D'].map(r=>`<button class="pf-chip rchip2 ${p.rating===r?'on':''}" data-r="${r}" onclick="setProfileRating('${r}')">${r}</button>`).join('')}</div></div>
-      <div class="pf-f"><label>Estado</label><div class="pf-chips">${STATUSES.map(s=>`<button class="pf-chip schip ${p.status===s?'on':''}" data-s="${s}" onclick="setProfileStatus('${s}')">${s}</button>`).join('')}</div></div>
+      <div class="pf-glbl">Rating & Status</div>
+      <div class="pf-f" style="margin-bottom:13px"><label>Overall rating</label><div class="pf-chips">${['A','B','C','D'].map(r=>`<button class="pf-chip rchip2 ${p.rating===r?'on':''}" data-r="${r}" onclick="setProfileRating('${r}')">${r}</button>`).join('')}</div></div>
+      <div class="pf-f"><label>Status</label><div class="pf-chips">${STATUSES.map(s=>`<button class="pf-chip schip ${p.status===s?'on':''}" data-s="${s}" onclick="setProfileStatus('${s}')">${s}</button>`).join('')}</div></div>
     </div>
 
     <div class="pf-group">
       <div class="pf-glbl">Links</div>
-      <div class="linkrow"><span class="ico">ZZ</span><input class="pf-in" placeholder="zerozero.pt/..." value="${esc(p.links.zerozero)}" oninput="pfLink('zerozero',this.value)">${p.links.zerozero?`<a class="open" href="${esc(p.links.zerozero)}" target="_blank" rel="noopener">Abrir</a>`:''}</div>
-      <div class="linkrow"><span class="ico">TM</span><input class="pf-in" placeholder="transfermarkt..." value="${esc(p.links.transfermarkt)}" oninput="pfLink('transfermarkt',this.value)">${p.links.transfermarkt?`<a class="open" href="${esc(p.links.transfermarkt)}" target="_blank" rel="noopener">Abrir</a>`:''}</div>
-      <div class="linkrow"><span class="ico">FPF</span><input class="pf-in" placeholder="fpf.pt/..." value="${esc(p.links.fpf)}" oninput="pfLink('fpf',this.value)">${p.links.fpf?`<a class="open" href="${esc(p.links.fpf)}" target="_blank" rel="noopener">Abrir</a>`:''}</div>
+      <div class="linkrow"><span class="ico">ZZ</span><input class="pf-in" placeholder="zerozero.pt/..." value="${esc(p.links.zerozero)}" oninput="pfLink('zerozero',this.value)">${p.links.zerozero?`<a class="open" href="${esc(p.links.zerozero)}" target="_blank" rel="noopener">Open</a>`:''}</div>
+      <div class="linkrow"><span class="ico">TM</span><input class="pf-in" placeholder="transfermarkt..." value="${esc(p.links.transfermarkt)}" oninput="pfLink('transfermarkt',this.value)">${p.links.transfermarkt?`<a class="open" href="${esc(p.links.transfermarkt)}" target="_blank" rel="noopener">Open</a>`:''}</div>
+      <div class="linkrow"><span class="ico">FPF</span><input class="pf-in" placeholder="fpf.pt/..." value="${esc(p.links.fpf)}" oninput="pfLink('fpf',this.value)">${p.links.fpf?`<a class="open" href="${esc(p.links.fpf)}" target="_blank" rel="noopener">Open</a>`:''}</div>
     </div>
 
     <div class="pf-group">
-      <div class="pf-glbl">Notas gerais</div>
-      <textarea class="pf-in" id="pf-notes" placeholder="Características, contexto, recomendação…" style="min-height:90px" oninput="pfField('notes',this.value)">${esc(p.notes)}</textarea>
+      <div class="pf-glbl">General notes</div>
+      <textarea class="pf-in" id="pf-notes" placeholder="Strengths, context, recommendation…" style="min-height:90px" oninput="pfField('notes',this.value)">${esc(p.notes)}</textarea>
     </div>
 
     <div class="pf-group">
-      <div class="pf-glbl">Observações (${p.obs.length})</div>
+      <div class="pf-glbl">Observations (${p.obs.length})</div>
       <div id="pf-obs-list">${renderObs(p)}</div>
-      <button class="btn" style="width:100%;justify-content:center;margin-top:4px" onclick="addObs()"><span style="font-size:16px">+</span> Adicionar observação</button>
+      <button class="btn" style="width:100%;justify-content:center;margin-top:4px" onclick="addObs()"><span style="font-size:16px">+</span> Add observation</button>
     </div>
 
-    <button class="btn primary" style="width:100%;justify-content:center;padding:15px;font-size:15px" onclick="saveProfileAndClose()">Salvar jogador</button>
-    <div style="text-align:center;color:var(--mut2);font-size:11.5px;margin-top:9px;line-height:1.5">As alterações são guardadas automaticamente. A avaliação é opcional.</div>
+    <button class="btn primary" style="width:100%;justify-content:center;padding:15px;font-size:15px" onclick="saveProfileAndClose()">Save player</button>
+    <div style="text-align:center;color:var(--mut2);font-size:11.5px;margin-top:9px;line-height:1.5">Changes are saved automatically. Rating is optional.</div>
   </div>`;
 }
 function saveProfileAndClose(){
   const p = editingProfile; if(!p) return;
   if(!p.name.trim()){
-    toast('Indica pelo menos o nome do jogador');
+    toast('Enter at least the player name');
     const n=document.getElementById('pf-name'); if(n) n.focus();
     return;
   }
   save();
-  toast('Jogador guardado');
+  toast('Player saved');
   profileMode='view'; renderProfileScreen();
 }
 function renderObs(p){
-  if(!p.obs.length) return `<div style="color:var(--mut2);font-size:13px;margin-bottom:9px">Sem observações registadas.</div>`;
+  if(!p.obs.length) return `<div style="color:var(--mut2);font-size:13px;margin-bottom:9px">No observations recorded.</div>`;
   return p.obs.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(o=>{
     const d = o.date? new Date(o.date).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'}) : 'Sem data';
     const rate = o.rating? `<span class="pc-pos" style="color:#fff;border:none;background:${o.rating==='A'?'#2ba96b':o.rating==='B'?'#1d6fe0':o.rating==='C'?'#f5a623':'#e5484d'}">${o.rating}</span>`:'';
@@ -1802,7 +1802,7 @@ function renderObs(p){
   }).join('');
 }
 function renderObsRO(p){
-  if(!p.obs.length) return `<div style="color:var(--mut2);font-size:13px">Sem observações registadas.</div>`;
+  if(!p.obs.length) return `<div style="color:var(--mut2);font-size:13px">No observations recorded.</div>`;
   return p.obs.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(o=>{
     const d = o.date? new Date(o.date).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'}) : 'Sem data';
     const rate = o.rating? `<span class="pc-pos" style="color:#fff;border:none;background:${o.rating==='A'?'#2ba96b':o.rating==='B'?'#1d6fe0':o.rating==='C'?'#f5a623':'#e5484d'}">${o.rating}</span>`:'';
@@ -1823,7 +1823,7 @@ function renderProfileView(){
   const flag = countryFlag(p.nationality);
   const positions = profilePositions(p);
   const w = isWatch(p);
-  const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Clube por definir';
+  const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Club por definir';
   const clubLogo = p.club && DB.clubLogos && DB.clubLogos[p.club];
   const ageStr = yr ? `${yr}${age!=null?` · ${age} anos`:''}` : '';
   const natStr = p.nationality ? `${flag?flag+' ':''}${esc(p.nationality)}` : '';
@@ -1831,10 +1831,10 @@ function renderProfileView(){
   const chips = positions.map((c,i)=>`<span class="pv-pos">${c}</span>`).join('');
   const stat = (l,v)=> v? `<div class="pv-stat"><div class="pv-stat-l">${l}</div><div class="pv-stat-v">${v}</div></div>` : '';
   const stats = [
-    stat('Avaliação', p.rating? `<span class="pc-rate ${p.rating}" style="display:inline-flex;width:30px;height:30px;font-size:15px">${p.rating}</span>` : '—'),
+    stat('Rating', p.rating? `<span class="pc-rate ${p.rating}" style="display:inline-flex;width:30px;height:30px;font-size:15px">${p.rating}</span>` : '—'),
     stat('Pé', p.foot? esc(p.foot) : '—'),
     stat('Altura', p.height? esc(p.height)+' cm' : '—'),
-    stat('Biotipo', p.biotype? esc(p.biotype) : '—')
+    stat('Body type', p.biotype? esc(p.biotype) : '—')
   ].join('');
 
   const links = [['Zerozero',p.links.zerozero],['Transfermarkt',p.links.transfermarkt],['FPF',p.links.fpf]]
@@ -1846,7 +1846,7 @@ function renderProfileView(){
       <div class="pv-hero-row">
         ${avatarHTML(p, 86)}
         <div class="pv-hero-main">
-          <div class="pv-name">${esc(p.name||'Sem nome')}</div>
+          <div class="pv-name">${esc(p.name||'No name')}</div>
           <div class="pv-meta">${meta}</div>
           <div class="pv-tags">
             ${ageStr?`<span class="pv-tag">${ageStr}</span>`:''}
@@ -1856,7 +1856,7 @@ function renderProfileView(){
         </div>
       </div>
       <div class="pv-hero-actions">
-        <button class="pv-watch ${w?'on':''}" onclick="toggleWatchView()">${w?'★ Na watchlist':'☆ Adicionar à watchlist'}</button>
+        <button class="pv-watch ${w?'on':''}" onclick="toggleWatchView()">${w?'★ In watchlist':'☆ Add to watchlist'}</button>
         ${p.status?`<span class="pv-status"><span class="statusdot st-${statusSlug(p.status)}"></span>${esc(p.status)}</span>`:''}
       </div>
     </div>
@@ -1864,15 +1864,15 @@ function renderProfileView(){
     <div class="pv-body">
       <div class="pv-stats">${stats}</div>
 
-      ${positions.length?`<div class="pv-block"><div class="pv-block-t">Posições</div><div class="pv-posrow"><div class="pv-chips">${chips}<div class="pv-poslegend">${posLegend(p)}</div></div><div class="posfield pv-pitch">${renderPosFieldRO(p)}</div></div></div>`:''}
+      ${positions.length?`<div class="pv-block"><div class="pv-block-t">Positions</div><div class="pv-posrow"><div class="pv-chips">${chips}<div class="pv-poslegend">${posLegend(p)}</div></div><div class="posfield pv-pitch">${renderPosFieldRO(p)}</div></div></div>`:''}
 
       ${links?`<div class="pv-block"><div class="pv-block-t">Links</div><div class="pv-links">${links}</div></div>`:''}
 
-      ${p.notes?`<div class="pv-block"><div class="pv-block-t">Notas</div><div class="pv-notes">${esc(p.notes)}</div></div>`:''}
+      ${p.notes?`<div class="pv-block"><div class="pv-block-t">Notes</div><div class="pv-notes">${esc(p.notes)}</div></div>`:''}
 
-      <div class="pv-block"><div class="pv-block-t">Observações (${p.obs.length})</div>${renderObsRO(p)}</div>
+      <div class="pv-block"><div class="pv-block-t">Observations (${p.obs.length})</div>${renderObsRO(p)}</div>
 
-      <button class="btn primary" style="width:100%;justify-content:center;padding:15px;font-size:15px" onclick="editProfile()">Editar ficha</button>
+      <button class="btn primary" style="width:100%;justify-content:center;padding:15px;font-size:15px" onclick="editProfile()">Edit profile</button>
     </div>`;
 }
 function toggleWatchView(){
@@ -1892,13 +1892,13 @@ function setProfilePos(slot,val){ editingProfile[slot]=(editingProfile[slot]===v
 
 /* ---------- Interactive pitch position selector ---------- */
 const POS_POINTS = [
-  {c:'GR',x:50,y:90},
-  {c:'DE',x:22,y:77},{c:'DC',x:50,y:79},{c:'DD',x:78,y:77},
-  {c:'LE',x:13,y:61},{c:'LD',x:87,y:61},
-  {c:'MDC',x:50,y:64},
-  {c:'MC',x:50,y:51},
-  {c:'EE',x:15,y:40},{c:'MO',x:50,y:38},{c:'ED',x:85,y:40},
-  {c:'AV',x:50,y:23}
+  {c:'GK',x:50,y:90},
+  {c:'LB',x:22,y:77},{c:'CB',x:50,y:79},{c:'RB',x:78,y:77},
+  {c:'LWB',x:13,y:61},{c:'RWB',x:87,y:61},
+  {c:'DM',x:50,y:64},
+  {c:'CM',x:50,y:51},
+  {c:'LW',x:15,y:40},{c:'AM',x:50,y:38},{c:'RW',x:85,y:40},
+  {c:'ST',x:50,y:23}
 ];
 function posOrder(p,code){ const l=[p.pos1,p.pos2,p.pos3]; const i=l.indexOf(code); return i>=0? i+1 : 0; }
 function renderPosField(p){
@@ -1917,14 +1917,14 @@ function renderPosField(p){
 }
 function posLegend(p){
   const l=[p.pos1,p.pos2,p.pos3].filter(Boolean);
-  if(!l.length) return '<span style="color:var(--mut2)">Sem posição definida</span>';
+  if(!l.length) return '<span style="color:var(--mut2)">No position set</span>';
   return l.map((c,i)=>`<span class="pl-item"><b>P${i+1}</b> ${c}${POS_FULL[c]?` <span style="color:var(--mut2)">· ${POS_FULL[c]}</span>`:''}</span>`).join('');
 }
 function togglePosField(code){
   const p=editingProfile; let list=[p.pos1,p.pos2,p.pos3].filter(Boolean);
   const i=list.indexOf(code);
   if(i>=0) list.splice(i,1);
-  else { if(list.length>=3){ toast('Máximo 3 posições'); return; } list.push(code); }
+  else { if(list.length>=3){ toast('Maximum 3 positions'); return; } list.push(code); }
   p.pos1=list[0]||''; p.pos2=list[1]||''; p.pos3=list[2]||'';
   save();
   document.getElementById('posfield').innerHTML = renderPosField(p);
@@ -1938,17 +1938,17 @@ function addObs(){
   editingProfile.obs.push({ id:uid(), date:today, context:'', rating:editingProfile.rating||'', notes:'' });
   save();
   document.getElementById('pf-obs-list').innerHTML = renderObs(editingProfile);
-  toast('Observação adicionada — toca para editar no histórico');
+  toast('Observation added — tap to edit in history');
   // simple inline edit via prompt for context/notes
   editObsPrompt(editingProfile.obs[editingProfile.obs.length-1].id);
 }
 function editObsPrompt(id){
   const o = editingProfile.obs.find(x=>x.id===id); if(!o) return;
-  const notes = prompt('Notas desta observação:', o.notes||'');
+  const notes = prompt('Notes for this observation:', o.notes||'');
   if(notes!==null){ o.notes = notes; save(); document.getElementById('pf-obs-list').innerHTML = renderObs(editingProfile); }
 }
 function delObs(id){
-  if(!confirm('Eliminar esta observação?')) return;
+  if(!confirm('Delete this observation?')) return;
   editingProfile.obs = editingProfile.obs.filter(o=>o.id!==id); save();
   renderProfile();
 }
@@ -1956,7 +1956,7 @@ function delObs(id){
 /* ---------- Profile photo ---------- */
 function photoClick(){
   if(editingProfile && editingProfile.photo){
-    if(confirm('Remover a foto deste jogador?')){ editingProfile.photo=''; save(); renderProfile(); return; }
+    if(confirm('Remove this player photo?')){ editingProfile.photo=''; save(); renderProfile(); return; }
     // if they cancel removal, still allow choosing a new one
   }
   document.getElementById('photo-input').click();
@@ -1974,14 +1974,14 @@ function photoUpload(ev){
       const out=Math.min(max,side);
       const c=document.createElement('canvas'); c.width=out; c.height=out;
       c.getContext('2d').drawImage(tmp,sx,sy,side,side,0,0,out,out);
-      let data; try{ data=c.toDataURL('image/jpeg',0.82); }catch(err){ toast('Imagem inválida'); return; }
-      try{ editingProfile.photo=data; save(); }catch(err){ toast('Imagem demasiado grande'); return; }
-      renderProfile(); toast('Foto atualizada');
+      let data; try{ data=c.toDataURL('image/jpeg',0.82); }catch(err){ toast('Invalid image'); return; }
+      try{ editingProfile.photo=data; save(); }catch(err){ toast('Image too large'); return; }
+      renderProfile(); toast('Photo updated');
     };
-    tmp.onerror=()=>toast('Não foi possível ler a imagem');
+    tmp.onerror=()=>toast('Could not read the image');
     tmp.src=e.target.result;
   };
-  reader.onerror=()=>toast('Não foi possível ler o ficheiro');
+  reader.onerror=()=>toast('Could not read the file');
   reader.readAsDataURL(file);
 }
 
@@ -1989,14 +1989,14 @@ function photoUpload(ev){
 function renderShadow(){
   const list = document.getElementById('shadow-list');
   if(!DB.shadows.length){
-    list.innerHTML = `<div class="empty"><div class="big">🛡</div><div class="et">Sem shadow teams</div><div>Cria o teu primeiro onze-alvo.</div></div>`;
+    list.innerHTML = `<div class="empty"><div class="big">🛡</div><div class="et">No shadow teams</div><div>Create your first target line-up.</div></div>`;
     return;
   }
   list.innerHTML = DB.shadows.map(s=>{
     const filled = Object.values(s.slots||{}).reduce((a,arr)=>a+(arr&&arr.length?1:0),0);
     return `<div class="shcard" onclick="openShadow('${s.id}')">
       <div class="sh-form">${esc(s.formation||'4-3-3')}</div>
-      <div class="pc-main"><div class="pc-name">${esc(s.name||'Sem nome')}</div><div class="pc-meta">${filled}/11 posições preenchidas</div></div>
+      <div class="pc-main"><div class="pc-name">${esc(s.name||'No name')}</div><div class="pc-meta">${filled}/11 posições preenchidas</div></div>
     </div>`;
   }).join('');
 }
@@ -2024,7 +2024,7 @@ function renameShadow(){
 }
 function deleteShadow(){
   if(!activeShadow) return;
-  if(!confirm(`Eliminar a shadow team "${activeShadow.name}"?`)) return;
+  if(!confirm(`Delete the shadow team "${activeShadow.name}"?`)) return;
   DB.shadows = DB.shadows.filter(s=>s.id!==activeShadow.id); save();
   showSection('shadow');
 }
@@ -2078,7 +2078,7 @@ function openSlot(i){
   shadowSlotIndex = i;
   const f = activeShadow.formation||DEFAULT_FORMATION;
   const slot = (FORMATIONS[f]||[])[i];
-  document.getElementById('slot-title').textContent = `Posição ${slot?slot.pos:''}`;
+  document.getElementById('slot-title').textContent = `Position ${slot?slot.pos:''}`;
   renderSlotPlayers();
   document.getElementById('slot-bg').classList.add('show');
   document.getElementById('slot-sheet').classList.add('show');
@@ -2090,17 +2090,17 @@ function renderSlotPlayers(){
   document.getElementById('slot-count').textContent = `${ids.length}/4`;
   document.getElementById('slot-add-btn').style.display = ids.length>=4?'none':'inline-flex';
   const wrap = document.getElementById('slot-players');
-  if(!ids.length){ wrap.innerHTML = `<div style="color:var(--mut2);font-size:13px">Sem jogadores nesta posição.</div>`; return; }
+  if(!ids.length){ wrap.innerHTML = `<div style="color:var(--mut2);font-size:13px">No players in this position.</div>`; return; }
   wrap.innerHTML = ids.map((id,idx)=>{
     const p = DB.players.find(x=>x.id===id); if(!p) return '';
     const meta=[p.club,birthYear(p.birth)].filter(Boolean).join(' · ');
     return `<div class="slotp">
       <div class="ord">${idx+1}</div>
-      <div style="min-width:0"><div class="nm">${esc(p.name||'Sem nome')}</div><div class="meta">${esc(meta)||'—'}</div></div>
+      <div style="min-width:0"><div class="nm">${esc(p.name||'No name')}</div><div class="meta">${esc(meta)||'—'}</div></div>
       <div class="acts">
         ${idx>0?`<span onclick="moveSlotPlayer(${idx},-1)" title="Subir">↑</span>`:''}
         ${idx<ids.length-1?`<span onclick="moveSlotPlayer(${idx},1)" title="Descer">↓</span>`:''}
-        <span onclick="removeSlotPlayer('${id}')" title="Remover" style="color:var(--danger)">✕</span>
+        <span onclick="removeSlotPlayer('${id}')" title="Remove" style="color:var(--danger)">✕</span>
       </div>
     </div>`;
   }).join('');
@@ -2129,28 +2129,28 @@ function renderPicker(){
   if(q) list=list.filter(p=>(p.name+' '+p.club).toLowerCase().includes(q));
   list=list.sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
   const el=document.getElementById('picker-list');
-  if(!DB.players.length){ el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:8px 2px">A base de dados está vazia. Cria perfis primeiro.</div>`; return; }
-  if(!list.length){ el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:8px 2px">Sem jogadores para adicionar.</div>`; return; }
+  if(!DB.players.length){ el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:8px 2px">The database is empty. Create profiles first.</div>`; return; }
+  if(!list.length){ el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:8px 2px">No players to add.</div>`; return; }
   el.innerHTML=list.map(p=>{
     const meta=[p.club,p.level,birthYear(p.birth)].filter(Boolean).join(' · ');
     const r=p.rating||'none';
     return `<div class="pcard" style="margin-bottom:8px" onclick="addToSlot('${p.id}')">
       ${avatarHTML(p,28)}
       <div class="pc-rate ${r}" style="width:26px;height:26px;font-size:13px">${p.rating||'–'}</div>
-      <div class="pc-main"><div class="pc-name">${esc(p.name||'Sem nome')}</div><div class="pc-meta">${esc(meta)||'—'}</div></div>
+      <div class="pc-main"><div class="pc-name">${esc(p.name||'No name')}</div><div class="pc-meta">${esc(meta)||'—'}</div></div>
     </div>`;
   }).join('');
 }
 function addToSlot(id){
   const ids=slotIds();
-  if(ids.length>=4){ toast('Máximo 4 por posição'); return; }
+  if(ids.length>=4){ toast('Maximum 4 per position'); return; }
   if(!ids.includes(id)) ids.push(id);
   save(); closePicker(); renderSlotPlayers();
 }
 
 /* ===================== EXPORT / IMPORT (cópia de segurança) ===================== */
 function exportDB(){
-  const payload = { app:'ScoutReport', version:1, exportedAt:new Date().toISOString(),
+  const payload = { app:'ScoutResett', version:1, exportedAt:new Date().toISOString(),
     data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows, clubLogos:DB.clubLogos||{} } };
   const json = JSON.stringify(payload);
   const stamp = new Date().toISOString().slice(0,10);
@@ -2159,14 +2159,14 @@ function exportDB(){
   try{
     const file = new File([blob], fname, {type:'application/json'});
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({ files:[file], title:'ScoutReport — base de dados' }).catch(()=>{});
+      navigator.share({ files:[file], title:'ScoutResett — base de dados' }).catch(()=>{});
       return;
     }
   }catch(e){}
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href=url; a.download=fname;
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  toast('Base de dados exportada');
+  toast('Database exported');
 }
 let pendingImport = null;
 function importClick(){ document.getElementById('import-input').click(); }
@@ -2177,16 +2177,16 @@ function importFile(ev){
   const reader = new FileReader();
   reader.onload = e=>{
     let parsed;
-    try{ parsed = JSON.parse(e.target.result); }catch(err){ toast('Ficheiro inválido'); return; }
+    try{ parsed = JSON.parse(e.target.result); }catch(err){ toast('Invalid file'); return; }
     const d = parsed && parsed.data ? parsed.data : parsed;
-    if(!d || !Array.isArray(d.matches) && !Array.isArray(d.players)){ toast('Não parece um backup do ScoutReport'); return; }
+    if(!d || !Array.isArray(d.matches) && !Array.isArray(d.players)){ toast('Does not look like a ScoutResett backup'); return; }
     pendingImport = normalizeDB(d);
     const nm = pendingImport.matches.length, np = pendingImport.players.length, nf = pendingImport.folders.length;
     document.getElementById('import-info').textContent = `Ficheiro: ${np} jogador(es), ${nm} relatório(s), ${nf} pasta(s).`;
     document.getElementById('import-bg').classList.add('show');
     document.getElementById('import-sheet').classList.add('show');
   };
-  reader.onerror = ()=>toast('Não foi possível ler o ficheiro');
+  reader.onerror = ()=>toast('Could not read the file');
   reader.readAsText(file);
 }
 function normalizeDB(d){
@@ -2222,7 +2222,7 @@ function doImport(mode){
   pendingImport = null;
   save(); closeImport(); currentFolder=null; activeTeamKey=null;
   showSection(currentSection);
-  toast(mode==='replace'?'Dados substituídos':'Dados juntos');
+  toast(mode==='replace'?'Data replaced':'Data merged');
 }
 
 /* ---------- Match management ---------- */
@@ -2255,13 +2255,13 @@ function goHome(){
 }
 function deleteMatch(id, ev){
   if(ev) ev.stopPropagation();
-  if(!confirm('Eliminar este relatório? Esta ação não pode ser desfeita.')) return;
+  if(!confirm('Delete this report? This action cannot be undone.')) return;
   DB.matches = DB.matches.filter(m=>m.id!==id); save(); renderHome();
 }
 
 function matchLabel(m){
   return (m.title && m.title.trim()) ? m.title.trim()
-    : `${m.home.name||'Casa'} vs ${m.away.name||'Fora'}`;
+    : `${m.home.name||'Home'} vs ${m.away.name||'Away'}`;
 }
 
 function renderHome(){
@@ -2276,38 +2276,38 @@ function renderHome(){
         <div class="backbtn" onclick="exitFolder()">‹</div>
         <div class="home-title" style="font-size:21px">${esc(f.name)}</div>
       </div>
-      <div class="home-sub">Relatórios desta pasta.</div>
+      <div class="home-sub">Resetts in this folder.</div>
       <div class="home-bar">
-        <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Editar pasta</button>
-        <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> Novo jogo</button>
+        <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Edit folder</button>
+        <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
       </div>`;
     const inside = DB.matches.filter(m=>m.folderId===currentFolder);
     list.innerHTML = inside.length ? inside.map(matchCard).join('')
-      : `<div class="empty"><div class="big">📋</div><div class="et">Pasta vazia</div><div>Cria um relatório aqui.</div></div>`;
+      : `<div class="empty"><div class="big">📋</div><div class="et">Empty folder</div><div>Create a report here.</div></div>`;
     return;
   }
 
   // ROOT
   top.innerHTML = `
-    <div class="home-title">Os meus relatórios</div>
-    <div class="home-sub">Organiza por pastas (ex: torneios) ou cria um relatório solto.</div>
+    <div class="home-title">My reports</div>
+    <div class="home-sub">Organise into folders (e.g. tournaments) or create a loose report.</div>
     <div class="home-bar">
-      <button class="btn" onclick="newFolder()"><span style="font-size:17px;line-height:1">＋</span> Nova pasta</button>
-      <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> Novo jogo</button>
+      <button class="btn" onclick="newFolder()"><span style="font-size:17px;line-height:1">＋</span> New folder</button>
+      <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
     </div>`;
 
   const loose = DB.matches.filter(m=>!m.folderId);
   if(!DB.folders.length && !loose.length){
-    list.innerHTML = `<div class="empty"><div class="big">📋</div><div class="et">Ainda sem relatórios</div><div>Cria uma pasta para um torneio, ou um relatório solto.</div></div>`;
+    list.innerHTML = `<div class="empty"><div class="big">📋</div><div class="et">No reports yet</div><div>Create a folder for a tournament, or a loose report.</div></div>`;
     return;
   }
   let html = '';
   if(DB.folders.length){
-    html += `<div class="section-lbl">Pastas</div>`;
+    html += `<div class="section-lbl">Folders</div>`;
     html += DB.folders.map(folderCard).join('');
   }
   if(loose.length){
-    html += `<div class="section-lbl">Relatórios soltos</div>`;
+    html += `<div class="section-lbl">Loose reports</div>`;
     html += loose.map(matchCard).join('');
   }
   list.innerHTML = html;
@@ -2335,7 +2335,7 @@ function matchCard(m){
   return `<div class="mcard" onclick="openMatch('${m.id}')">
     <div class="mcard-main">
       <div class="mcard-teams">${esc(matchLabel(m))}</div>
-      <div class="mcard-meta">${d} · ${tot} jogador${tot!==1?'es':''}</div>
+      <div class="mcard-meta">${d} · ${tot} player${tot!==1?'s':''}</div>
     </div>
     <div class="mcard-menu" onclick="openItemActions('match','${m.id}',event)">⋯</div>
   </div>`;
@@ -2343,7 +2343,7 @@ function matchCard(m){
 
 /* ---------- Folders ---------- */
 function newFolder(){
-  const name = (prompt('Nome da pasta (ex: Torneio do Algarve):')||'').trim();
+  const name = (prompt('Folder name (e.g. Algarve Tournament):')||'').trim();
   if(!name) return;
   DB.folders.unshift({ id:uid(), name, createdAt:new Date().toISOString() });
   save(); renderHome();
@@ -2352,15 +2352,15 @@ function openFolder(id){ currentFolder = id; renderHome(); }
 function exitFolder(){ currentFolder = null; renderHome(); }
 function renameFolder(id){
   const f = DB.folders.find(x=>x.id===id); if(!f) return;
-  const name = (prompt('Novo nome da pasta:', f.name)||'').trim();
+  const name = (prompt('New folder name:', f.name)||'').trim();
   if(name){ f.name = name; save(); renderHome(); }
 }
 function deleteFolder(id){
   const f = DB.folders.find(x=>x.id===id); if(!f) return;
   const n = DB.matches.filter(m=>m.folderId===id).length;
   const msg = n>0
-    ? `Eliminar a pasta "${f.name}"? Os ${n} relatório(s) lá dentro NÃO são apagados — voltam para "Relatórios soltos".`
-    : `Eliminar a pasta "${f.name}"?`;
+    ? `Delete a pasta "${f.name}"? Os ${n} relatório(s) lá dentro NÃO são apagados — voltam para "Loose reports".`
+    : `Delete a pasta "${f.name}"?`;
   if(!confirm(msg)) return;
   DB.matches.forEach(m=>{ if(m.folderId===id) m.folderId=null; });
   DB.folders = DB.folders.filter(x=>x.id!==id);
@@ -2372,7 +2372,7 @@ function deleteFolder(id){
 function renameMatch(id){
   const m = DB.matches.find(x=>x.id===id); if(!m) return;
   const cur = m.title && m.title.trim() ? m.title : matchLabel(m);
-  const name = prompt('Nome do relatório:', cur);
+  const name = prompt('Report name:', cur);
   if(name!==null){ m.title = name.trim(); save(); renderHome(); }
 }
 
@@ -2383,17 +2383,17 @@ function openItemActions(type, id, ev){
   const listEl = document.getElementById('item-actions-list');
   if(type==='folder'){
     const f = DB.folders.find(x=>x.id===id);
-    document.getElementById('item-title').textContent = f? f.name : 'Pasta';
+    document.getElementById('item-title').textContent = f? f.name : 'Folder';
     listEl.innerHTML = `
-      <button class="act-btn" onclick="doRenameFolder()"><span class="ai">✎</span> Renomear pasta</button>
-      <button class="act-btn danger" onclick="doDeleteFolder()"><span class="ai">🗑</span> Eliminar pasta</button>`;
+      <button class="act-btn" onclick="doRenameFolder()"><span class="ai">✎</span> Rename folder</button>
+      <button class="act-btn danger" onclick="doDeleteFolder()"><span class="ai">🗑</span> Delete folder</button>`;
   } else {
     const m = DB.matches.find(x=>x.id===id);
-    document.getElementById('item-title').textContent = m? matchLabel(m) : 'Relatório';
+    document.getElementById('item-title').textContent = m? matchLabel(m) : 'Report';
     listEl.innerHTML = `
-      <button class="act-btn" onclick="doRenameMatch()"><span class="ai">✎</span> Renomear relatório</button>
-      <button class="act-btn" onclick="openMove()"><span class="ai">🗂</span> Mover para pasta</button>
-      <button class="act-btn danger" onclick="doDeleteMatch()"><span class="ai">🗑</span> Eliminar relatório</button>`;
+      <button class="act-btn" onclick="doRenameMatch()"><span class="ai">✎</span> Rename report</button>
+      <button class="act-btn" onclick="openMove()"><span class="ai">🗂</span> Move to folder</button>
+      <button class="act-btn danger" onclick="doDeleteMatch()"><span class="ai">🗑</span> Delete report</button>`;
   }
   document.getElementById('item-bg').classList.add('show');
   document.getElementById('item-sheet').classList.add('show');
@@ -2414,11 +2414,11 @@ function openMove(){
   closeItemActions();
   const listEl = document.getElementById('move-list');
   let html = `<button class="move-folder ${!m.folderId?'cur':''}" onclick="moveMatchTo('${id}', null)">
-      <span>📂</span> Sem pasta (soltos)</button>`;
+      <span>📂</span> No folder (loose)</button>`;
   html += DB.folders.map(f=>`
     <button class="move-folder ${m.folderId===f.id?'cur':''}" onclick="moveMatchTo('${id}','${f.id}')">
       <span>🗂</span> ${esc(f.name)}</button>`).join('');
-  if(!DB.folders.length) html += `<div style="color:var(--mut);font-size:13px;padding:6px 2px">Ainda não tens pastas. Cria uma no ecrã inicial.</div>`;
+  if(!DB.folders.length) html += `<div style="color:var(--mut);font-size:13px;padding:6px 2px">No folders yet. Create one on the home screen.</div>`;
   listEl.innerHTML = html;
   document.getElementById('move-bg').classList.add('show');
   document.getElementById('move-sheet').classList.add('show');
@@ -2430,7 +2430,7 @@ function closeMove(){
 function moveMatchTo(id, folderId){
   const m = DB.matches.find(x=>x.id===id); if(m){ m.folderId = folderId; save(); }
   closeMove(); renderHome();
-  toast('Relatório movido');
+  toast('Resett moved');
 }
 
 function migrate(m){
@@ -2460,8 +2460,8 @@ function switchTeam(team){
   renderPitch(); renderBench();
 }
 function renderTabs(){
-  const h = activeMatch.home.name || 'Casa';
-  const a = activeMatch.away.name || 'Fora';
+  const h = activeMatch.home.name || 'Home';
+  const a = activeMatch.away.name || 'Away';
   document.getElementById('tab-home-lbl').textContent = h.length>14? h.slice(0,13)+'…':h;
   document.getElementById('tab-away-lbl').textContent = a.length>14? a.slice(0,13)+'…':a;
   document.getElementById('cnt-home').textContent = activeMatch.home.players.length || '';
@@ -2518,8 +2518,8 @@ function renderPitch(){
 function renderBench(){
   const strip = document.getElementById('bench-strip');
   const bt = document.querySelector('.bench-title');
-  const tname = (activeTeam==='home'? (activeMatch.home.name||'Casa') : (activeMatch.away.name||'Fora'));
-  if(bt) bt.textContent = 'Suplentes · ' + tname;
+  const tname = (activeTeam==='home'? (activeMatch.home.name||'Home') : (activeMatch.away.name||'Away'));
+  if(bt) bt.textContent = 'Substitutes · ' + tname;
   const col = teamColor(activeTeam), nc = numColor(col);
   const subs = team().players.filter(p=>p.sub);
   let html = subs.map(p=>{
@@ -2527,11 +2527,11 @@ function renderBench(){
     return `
     <div class="bplayer ${activeTeam}${p.notes.trim()?' hasnote':''}" onclick="openEditor('${p.id}',false)">
       <div class="bdisc" style="background:${col};color:${nc}">${p.num||'?'}</div>
-      <div class="bname">${esc(p.name||'Sem nome')}${p.birth?` · ${esc(p.birth)}`:''}</div>${badge}
+      <div class="bname">${esc(p.name||'No name')}${p.birth?` · ${esc(p.birth)}`:''}</div>${badge}
     </div>`;
   }).join('');
   html += `<button class="addbench" onclick="addPlayer(true)" title="Adicionar ao banco">+</button>`;
-  if(!subs.length) html = `<span class="bench-empty">Sem suplentes.</span>` + html;
+  if(!subs.length) html = `<span class="bench-empty">No substitutes.</span>` + html;
   strip.innerHTML = html;
 }
 
@@ -2636,7 +2636,7 @@ function playerTeam(id){
 }
 function setSubSwitch(on){
   document.getElementById('ed-sub-switch').classList.toggle('on', on);
-  document.getElementById('ed-sub-lbl').textContent = on? 'No banco' : 'Em campo';
+  document.getElementById('ed-sub-lbl').textContent = on? 'On bench' : 'Em campo';
 }
 function deletePlayer(){
   const t = team();
@@ -2645,7 +2645,7 @@ function deletePlayer(){
     activeMatch[tk].players = activeMatch[tk].players.filter(p=>p.id!==editingId);
   });
   save(); closeSheet();
-  toast('Jogador eliminado');
+  toast('Player deleted');
 }
 
 function findPlayer(id){
@@ -2657,9 +2657,9 @@ function findPlayer(id){
 }
 
 /* ---------- Export ---------- */
-function buildReport(){
+function buildResett(){
   const m = activeMatch;
-  const h = m.home.name || 'Casa', a = m.away.name || 'Fora';
+  const h = m.home.name || 'Home', a = m.away.name || 'Away';
   const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
   let out = `RELATÓRIO DE JOGO\n${h}  vs  ${a}\n${d}\n`;
   out += '═'.repeat(38)+'\n';
@@ -2672,7 +2672,7 @@ function buildReport(){
     const field = t.players.filter(p=>!p.sub);
     const bench = t.players.filter(p=>p.sub);
     out += `\n  Onze:\n` + (field.length? field.map(fmtP).join('') : '    —\n');
-    out += `\n  Suplentes / entradas:\n` + (bench.length? bench.map(fmtP).join('') : '    —\n');
+    out += `\n  Substitutes / subs on:\n` + (bench.length? bench.map(fmtP).join('') : '    —\n');
     out += '\n'+'─'.repeat(38)+'\n';
   });
   return out;
@@ -2682,36 +2682,36 @@ function fmtP(p){
   const pos = p.pos? ` (${p.pos})` : '';
   const yr = p.birth? ` · ${p.birth}` : '';
   const rate = p.rate? `  [${p.rate}]` : '';
-  let s = `    ${num} ${p.name||'Sem nome'}${pos}${yr}${rate}\n`;
+  let s = `    ${num} ${p.name||'No name'}${pos}${yr}${rate}\n`;
   if(p.notes.trim()){
     s += p.notes.trim().split('\n').map(l=>`        › ${l}`).join('\n')+'\n';
   }
   return s;
 }
 function openExport(){
-  document.getElementById('report-text').textContent = buildReport();
+  document.getElementById('report-text').textContent = buildResett();
   document.getElementById('export-bg').classList.add('show');
 }
 function closeExport(){ document.getElementById('export-bg').classList.remove('show'); }
-function copyReport(){
-  const txt = buildReport();
-  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>toast('Copiado')).catch(()=>fallbackCopy(txt)); }
+function copyResett(){
+  const txt = buildResett();
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>toast('Copied')).catch(()=>fallbackCopy(txt)); }
   else fallbackCopy(txt);
 }
 function fallbackCopy(txt){
   const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select();
-  try{document.execCommand('copy'); toast('Copiado');}catch(e){toast('Não foi possível copiar');}
+  try{document.execCommand('copy'); toast('Copied');}catch(e){toast('Could not copy');}
   ta.remove();
 }
 function printPDF(){
-  buildPrintReport();
+  buildPrintResett();
   closeExport();
   setTimeout(()=>{ window.print(); }, 120);
 }
 
-function buildPrintReport(){
+function buildPrintResett(){
   const m = activeMatch;
-  const h = m.home.name || 'Casa', a = m.away.name || 'Fora';
+  const h = m.home.name || 'Home', a = m.away.name || 'Away';
   const ch = teamColor('home'), ca = teamColor('away');
   const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
 
@@ -2738,7 +2738,7 @@ function buildPrintReport(){
     </g></svg>`;
 
   const col = (tk)=>{
-    const t=m[tk]; const name=(t.name||(tk==='home'?'Casa':'Fora'));
+    const t=m[tk]; const name=(t.name||(tk==='home'?'Home':'Away'));
     const c=teamColor(tk), nc=numColor(c);
     const field=t.players.filter(p=>!p.sub), bench=t.players.filter(p=>p.sub);
     const row = (p)=>{
@@ -2758,9 +2758,9 @@ function buildPrintReport(){
       <div class="pr-teamhdr" style="background:${c};color:${nc}">
         <span class="sq"></span>${esc(name)}
       </div>
-      <div class="pr-sub">Onze</div>
+      <div class="pr-sub">Lineup</div>
       ${field.length? field.map(row).join('') : '<div class="pr-pnotes" style="padding-left:0">—</div>'}
-      <div class="pr-sub">Suplentes / entradas</div>
+      <div class="pr-sub">Substitutes / subs on</div>
       ${bench.length? bench.map(row).join('') : '<div class="pr-pnotes" style="padding-left:0">—</div>'}
     </div>`;
   };
@@ -2768,7 +2768,7 @@ function buildPrintReport(){
   document.getElementById('printRoot').innerHTML = `
     <div class="pr-head">
       <div class="pr-brand">SCOUT<span class="thin">REPORT</span></div>
-      <div class="pr-kind">Relatório de Observação</div>
+      <div class="pr-kind">Scouting Resett</div>
     </div>
     <div class="pr-title">
       <div class="pr-teams">
@@ -2779,29 +2779,29 @@ function buildPrintReport(){
       <div class="pr-date">${d}</div>
     </div>
     <div class="pr-pitch">${pitchSVG}${toks}</div>
-    ${(m.gnotes && m.gnotes.trim()) ? `<div class="pr-gnotes"><div class="h">Notas do jogo</div><div class="body">${esc(m.gnotes.trim())}</div></div>` : ''}
+    ${(m.gnotes && m.gnotes.trim()) ? `<div class="pr-gnotes"><div class="h">Match notes</div><div class="body">${esc(m.gnotes.trim())}</div></div>` : ''}
     <div class="pr-cols">${col('home')}${col('away')}</div>
-    <div class="pr-foot">Gerado com ScoutReport · ${d}</div>
+    <div class="pr-foot">Gerado com ScoutResett · ${d}</div>
   `;
 }
-function shareReport(){
+function shareResett(){
   const m = activeMatch;
-  const title = `${m.home.name||'Casa'} vs ${m.away.name||'Fora'}`;
-  const text = buildReport();
+  const title = `${m.home.name||'Home'} vs ${m.away.name||'Away'}`;
+  const text = buildResett();
   if(navigator.share){
     navigator.share({ title, text })
-      .then(()=>{}).catch(err=>{ if(err && err.name!=='AbortError') copyReport(); });
+      .then(()=>{}).catch(err=>{ if(err && err.name!=='AbortError') copyResett(); });
   } else {
     // Desktop / unsupported: fall back to copy so it can be pasted into Notes
-    copyReport();
-    toast('Copiado — cola no Notas');
+    copyResett();
+    toast('Copied — paste into Notes');
   }
 }
 
 /* ---------- Colour chooser ---------- */
 function openColor(tk){
   colorTeam = tk;
-  const tname = (tk==='home'? (activeMatch.home.name||'Casa') : (activeMatch.away.name||'Fora'));
+  const tname = (tk==='home'? (activeMatch.home.name||'Home') : (activeMatch.away.name||'Away'));
   document.getElementById('color-team-lbl').textContent = 'Cor — ' + tname;
   const cur = teamColor(tk);
   document.getElementById('palette').innerHTML = PALETTE.map(c=>{
@@ -2823,7 +2823,7 @@ function setColor(c){
   document.querySelectorAll('#palette .pcolor').forEach(el=>{
     el.classList.toggle('on', el.style.background && rgbToHex(el.style.background)===c.toLowerCase());
   });
-  toast('Cor atualizada');
+  toast('Colour updated');
 }
 function rgbToHex(s){
   if(s.startsWith('#')) return s.toLowerCase();
@@ -2851,8 +2851,8 @@ function gnotesChange(){
 function openImportList(){
   closeFormation();
   document.getElementById('implist-text').value='';
-  const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'Casa':'Fora');
-  document.getElementById('implist-team').textContent = 'Para a equipa: ' + tname;
+  const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'Home':'Away');
+  document.getElementById('implist-team').textContent = 'For the team: ' + tname;
   document.getElementById('implist-bg').classList.add('show');
   document.getElementById('implist-sheet').classList.add('show');
 }
@@ -2872,9 +2872,9 @@ function parseList(text){
 }
 function doImportList(){
   const list = parseList(document.getElementById('implist-text').value);
-  if(!list.length){ toast('Não encontrei nomes na lista'); return; }
+  if(!list.length){ toast('No names found in the list'); return; }
   const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'da casa':'de fora');
-  if(!confirm(`Importar ${list.length} jogador(es) para a equipa ${tname}?\nOs jogadores atuais desta equipa serão substituídos.`)) return;
+  if(!confirm(`Import ${list.length} player(s) into the ${tname} team?\nThe current players of this team will be replaced.`)) return;
   const slots = FORMATIONS[DEFAULT_FORMATION];
   activeMatch[activeTeam].players = list.map((p,i)=>{
     const onField = i<11;
@@ -2883,14 +2883,14 @@ function doImportList(){
     return base;
   });
   save(); closeImportList(); switchTeam(activeTeam); renderTabs();
-  toast(`${list.length} jogadores importados`);
+  toast(`${list.length} players imported`);
 }
 
 /* ---------- Formation ---------- */
 function openFormation(){
   const t = team();
-  const tname = (activeTeam==='home'? (activeMatch.home.name||'Casa') : (activeMatch.away.name||'Fora'));
-  document.getElementById('form-team-lbl').textContent = 'Onze — ' + tname;
+  const tname = (activeTeam==='home'? (activeMatch.home.name||'Home') : (activeMatch.away.name||'Away'));
+  document.getElementById('form-team-lbl').textContent = 'Lineup — ' + tname;
   document.getElementById('form-current-count').textContent = t.players.filter(p=>!p.sub).length;
   document.querySelectorAll('#form-chips .pchip').forEach(c=>c.classList.remove('on'));
   document.getElementById('form-bg').classList.add('show');
@@ -2919,7 +2919,7 @@ function applyFormation(formation){
   save(); renderPitch(); renderBench(); renderTabs();
   document.getElementById('form-current-count').textContent = t.players.filter(p=>!p.sub).length;
   document.querySelectorAll('#form-chips .pchip').forEach(c=>c.classList.toggle('on', c.dataset.f===formation));
-  toast('Sistema ' + formation);
+  toast('System ' + formation);
 }
 
 /* ---------- Custom logo ---------- */
@@ -2927,12 +2927,12 @@ const LOGO_KEY = 'scoutreport_logo';
 const HERO_KEY = 'scoutreport_hero';
 const THEME_KEY = 'scoutreport_theme';
 const THEMES = {
-  ambar:   {accent:'#f5a623', ink:'#7a5300', d:'#fdf1d9', name:'Âmbar'},
-  azul:    {accent:'#1d6fe0', ink:'#0a3a7a', d:'#e7f0fe', name:'Azul'},
-  verde:   {accent:'#1f9d57', ink:'#0f5132', d:'#e3f5ec', name:'Verde'},
-  carmim:  {accent:'#e5484d', ink:'#7a1d20', d:'#fdeaea', name:'Carmim'},
-  roxo:    {accent:'#7c3aed', ink:'#3f1d7a', d:'#f1e9fd', name:'Roxo'},
-  grafite: {accent:'#3a3a3c', ink:'#ffffff', d:'#ededee', name:'Grafite'}
+  ambar:   {accent:'#f5a623', ink:'#7a5300', d:'#fdf1d9', name:'Amber'},
+  azul:    {accent:'#1d6fe0', ink:'#0a3a7a', d:'#e7f0fe', name:'Blue'},
+  verde:   {accent:'#1f9d57', ink:'#0f5132', d:'#e3f5ec', name:'Green'},
+  carmim:  {accent:'#e5484d', ink:'#7a1d20', d:'#fdeaea', name:'Crimson'},
+  roxo:    {accent:'#7c3aed', ink:'#3f1d7a', d:'#f1e9fd', name:'Purple'},
+  grafite: {accent:'#3a3a3c', ink:'#ffffff', d:'#ededee', name:'Graphite'}
 };
 function markSVG(color){
   return `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 8 L17 19 L7 19 L4 8 Z"/><path d="M12 3 L12 9 M12 9 L17 12.5 M12 9 L7 12.5 M17 12.5 L15 19 M7 12.5 L9 19 M17 12.5 L20 8 M7 12.5 L4 8"/></svg>`;
@@ -2980,7 +2980,7 @@ function applyHero(){
   else { img.style.backgroundImage=''; el.classList.remove('has-img'); }
 }
 function heroChoose(){ document.getElementById('hero-input').click(); }
-function heroRemove(){ try{ localStorage.removeItem(HERO_KEY); }catch(e){} applyHero(); renderSettingsPreviews(); toast('Imagem removida'); }
+function heroRemove(){ try{ localStorage.removeItem(HERO_KEY); }catch(e){} applyHero(); renderSettingsPreviews(); toast('Image removed'); }
 function heroUpload(ev){
   const file = ev.target.files && ev.target.files[0]; ev.target.value='';
   if(!file) return;
@@ -2992,14 +2992,14 @@ function heroUpload(ev){
       if(w>maxW){ h=Math.round(h*maxW/w); w=maxW; }
       const c=document.createElement('canvas'); c.width=w; c.height=h;
       c.getContext('2d').drawImage(tmp,0,0,w,h);
-      let out; try{ out=c.toDataURL('image/jpeg',0.8); }catch(err){ toast('Imagem inválida'); return; }
-      try{ localStorage.setItem(HERO_KEY,out); }catch(err){ toast('Imagem demasiado grande'); return; }
-      applyHero(); renderSettingsPreviews(); toast('Imagem do cabeçalho atualizada');
+      let out; try{ out=c.toDataURL('image/jpeg',0.8); }catch(err){ toast('Invalid image'); return; }
+      try{ localStorage.setItem(HERO_KEY,out); }catch(err){ toast('Image too large'); return; }
+      applyHero(); renderSettingsPreviews(); toast('Header image updated');
     };
-    tmp.onerror=()=>toast('Não foi possível ler a imagem');
+    tmp.onerror=()=>toast('Could not read the image');
     tmp.src=e.target.result;
   };
-  reader.onerror=()=>toast('Não foi possível ler o ficheiro');
+  reader.onerror=()=>toast('Could not read the file');
   reader.readAsDataURL(file);
 }
 
@@ -3021,7 +3021,7 @@ function renderSettingsPreviews(){
   if(lp) lp.innerHTML = logo? `<img src="${logo}" alt="">` : markSVG('#a6a6ac');
   const lr=document.getElementById('set-logo-reset'); if(lr) lr.style.display = logo? '' : 'none';
   const hp=document.getElementById('set-hero-prev');
-  if(hp) hp.innerHTML = hero? `<img src="${hero}" alt="">` : `<span style="color:var(--mut2);font-size:10.5px">Sem imagem</span>`;
+  if(hp) hp.innerHTML = hero? `<img src="${hero}" alt="">` : `<span style="color:var(--mut2);font-size:10.5px">No image</span>`;
   const hr=document.getElementById('set-hero-remove'); if(hr) hr.style.display = hero? '' : 'none';
 }
 function logoClick(ev){
@@ -3038,7 +3038,7 @@ function closeLogo(){
 function logoChoose(){ document.getElementById('logo-input').click(); }
 function logoReset(){
   try{ localStorage.removeItem(LOGO_KEY); }catch(e){}
-  applyLogo(); closeLogo(); toast('Logótipo reposto');
+  applyLogo(); closeLogo(); toast('Logo reset');
 }
 function logoUpload(ev){
   const file = ev.target.files && ev.target.files[0];
@@ -3055,14 +3055,14 @@ function logoUpload(ev){
       const c=document.createElement('canvas'); c.width=w; c.height=h;
       c.getContext('2d').drawImage(tmp,0,0,w,h);
       let out;
-      try{ out = c.toDataURL('image/png'); }catch(err){ toast('Imagem inválida'); return; }
-      try{ localStorage.setItem(LOGO_KEY, out); }catch(err){ toast('Imagem demasiado grande'); return; }
-      applyLogo(); closeLogo(); toast('Logótipo atualizado');
+      try{ out = c.toDataURL('image/png'); }catch(err){ toast('Invalid image'); return; }
+      try{ localStorage.setItem(LOGO_KEY, out); }catch(err){ toast('Image too large'); return; }
+      applyLogo(); closeLogo(); toast('Logo updated');
     };
-    tmp.onerror = ()=>toast('Não foi possível ler a imagem');
+    tmp.onerror = ()=>toast('Could not read the image');
     tmp.src = e.target.result;
   };
-  reader.onerror = ()=>toast('Não foi possível ler o ficheiro');
+  reader.onerror = ()=>toast('Could not read the file');
   reader.readAsDataURL(file);
 }
 
