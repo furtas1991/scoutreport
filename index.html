@@ -502,6 +502,57 @@ body.noTabs .tabbar{display:none}
 .slotp .acts span{padding:5px 7px;border-radius:7px;cursor:pointer;color:var(--mut);font-size:14px}
 .slotp .acts span:active{background:var(--line2)}
 
+/* ============ DASHBOARD (Início) ============ */
+#dashboard{flex:1;overflow-y:auto;display:none;flex-direction:column}
+#dashboard.show{display:flex}
+.dash-hero{position:relative;overflow:hidden;min-height:172px;display:flex;align-items:flex-end}
+.dash-pitch-bg{position:absolute;inset:0;width:100%;height:100%}
+.dash-hero-content{position:relative;z-index:1;width:100%;padding:20px 18px 18px}
+.dash-brand{display:flex;align-items:center;gap:12px}
+.dash-mark{width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.dash-mark svg{width:26px;height:26px}
+.dash-mark img{width:100%;height:100%;object-fit:contain}
+.dash-wm{font-size:21px;font-weight:800;letter-spacing:.12em;color:#fff;line-height:1}
+.dash-wm span{font-weight:300}
+.dash-tag{font-size:12px;color:rgba(255,255,255,.82);letter-spacing:.04em;margin-top:4px;font-weight:500}
+.dash-greet{color:#fff;font-size:15px;font-weight:600;margin-top:16px;letter-spacing:-.01em;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+
+.dash-body{padding:20px 16px 36px;flex:1}
+.dash-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mut2);margin:0 2px 11px}
+.dash-lbl:not(:first-child){margin-top:24px}
+.dash-quick{display:flex;gap:9px}
+.qbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:15px 6px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer;box-shadow:var(--sh-1);
+  transition:transform .12s ease,box-shadow .16s ease;letter-spacing:-.01em;text-align:center}
+.qbtn:active{transform:translateY(1px) scale(.985)}
+.qic{font-size:21px;line-height:1}
+
+.watch-hero{display:flex;align-items:center;gap:13px;margin-top:24px;background:linear-gradient(135deg,#fff7e8,#fdeccf);
+  border:1px solid #f3dca6;border-radius:var(--r-lg);padding:15px 16px;cursor:pointer;box-shadow:var(--sh-1);transition:transform .12s ease}
+.watch-hero:active{transform:translateY(1px) scale(.992)}
+.wh-star{width:40px;height:40px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;box-shadow:0 2px 8px rgba(245,166,35,.4)}
+.wh-main{flex:1;min-width:0}
+.wh-title{font-weight:800;font-size:16px;letter-spacing:-.3px;color:#5a3d00}
+.wh-sub{font-size:12.5px;color:#9a6b08;margin-top:2px;font-weight:600}
+.wh-go{color:#c4830c;font-size:24px;font-weight:300}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.navcard{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;cursor:pointer;
+  box-shadow:var(--sh-1);transition:transform .12s ease,box-shadow .16s ease;position:relative;min-height:104px;display:flex;flex-direction:column}
+.navcard:active{transform:translateY(1px) scale(.99)}
+.nc-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:auto}
+.nc-ic svg{width:21px;height:21px}
+.nc-rep{background:#e7f0fe;color:#1d6fe0}
+.nc-team{background:#e9f7ef;color:#2ba96b}
+.nc-db{background:#f3ecfd;color:#7c3aed}
+.nc-sh{background:#fdeccf;color:#c4830c}
+.nc-name{font-weight:700;font-size:14.5px;letter-spacing:-.3px;margin-top:12px}
+.nc-count{position:absolute;top:16px;right:16px;font-size:22px;font-weight:800;letter-spacing:-1px;color:var(--txt);font-variant-numeric:tabular-nums}
+
+.dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;box-shadow:var(--sh-1)}
+.dash-recent-card:active{border-color:var(--line2)}
+
 /* ============ PREMIUM REFINEMENTS ============ */
 /* more breathing room + stronger titles */
 #home,#teams,#database{padding:22px 16px 38px}
@@ -628,8 +679,92 @@ body.noTabs .tabbar{display:none}
   </div>
 </header>
 
+<!-- ====== DASHBOARD (Início) ====== -->
+<div id="dashboard" class="show">
+  <div class="dash-hero">
+    <svg class="dash-pitch-bg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="grassg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2f8a4d"/><stop offset="1" stop-color="#236b3b"/>
+        </linearGradient>
+        <radialGradient id="vign" cx="50%" cy="30%" r="80%">
+          <stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.28"/>
+        </radialGradient>
+      </defs>
+      <rect width="400" height="220" fill="url(#grassg)"/>
+      <g opacity="0.9">
+        <rect x="0" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
+        <rect x="100" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
+        <rect x="200" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
+        <rect x="300" y="0" width="50" height="220" fill="#ffffff" opacity="0.035"/>
+      </g>
+      <g fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="2">
+        <circle cx="200" cy="250" r="95"/>
+        <line x1="0" y1="155" x2="400" y2="155"/>
+        <rect x="120" y="208" width="160" height="60"/>
+        <rect x="170" y="240" width="60" height="28"/>
+      </g>
+      <rect width="400" height="220" fill="url(#vign)"/>
+    </svg>
+    <div class="dash-hero-content">
+      <div class="dash-brand">
+        <span class="dash-mark" id="dash-mark"></span>
+        <div>
+          <div class="dash-wm">SCOUT<span>REPORT</span></div>
+          <div class="dash-tag">Observação &amp; análise</div>
+        </div>
+      </div>
+      <div class="dash-greet" id="dash-greet">Bom trabalho.</div>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <div class="dash-lbl">Ações rápidas</div>
+    <div class="dash-quick">
+      <button class="qbtn" onclick="dashNewMatch()"><span class="qic">📝</span>Novo relatório</button>
+      <button class="qbtn" onclick="newProfile()"><span class="qic">👤</span>Novo jogador</button>
+      <button class="qbtn" onclick="newShadow()"><span class="qic">🛡️</span>Nova shadow</button>
+    </div>
+
+    <div class="watch-hero" id="watch-hero" onclick="goWatchlist()">
+      <div class="wh-star">★</div>
+      <div class="wh-main">
+        <div class="wh-title">Watchlist</div>
+        <div class="wh-sub" id="wh-sub">— jogadores a seguir</div>
+      </div>
+      <div class="wh-go">›</div>
+    </div>
+
+    <div class="dash-lbl">Secções</div>
+    <div class="dash-grid">
+      <div class="navcard" onclick="showSection('reports')">
+        <div class="nc-ic nc-rep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <div class="nc-name">Relatórios</div>
+        <div class="nc-count" id="nc-reports">0</div>
+      </div>
+      <div class="navcard" onclick="showSection('teams')">
+        <div class="nc-ic nc-team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.3"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M15 14.5c2.3.3 4 2.1 4 4.5"/></svg></div>
+        <div class="nc-name">Equipas</div>
+        <div class="nc-count" id="nc-teams">0</div>
+      </div>
+      <div class="navcard" onclick="showSection('database')">
+        <div class="nc-ic nc-db"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
+        <div class="nc-name">Base de dados</div>
+        <div class="nc-count" id="nc-database">0</div>
+      </div>
+      <div class="navcard" onclick="showSection('shadow')">
+        <div class="nc-ic nc-sh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6z"/><circle cx="12" cy="10" r="2.3"/><path d="M8.5 16.5c.4-1.8 1.9-2.8 3.5-2.8s3.1 1 3.5 2.8"/></svg></div>
+        <div class="nc-name">Shadow teams</div>
+        <div class="nc-count" id="nc-shadow">0</div>
+      </div>
+    </div>
+
+    <div id="dash-recent"></div>
+  </div>
+</div>
+
 <!-- ====== HOME (Relatórios) ====== -->
-<div id="home" class="show">
+<div id="home">
   <div id="home-top"></div>
   <div id="matchlist" class="matchlist"></div>
 </div>
@@ -741,7 +876,11 @@ body.noTabs .tabbar{display:none}
 
 <!-- ====== BOTTOM TAB BAR ====== -->
 <nav class="tabbar" id="tabbar">
-  <button id="nav-reports" class="on" onclick="showSection('reports')">
+  <button id="nav-home" class="on" onclick="showSection('dashboard')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/><path d="M9 20v-6h6v6"/></svg>
+    Início
+  </button>
+  <button id="nav-reports" onclick="showSection('reports')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
     Relatórios
   </button>
@@ -751,7 +890,7 @@ body.noTabs .tabbar{display:none}
   </button>
   <button id="nav-database" onclick="showSection('database')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
-    Base de dados
+    Dados
   </button>
   <button id="nav-shadow" onclick="showSection('shadow')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6z"/><circle cx="12" cy="10" r="2.3"/><path d="M8.5 16.5c.4-1.8 1.9-2.8 3.5-2.8s3.1 1 3.5 2.8"/></svg>
@@ -1153,14 +1292,48 @@ function showSection(name){
   currentSection = name;
   activeMatch = null; editingProfile = null; activeShadow = null;
   document.body.classList.remove('noTabs');
-  ['home','match','teams','database','profile','shadow','shadowview'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  ['dashboard','home','match','teams','database','profile','shadow','shadowview'].forEach(id=>document.getElementById(id).classList.remove('show'));
   setHeader('root');
   document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('on'));
-  if(name==='reports'){ document.getElementById('home').classList.add('show'); document.getElementById('nav-reports').classList.add('on'); renderHome(); }
+  if(name==='dashboard'){ document.getElementById('dashboard').classList.add('show'); document.getElementById('nav-home').classList.add('on'); renderDashboard(); }
+  else if(name==='reports'){ document.getElementById('home').classList.add('show'); document.getElementById('nav-reports').classList.add('on'); renderHome(); }
   else if(name==='teams'){ document.getElementById('teams').classList.add('show'); document.getElementById('nav-teams').classList.add('on'); renderTeams(); }
   else if(name==='database'){ document.getElementById('database').classList.add('show'); document.getElementById('nav-database').classList.add('on'); renderDatabase(); }
   else if(name==='shadow'){ document.getElementById('shadow').classList.add('show'); document.getElementById('nav-shadow').classList.add('on'); renderShadow(); }
 }
+function renderDashboard(){
+  document.getElementById('nc-reports').textContent = DB.matches.length;
+  const teamCount = new Set(DB.players.map(profileTeamKey)).size;
+  document.getElementById('nc-teams').textContent = DB.players.length? teamCount : 0;
+  document.getElementById('nc-database').textContent = DB.players.length;
+  document.getElementById('nc-shadow').textContent = DB.shadows.length;
+  const watch = DB.players.filter(isWatch).length;
+  document.getElementById('wh-sub').textContent = watch? `${watch} jogador${watch!==1?'es':''} a seguir` : 'Nenhum jogador ainda';
+  // greeting by time of day
+  const h = new Date().getHours();
+  const g = h<12? 'Bom dia.' : h<20? 'Boa tarde.' : 'Boa noite.';
+  document.getElementById('dash-greet').textContent = g + ' Pronto para observar?';
+  // logo in hero
+  const mark = document.getElementById('dash-mark');
+  let logo=null; try{ logo=localStorage.getItem(LOGO_KEY); }catch(e){}
+  mark.innerHTML = logo? `<img src="${logo}" alt="">`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 8 L17 19 L7 19 L4 8 Z"/><path d="M12 3 L12 9 M12 9 L17 12.5 M12 9 L7 12.5 M17 12.5 L15 19 M7 12.5 L9 19 M17 12.5 L20 8 M7 12.5 L4 8"/></svg>`;
+  // recent reports
+  const recent = DB.matches.slice(0,3);
+  const rc = document.getElementById('dash-recent');
+  if(recent.length){
+    rc.innerHTML = `<div class="dash-lbl">Relatórios recentes</div>` + recent.map(m=>{
+      const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short'});
+      return `<div class="dash-recent-card" onclick="openMatch('${m.id}')">
+        <span class="qic" style="font-size:17px">📝</span>
+        <div style="flex:1;min-width:0"><div class="pc-name">${esc(matchLabel(m))}</div><div class="pc-meta">${d}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }).join('');
+  } else rc.innerHTML='';
+}
+function dashNewMatch(){ currentFolder=null; newMatch(); }
+function goWatchlist(){ showSection('database'); setDbView('watch'); }
 
 /* ---------- Database ---------- */
 function matchesFilters(p, q){
@@ -1305,7 +1478,7 @@ function openProfile(id, from){
   editingProfile = DB.players.find(p=>p.id===id);
   if(!editingProfile) return;
   profileReturn = from || 'database';
-  ['home','match','teams','database','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
+  ['dashboard','home','match','teams','database','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
   document.getElementById('profile').classList.add('show');
   document.body.classList.add('noTabs');
   setHeader('profile');
@@ -1494,7 +1667,7 @@ function newShadow(){
 function openShadow(id){
   activeShadow = DB.shadows.find(s=>s.id===id);
   if(!activeShadow) return;
-  ['home','match','teams','database','profile','shadow'].forEach(x=>document.getElementById(x).classList.remove('show'));
+  ['dashboard','home','match','teams','database','profile','shadow'].forEach(x=>document.getElementById(x).classList.remove('show'));
   document.getElementById('shadowview').classList.add('show');
   document.body.classList.add('noTabs');
   setHeader('shadow');
@@ -1723,7 +1896,7 @@ function openMatch(id){
   if(!activeMatch) return;
   migrate(activeMatch);
   activeTeam='home';
-  ['home','teams','database','profile','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
+  ['dashboard','home','teams','database','profile','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
   document.getElementById('match').classList.add('show');
   document.body.classList.add('noTabs');
   setHeader('match');
@@ -2447,7 +2620,7 @@ document.getElementById('pitch').addEventListener('touchmove', e=>{ e.preventDef
 
 /* ---------- boot ---------- */
 applyLogo();
-showSection('reports');
+showSection('dashboard');
 </script>
 </body>
 </html>
