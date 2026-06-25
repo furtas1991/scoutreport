@@ -481,18 +481,24 @@ body.noTabs .tabbar{display:none}
 
 /* shadow field (vertical, one team) */
 .shwrap{padding:14px}
-.shpitch{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:68/100;border-radius:14px;overflow:hidden;
+.shpitch{position:relative;width:100%;max-width:460px;margin:0 auto;aspect-ratio:60/122;border-radius:14px;overflow:visible;
   background:repeating-linear-gradient(0deg,var(--grass) 0 10%,var(--grass2) 10% 20%);border:1px solid var(--line2)}
 .shpitch svg{position:absolute;inset:0;width:100%;height:100%}
-.shtok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;width:84px}
-.shtok .slotpos{font-size:10px;font-weight:800;color:#fff;background:rgba(0,0,0,.35);padding:0 6px;border-radius:4px}
-.shtok .first{background:#fff;border-radius:9px;padding:5px 6px 4px;box-shadow:0 1px 4px rgba(0,0,0,.25);width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
-.shtok .first .avatar{width:34px;height:34px}
-.shtok .first .nm{font-size:11px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.shtok .first .meta{font-size:9px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shtok .more{font-size:9px;font-weight:700;color:#1a1405;background:rgba(245,166,35,.95);border-radius:4px;padding:0 5px;margin-top:1px}
-.shtok .empty-slot{width:30px;height:30px;border-radius:50%;border:2px dashed rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
-.shtok .rdot{position:absolute;top:-4px;right:8px;width:14px;height:14px;border-radius:50%;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.shtok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;width:96px;z-index:1}
+.shtok.filled{z-index:2}
+.shtok .slotpos{font-size:9.5px;font-weight:800;color:#fff;background:rgba(0,0,0,.45);padding:1px 7px;border-radius:4px}
+.shcard{background:#fff;border-radius:9px;box-shadow:0 1px 6px rgba(0,0,0,.3);width:100%;overflow:hidden;display:flex;flex-direction:column}
+.shcard.empty{align-items:center;justify-content:center;padding:8px}
+.shp-row{display:flex;align-items:center;gap:5px;padding:3px 5px;border-bottom:1px solid #eef0f2}
+.shp-row:last-child{border-bottom:none}
+.shp-ord{width:13px;height:13px;border-radius:50%;background:#15181c;color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.shp-row .avatar{width:21px;height:21px;font-size:8px;flex-shrink:0}
+.shp-info{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.shp-nm{font-size:9.5px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shp-bd{font-size:8px;color:#8a9098}
+.shp-r{width:13px;height:13px;border-radius:3px;color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.shp-r.A{background:#2ba96b}.shp-r.B{background:#1d6fe0}.shp-r.C{background:#f5a623}.shp-r.D{background:#e5484d}
+.shtok .empty-slot{width:28px;height:28px;border-radius:50%;border:2px dashed #c4cacf;display:flex;align-items:center;justify-content:center;color:#aeb4ba;font-size:15px}
 
 /* slot manager rows */
 .slotp{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1px solid var(--line2);border-radius:11px;padding:9px 11px;margin-bottom:8px}
@@ -2080,33 +2086,23 @@ function renderShadowView(){
   slots.forEach((slot,i)=>{
     const ids = (s.slots&&s.slots[i])||[];
     const players = ids.map(id=>DB.players.find(p=>p.id===id)).filter(Boolean);
-    const first = players[0];
     let inner;
-    if(first){
-      const r = first.rating;
-      const rdot = r? `<span class="rdot" style="background:${r==='A'?'#2ba96b':r==='B'?'#1d6fe0':r==='C'?'#f5a623':'#e5484d'}">${r}</span>`:'';
-      inner = `<div class="slotpos">${slot.pos}</div>
-        <div class="first" style="position:relative">${rdot}${avatarHTML(first,34)}<div class="nm">${esc(shortName(first.name)||'—')}</div></div>
-        ${players.length>1?`<div class="more">+${players.length-1}</div>`:''}`;
+    if(players.length){
+      const rows = players.map((p,idx)=>{
+        const r=p.rating? `<span class="shp-r ${p.rating}">${p.rating}</span>`:'';
+        return `<div class="shp-row">
+          <span class="shp-ord">${idx+1}</span>
+          ${avatarHTML(p,22)}
+          <span class="shp-info"><span class="shp-nm">${esc(firstLast(p.name)||'—')}</span>${p.birth?`<span class="shp-bd">${fmtBirth(p.birth)}</span>`:''}</span>
+          ${r}
+        </div>`;
+      }).join('');
+      inner = `<div class="slotpos">${slot.pos}</div><div class="shcard">${rows}</div>`;
     } else {
-      inner = `<div class="slotpos">${slot.pos}</div><div class="empty-slot">+</div>`;
+      inner = `<div class="slotpos">${slot.pos}</div><div class="shcard empty"><div class="empty-slot">+</div></div>`;
     }
-    toks += `<div class="shtok" style="left:${slot.x}%;top:${slot.y}%" onclick="openSlot(${i})">${inner}</div>`;
+    toks += `<div class="shtok ${players.length?'filled':''}" style="left:${slot.x}%;top:${slot.y}%" onclick="openSlot(${i})">${inner}</div>`;
   });
-  // depth chart: every position with all options (photos, in order)
-  let depth='';
-  slots.forEach((slot,i)=>{
-    const ids = (s.slots&&s.slots[i])||[];
-    const players = ids.map(id=>DB.players.find(p=>p.id===id)).filter(Boolean);
-    if(!players.length) return;
-    const opts = players.map((p,idx)=>{
-      const meta=[p.club,birthYear(p.birth)].filter(Boolean).join(' · ');
-      const r=p.rating? `<span class="sh-opt-r ${p.rating}">${p.rating}</span>`:'';
-      return `<div class="sh-opt"><span class="sh-opt-ord">${idx+1}</span>${avatarHTML(p,30)}<div class="sh-opt-main"><div class="sh-opt-nm">${esc(p.name||'No name')}</div>${meta?`<div class="sh-opt-meta">${esc(meta)}</div>`:''}</div>${r}</div>`;
-    }).join('');
-    depth += `<div class="sh-depth-row" onclick="openSlot(${i})"><div class="sh-depth-pos">${slot.pos}</div><div class="sh-depth-opts">${opts}</div></div>`;
-  });
-  const depthSection = depth? `<div class="sh-depth"><div class="dash-lbl" style="margin:0 0 10px">All options by position</div>${depth}</div>` : '';
   document.getElementById('shadowview').innerHTML = `
     <div class="pf-hero" style="padding:16px">
       <div class="sec-title" style="font-size:21px">${esc(s.name)}</div>
@@ -2123,8 +2119,7 @@ function renderShadowView(){
         </svg>
         ${toks}
       </div>
-    </div>
-    ${depthSection}`;
+    </div>`;
 }
 
 /* ---------- Slot manager ---------- */
@@ -2595,6 +2590,18 @@ function shortName(n){
   const parts = n.trim().split(/\s+/);
   if(parts.length===1) return parts[0];
   return parts[parts.length-1]; // surname
+}
+function firstLast(n){
+  const p=(n||'').trim().split(/\s+/).filter(Boolean);
+  if(!p.length) return '';
+  if(p.length===1) return p[0];
+  return p[0]+' '+p[p.length-1];
+}
+function fmtBirth(b){
+  if(!b) return '';
+  const d=new Date(b); if(isNaN(d)) return '';
+  const dd=String(d.getDate()).padStart(2,'0'), mm=String(d.getMonth()+1).padStart(2,'0');
+  return `${dd}/${mm}/${d.getFullYear()}`;
 }
 
 /* ---------- Drag (mouse + touch via pointer events) ---------- */
