@@ -1351,25 +1351,26 @@ let currentFolder = null; // folder id we are browsing, or null = root
 let actionTarget = null;  // {type:'folder'|'match', id} for the action sheet
 
 function load(){
+  let r = null;
+  try{ r = localStorage.getItem(LS_KEY); }catch(e){}
+  if(!r) return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
+  let d;
+  try{ d = JSON.parse(r); }catch(e){ d = null; }
+  if(!d || typeof d!=='object') return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
+  if(!d.folders) d.folders = [];
+  d.matches = d.matches || [];
+  d.players = d.players || [];
+  d.shadows = d.shadows || [];
+  if(!d.clubLogos || typeof d.clubLogos!=='object') d.clubLogos = {};
   try{
-    const r = localStorage.getItem(LS_KEY);
-    if(r){
-      const d = JSON.parse(r);
-      if(!d.folders) d.folders = [];
-      d.matches = d.matches || [];
-      d.players = d.players || [];
-      d.shadows = d.shadows || [];
-      if(!d.clubLogos || typeof d.clubLogos!=='object') d.clubLogos = {};
-      d.matches.forEach(m=>{
-        if(m.folderId === undefined) m.folderId = null;
-        if(m.title === undefined) m.title = '';
-      });
-      migrateMatches(d.matches);
-      d.players.forEach(normalizeProfile);
-      return d;
-    }
-  }catch(e){}
-  return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
+    d.matches.forEach(m=>{
+      if(m.folderId === undefined) m.folderId = null;
+      if(m.title === undefined) m.title = '';
+    });
+    migrateMatches(d.matches);
+    d.players.forEach(normalizeProfile);
+  }catch(e){ /* keep parsed data even if migration hiccups */ }
+  return d;
 }
 /* ---- migration: old PT domain values -> EN ---- */
 const POS_MIGRATE = {GR:'GK',DC:'CB',DD:'RB',DE:'LB',LD:'RWB',LE:'LWB',MDC:'DM',MC:'CM',MO:'AM',ED:'RW',EE:'LW',AV:'ST'};
@@ -3103,7 +3104,6 @@ function toast(msg){
 document.getElementById('pitch').addEventListener('touchmove', e=>{ e.preventDefault(); }, {passive:false});
 
 /* ---------- boot ---------- */
-save(); // persist any one-time data migration
 applyTheme(getTheme());
 applyLogo();
 applyHero();
