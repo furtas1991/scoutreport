@@ -495,8 +495,8 @@ body.noTabs .tabbar{display:none}
 .shp-row:last-child{border-bottom:none}
 .shp-ord{width:15px;height:15px;border-radius:50%;background:#15181c;color:#fff;font-size:8.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .shp-info{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.25;text-align:left}
-.shp-nm{font-size:11px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shp-sub{font-size:9px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shp-nm{font-size:10px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shp-sub{font-size:8.5px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shtok .empty-slot{width:24px;height:24px;border-radius:50%;border:2px dashed #c4cacf;display:flex;align-items:center;justify-content:center;color:#aeb4ba;font-size:14px}
 /* colour key */
 .sh-legend{max-width:480px;margin:16px auto 0;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--sh-1)}
@@ -512,6 +512,10 @@ body.noTabs .tabbar{display:none}
 .cdot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid var(--surf);box-shadow:0 0 0 1px var(--line2);position:relative}
 .cdot.on{box-shadow:0 0 0 2px var(--surf),0 0 0 4px currentColor}
 .cdot-clear{background:var(--surf2);color:var(--mut2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.club-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.club-colors{display:flex;gap:7px;margin-right:auto}
+.club-colors .cdot{width:22px;height:22px}
+.lvl-badge{width:44px;height:44px;border-radius:11px;background:var(--accent-d);color:var(--accent-ink);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
 
 /* ============ PRINT / PDF REPORT ============ */
 
@@ -964,9 +968,10 @@ body.noTabs .tabbar{display:none}
 <div id="match">
   <div class="teamhead">
     <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
-    <input class="tname" id="home-name" placeholder="Home team" oninput="renameTeam('home',this.value)">
+    <input class="tname" id="home-name" list="dl-teamnames" placeholder="Home team" oninput="renameTeam('home',this.value)">
     <span class="vs">VS</span>
-    <input class="tname" id="away-name" placeholder="Away team" oninput="renameTeam('away',this.value)">
+    <input class="tname" id="away-name" list="dl-teamnames" placeholder="Away team" oninput="renameTeam('away',this.value)">
+    <datalist id="dl-teamnames"></datalist>
     <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
   </div>
 
@@ -1402,15 +1407,16 @@ let actionTarget = null;  // {type:'folder'|'match', id} for the action sheet
 function load(){
   let r = null;
   try{ r = localStorage.getItem(LS_KEY); }catch(e){}
-  if(!r) return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
+  if(!r) return { folders: [], matches: [], players: [], shadows: [], clubLogos: {}, clubs: [] };
   let d;
   try{ d = JSON.parse(r); }catch(e){ d = null; }
-  if(!d || typeof d!=='object') return { folders: [], matches: [], players: [], shadows: [], clubLogos: {} };
+  if(!d || typeof d!=='object') return { folders: [], matches: [], players: [], shadows: [], clubLogos: {}, clubs: [] };
   if(!d.folders) d.folders = [];
   d.matches = d.matches || [];
   d.players = d.players || [];
   d.shadows = d.shadows || [];
   if(!d.clubLogos || typeof d.clubLogos!=='object') d.clubLogos = {};
+  if(!Array.isArray(d.clubs)) d.clubs = [];
   try{
     d.matches.forEach(m=>{
       if(m.folderId === undefined) m.folderId = null;
@@ -1486,7 +1492,8 @@ const LEVELS = ['U13','U15','U16','U17','U19','U23','Senior'];
 
 let currentSection = 'reports';
 let profileReturn = 'database';
-let activeTeamKey = null;
+let activeClub = null;
+let activeLevel = null;
 let editingProfile = null;
 let filters = { club:'', level:'', pos:'', foot:'', rating:'', status:'' };
 let dbView = 'all';          // 'all' | 'watch'
@@ -1501,7 +1508,7 @@ function ageFromBirth(b){
   if(mo<0 || (mo===0 && now.getDate()<d.getDate())) a--;
   return a>=0 && a<80 ? a : null;
 }
-function birthYear(b){ if(!b) return ''; const d=new Date(b); return isNaN(d)?'':d.getFullYear(); }
+function birthYear(b){ if(!b) return ''; const d=new Date(b); return isNaN(d)?'':String(d.getFullYear()); }
 function profilePositions(p){ return [p.pos1,p.pos2,p.pos3].filter(Boolean); }
 function profileTeamKey(p){ const c=(p.club||'No club').trim(); const l=(p.level||'').trim(); return l? `${c} · ${l}` : c; }
 
@@ -1656,16 +1663,39 @@ function clearFilter(key){ filters[key]=''; renderDatabase(); }
 function clearFilters(){ Object.keys(filters).forEach(k=>filters[k]=''); openFilters(); renderDatabase(); }
 
 /* ---------- Teams ---------- */
-function clubFromKey(k){ return k.replace(/·.*/,'').trim(); }
-function clubCrest(club, size){
-  const logo = DB.clubLogos && DB.clubLogos[club];
-  const s = `width:${size}px;height:${size}px`;
+/* ---------- Clubs & teams ---------- */
+function clubObj(name){ return DB.clubs.find(c=>c.name===name); }
+function ensureClub(name){
+  let c=clubObj(name);
+  if(!c){ c={id:uid(),name,logo:'',color:'',levels:[],createdAt:new Date().toISOString()}; DB.clubs.push(c); }
+  return c;
+}
+function clubLogoOf(name){ const c=clubObj(name); if(c&&c.logo) return c.logo; return (DB.clubLogos&&DB.clubLogos[name])||''; }
+function clubColorOf(name){ const c=clubObj(name); return (c&&c.color)||''; }
+function allClubNames(){
+  const set=new Set();
+  DB.clubs.forEach(c=>{ if(c.name) set.add(c.name); });
+  DB.players.forEach(p=>{ if(p.club&&p.club.trim()) set.add(p.club.trim()); });
+  return [...set].sort((a,b)=>a.localeCompare(b,'pt'));
+}
+function clubLevels(name){
+  const set=new Set();
+  const c=clubObj(name); if(c&&Array.isArray(c.levels)) c.levels.forEach(l=>l&&set.add(l));
+  DB.players.forEach(p=>{ if(p.club===name && p.level&&p.level.trim()) set.add(p.level.trim()); });
+  // order by LEVELS sequence then extras
+  return [...set].sort((a,b)=>{ const ia=LEVELS.indexOf(a),ib=LEVELS.indexOf(b); return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b); });
+}
+function clubPlayerCount(name){ return DB.players.filter(p=>p.club===name).length; }
+function clubCrest(name,size){
+  const logo=clubLogoOf(name);
+  const s=`width:${size}px;height:${size}px`;
   if(logo) return `<span class="tc-badge" style="${s};background:#fff;padding:3px;overflow:hidden"><img src="${logo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
-  const ini = (club||'?').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
-  return `<span class="tc-badge" style="${s}">${esc(ini||'?')}</span>`;
+  const ini=(name||'?').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+  const col=clubColorOf(name);
+  return `<span class="tc-badge" style="${s}${col?`;background:${col};color:#fff`:''}">${esc(ini||'?')}</span>`;
 }
 let pendingClubLogo = null;
-function clubLogoChoose(club){ pendingClubLogo = club; document.getElementById('clublogo-input').click(); }
+function clubLogoChoose(name){ pendingClubLogo = name; document.getElementById('clublogo-input').click(); }
 function clubLogoUpload(ev){
   const file = ev.target.files && ev.target.files[0]; ev.target.value='';
   if(!file || !pendingClubLogo) return;
@@ -1676,49 +1706,121 @@ function clubLogoUpload(ev){
       const max=140; let w=tmp.width,h=tmp.height; const sc=Math.min(max/w,max/h,1); w=Math.round(w*sc); h=Math.round(h*sc);
       const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(tmp,0,0,w,h);
       let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Invalid image'); return; }
-      if(!DB.clubLogos) DB.clubLogos={};
-      DB.clubLogos[pendingClubLogo]=out; save(); renderTeams(); toast('Club crest updated');
+      ensureClub(pendingClubLogo).logo = out; save(); renderTeams(); toast('Club crest updated');
     };
     tmp.onerror=()=>toast('Could not read the image');
     tmp.src=e.target.result;
   };
   reader.readAsDataURL(file);
 }
-function clubLogoReset(club){ if(DB.clubLogos) delete DB.clubLogos[club]; save(); renderTeams(); }
+function clubLogoReset(name){ const c=clubObj(name); if(c) c.logo=''; if(DB.clubLogos) delete DB.clubLogos[name]; save(); renderTeams(); }
+function newClub(){
+  const name=(prompt('Club name (e.g. Sporting CP):')||'').trim();
+  if(!name) return;
+  if(clubObj(name)){ toast('Club already exists'); openClub(name); return; }
+  ensureClub(name); save(); openClub(name);
+}
+function addLevel(name){
+  const lvl=(prompt('Age group / team (e.g. U17, B team):')||'').trim();
+  if(!lvl) return;
+  const c=ensureClub(name); if(!c.levels.includes(lvl)) c.levels.push(lvl);
+  save(); renderTeams();
+}
+function renameClub(name){
+  const nn=(prompt('Rename club:',name)||'').trim();
+  if(!nn||nn===name) return;
+  const c=ensureClub(name); c.name=nn;
+  DB.players.forEach(p=>{ if(p.club===name) p.club=nn; });
+  if(DB.clubLogos&&DB.clubLogos[name]){ DB.clubLogos[nn]=DB.clubLogos[name]; delete DB.clubLogos[name]; }
+  activeClub=nn; save(); renderTeams();
+}
+function deleteClub(name){
+  if(!confirm(`Delete club "${name}"? The players keep their data; only the club entry and crest are removed.`)) return;
+  DB.clubs=DB.clubs.filter(c=>c.name!==name); if(DB.clubLogos) delete DB.clubLogos[name];
+  activeClub=null; activeLevel=null; save(); renderTeams();
+}
+function setClubColor(name,col){ const c=ensureClub(name); c.color=(c.color===col?'':col); save(); renderTeams(); }
+function openClub(name){ activeClub=name; activeLevel=null; renderTeams(); }
+function exitClub(){ activeClub=null; activeLevel=null; renderTeams(); }
+function openLevel(lvl){ activeLevel=lvl; renderTeams(); }
+function exitLevel(){ activeLevel=null; renderTeams(); }
+
 function renderTeams(){
   const top = document.getElementById('teams-top');
   const list = document.getElementById('teams-list');
-  if(activeTeamKey){
-    const club = clubFromKey(activeTeamKey);
-    const hasLogo = DB.clubLogos && DB.clubLogos[club];
-    const players = DB.players.filter(p=>profileTeamKey(p)===activeTeamKey)
+
+  // STATE C: a club + age group -> players
+  if(activeClub && activeLevel!==null){
+    const players = DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel)
       .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
-    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitTeam()">‹</div></div>
+    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitLevel()">‹ ${esc(activeClub)}</div></div>
       <div class="team-head">
-        <span class="team-crest" onclick="clubLogoChoose('${esc(club).replace(/'/g,"\\'")}')">${clubCrest(club,64)}<span class="crest-edit">✎</span></span>
+        ${clubCrest(activeClub,52)}
         <div style="flex:1;min-width:0">
-          <div class="sec-title" style="font-size:21px">${esc(activeTeamKey)}</div>
-          <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''}${hasLogo?` · <span onclick="clubLogoReset('${esc(club).replace(/'/g,"\\'")}')" style="color:var(--accent);cursor:pointer">remover escudo</span>`:' · toca no escudo para carregar'}</div>
+          <div class="sec-title" style="font-size:20px">${esc(activeLevel||'No age group')}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${esc(activeClub)} · ${players.length} player${players.length!==1?'s':''}</div>
         </div>
       </div>`;
-    list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">No players</div></div>`;
+    list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">No players in this age group</div><div>Add players in the Database and set this club and age group.</div></div>`;
     return;
   }
-  top.innerHTML = `<div class="sec-title">My teams</div><div class="sec-sub">Players grouped by club and age group.</div>`;
-  if(!DB.players.length){ list.innerHTML = `<div class="empty"><div class="big">👥</div><div class="et">No teams yet</div><div>Create profiles in the Database and they group here.</div></div>`; return; }
-  const groups = {};
-  DB.players.forEach(p=>{ const k=profileTeamKey(p); (groups[k]=groups[k]||[]).push(p); });
-  const keys = Object.keys(groups).sort((a,b)=>a.localeCompare(b,'pt'));
-  list.innerHTML = keys.map(k=>{
-    const n = groups[k].length;
-    return `<div class="tcard" onclick="openTeam('${esc(k).replace(/'/g,"\\'")}')">
-      ${clubCrest(clubFromKey(k),44)}
-      <div class="pc-main"><div class="pc-name">${esc(k)}</div><div class="pc-meta">${n} player${n!==1?'s':''}</div></div>
+
+  // STATE B: a club -> age groups
+  if(activeClub){
+    const c = clubObj(activeClub);
+    const levels = clubLevels(activeClub);
+    const noLevel = DB.players.filter(p=>p.club===activeClub && !(p.level||'').trim()).length;
+    const total = clubPlayerCount(activeClub);
+    const palette = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
+    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitClub()">‹ Clubs</div></div>
+      <div class="team-head">
+        <span class="team-crest" onclick="clubLogoChoose('${esc(activeClub).replace(/'/g,"\\'")}')">${clubCrest(activeClub,64)}<span class="crest-edit">✎</span></span>
+        <div style="flex:1;min-width:0">
+          <div class="sec-title" style="font-size:21px">${esc(activeClub)}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${total} player${total!==1?'s':''} · ${levels.length} age group${levels.length!==1?'s':''}</div>
+        </div>
+      </div>
+      <div class="club-tools">
+        <span class="club-colors">${palette.map(col=>`<span class="cdot ${clubColorOf(activeClub)===col?'on':''}" style="background:${col}" onclick="setClubColor('${esc(activeClub).replace(/'/g,"\\'")}','${col}')"></span>`).join('')}</span>
+        <button class="btn" onclick="renameClub('${esc(activeClub).replace(/'/g,"\\'")}')">Rename</button>
+        <button class="btn" onclick="deleteClub('${esc(activeClub).replace(/'/g,"\\'")}')">Delete</button>
+      </div>
+      <div class="section-lbl" style="margin-top:18px">Age groups / teams</div>`;
+    let html = levels.map(lvl=>{
+      const n = DB.players.filter(p=>p.club===activeClub && (p.level||'')===lvl).length;
+      return `<div class="tcard" onclick="openLevel('${esc(lvl).replace(/'/g,"\\'")}')">
+        <span class="lvl-badge">${esc(lvl)}</span>
+        <div class="pc-main"><div class="pc-name">${esc(lvl)}</div><div class="pc-meta">${n} player${n!==1?'s':''}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }).join('');
+    if(noLevel){
+      html += `<div class="tcard" onclick="openLevel('')">
+        <span class="lvl-badge" style="background:var(--surf2);color:var(--mut)">—</span>
+        <div class="pc-main"><div class="pc-name">No age group</div><div class="pc-meta">${noLevel} player${noLevel!==1?'s':''}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }
+    html += `<button class="btn" style="width:100%;justify-content:center;margin-top:6px" onclick="addLevel('${esc(activeClub).replace(/'/g,"\\'")}')"><span style="font-size:16px">+</span> Add age group</button>`;
+    list.innerHTML = html;
+    return;
+  }
+
+  // STATE A: clubs list
+  top.innerHTML = `<div class="sec-title">Clubs</div><div class="sec-sub">Create clubs and age groups, then assign players and reports to them.</div>
+    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="newClub()"><span style="font-size:17px">+</span> New club</button>`;
+  const names = allClubNames();
+  if(!names.length){ list.innerHTML = `<div class="empty"><div class="et">No clubs yet</div><div>Tap “New club” to create one, or add players with a club in the Database.</div></div>`; return; }
+  list.innerHTML = names.map(name=>{
+    const total = clubPlayerCount(name);
+    const lv = clubLevels(name).length;
+    return `<div class="tcard" onclick="openClub('${esc(name).replace(/'/g,"\\'")}')">
+      ${clubCrest(name,44)}
+      <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${total} player${total!==1?'s':''}${lv?` · ${lv} age group${lv!==1?'s':''}`:''}</div></div>
+      <span style="color:var(--mut2);font-size:20px">›</span>
     </div>`;
   }).join('');
 }
-function openTeam(k){ activeTeamKey = k; renderTeams(); }
-function exitTeam(){ activeTeamKey = null; renderTeams(); }
 
 /* ---------- Profile (ficha) ---------- */
 let profileMode = 'view';
@@ -1814,8 +1916,8 @@ function renderProfile(){
       <div class="pf-row">
         <div class="pf-f"><label>Body type</label><input class="pf-in" list="dl-bio" placeholder="e.g. Mesomorph" value="${esc(p.biotype)}" oninput="pfField('biotype',this.value)"></div>
       </div>
-      <datalist id="dl-clubs">${distinct('club').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
-      <datalist id="dl-levels">${LEVELS.map(c=>`<option value="${c}">`).join('')}</datalist>
+      <datalist id="dl-clubs">${allClubNames().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+      <datalist id="dl-levels">${[...new Set([...clubLevels(p.club),...LEVELS])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
       <datalist id="dl-nats">${distinct('nationality').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
       <datalist id="dl-bio">${BIOTYPES.map(c=>`<option value="${c}">`).join('')}</datalist>
     </div>
@@ -2069,7 +2171,7 @@ function renderShadow(){
     const filled = Object.values(s.slots||{}).reduce((a,arr)=>a+(arr&&arr.length?1:0),0);
     return `<div class="shcard" onclick="openShadow('${s.id}')">
       <div class="sh-form">${esc(s.formation||'4-3-3')}</div>
-      <div class="pc-main"><div class="pc-name">${esc(s.name||'No name')}</div><div class="pc-meta">${filled}/11 posições preenchidas</div></div>
+      <div class="pc-main"><div class="pc-name">${esc(s.name||'No name')}</div><div class="pc-meta">${filled}/11 positions filled</div></div>
     </div>`;
   }).join('');
 }
@@ -2109,7 +2211,7 @@ function openShadow(id){
 function closeShadow(){ showSection('shadow'); }
 function renameShadow(){
   if(!activeShadow) return;
-  const name=(prompt('Novo nome:', activeShadow.name)||'').trim();
+  const name=(prompt('New name:', activeShadow.name)||'').trim();
   if(name){ activeShadow.name=name; save(); renderShadowView(); }
 }
 function deleteShadow(){
@@ -2274,8 +2376,8 @@ function addToSlot(id){
 
 /* ===================== EXPORT / IMPORT (cópia de segurança) ===================== */
 function exportDB(){
-  const payload = { app:'ScoutResett', version:1, exportedAt:new Date().toISOString(),
-    data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows, clubLogos:DB.clubLogos||{} } };
+  const payload = { app:'ScoutReport', version:1, exportedAt:new Date().toISOString(),
+    data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows, clubLogos:DB.clubLogos||{}, clubs:DB.clubs||[] } };
   const json = JSON.stringify(payload);
   const stamp = new Date().toISOString().slice(0,10);
   const fname = `scoutreport-backup-${stamp}.json`;
@@ -2283,7 +2385,7 @@ function exportDB(){
   try{
     const file = new File([blob], fname, {type:'application/json'});
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({ files:[file], title:'ScoutResett — base de dados' }).catch(()=>{});
+      navigator.share({ files:[file], title:'ScoutReport — database' }).catch(()=>{});
       return;
     }
   }catch(e){}
@@ -2303,7 +2405,7 @@ function importFile(ev){
     let parsed;
     try{ parsed = JSON.parse(e.target.result); }catch(err){ toast('Invalid file'); return; }
     const d = parsed && parsed.data ? parsed.data : parsed;
-    if(!d || !Array.isArray(d.matches) && !Array.isArray(d.players)){ toast('Does not look like a ScoutResett backup'); return; }
+    if(!d || !Array.isArray(d.matches) && !Array.isArray(d.players)){ toast('Does not look like a ScoutReport backup'); return; }
     pendingImport = normalizeDB(d);
     const nm = pendingImport.matches.length, np = pendingImport.players.length, nf = pendingImport.folders.length;
     document.getElementById('import-info').textContent = `Ficheiro: ${np} jogador(es), ${nm} relatório(s), ${nf} pasta(s).`;
@@ -2319,6 +2421,7 @@ function normalizeDB(d){
   d.players = Array.isArray(d.players)? d.players : [];
   d.shadows = Array.isArray(d.shadows)? d.shadows : [];
   d.clubLogos = (d.clubLogos && typeof d.clubLogos==='object')? d.clubLogos : {};
+  d.clubs = Array.isArray(d.clubs)? d.clubs : [];
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
   migrateMatches(d.matches);
   d.players.forEach(normalizeProfile);
@@ -2343,9 +2446,10 @@ function doImport(mode){
     const allF = new Set(DB.folders.map(f=>f.id));
     DB.matches.forEach(m=>{ if(m.folderId && !allF.has(m.folderId)) m.folderId=null; });
     if(pendingImport.clubLogos) DB.clubLogos = Object.assign({}, pendingImport.clubLogos, DB.clubLogos);
+    if(Array.isArray(pendingImport.clubs)){ const have=new Set(DB.clubs.map(c=>c.id)); pendingImport.clubs.forEach(c=>{ if(!have.has(c.id)) DB.clubs.push(c); }); }
   }
   pendingImport = null;
-  save(); closeImport(); currentFolder=null; activeTeamKey=null;
+  save(); closeImport(); currentFolder=null; activeClub=null; activeLevel=null;
   showSection(currentSection);
   toast(mode==='replace'?'Data replaced':'Data merged');
 }
@@ -2372,6 +2476,8 @@ function openMatch(id){
   setHeader('match');
   document.getElementById('home-name').value = activeMatch.home.name;
   document.getElementById('away-name').value = activeMatch.away.name;
+  const dlt=document.getElementById('dl-teamnames');
+  if(dlt) dlt.innerHTML = allClubNames().map(c=>`<option value="${esc(c)}">`).join('');
   switchTeam('home');
   renderTabs();
 }
@@ -2918,7 +3024,7 @@ function buildPrintResett(){
     <div class="pr-pitch">${pitchSVG}${toks}</div>
     ${(m.gnotes && m.gnotes.trim()) ? `<div class="pr-gnotes"><div class="h">Match notes</div><div class="body">${esc(m.gnotes.trim())}</div></div>` : ''}
     <div class="pr-cols">${col('home')}${col('away')}</div>
-    <div class="pr-foot">Gerado com ScoutResett · ${d}</div>
+    <div class="pr-foot">Generated with ScoutReport · ${d}</div>
   `;
 }
 function shareResett(){
