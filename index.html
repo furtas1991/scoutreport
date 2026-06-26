@@ -541,6 +541,12 @@ body.noTabs .tabbar{display:none}
 .assign-chip:active{background:var(--surf2)}
 .assign-chip-tx{flex:1;font-size:14px;font-weight:600;color:var(--txt);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .assign-chip-ed{color:var(--mut2);font-size:14px;flex-shrink:0}
+.selcard{cursor:pointer}
+.selcard.on{border-color:var(--accent);background:var(--accent-d)}
+.selbox{width:22px;height:22px;border-radius:7px;border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.selcard.on .selbox{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.selbar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;gap:10px;align-items:center;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--surf);border-top:1px solid var(--line2);box-shadow:0 -8px 24px rgba(0,0,0,.12)}
 
 /* ============ PRINT / PDF REPORT ============ */
 
@@ -1300,6 +1306,18 @@ body.noTabs .tabbar{display:none}
   </div>
 </div>
 
+<!-- ====== SELECTION ACTION BAR (fixed) ====== -->
+<div id="selbar" class="selbar" style="display:none"></div>
+
+<!-- ====== BULK SET AGE GROUP SHEET ====== -->
+<div class="sheet-bg" id="setlvl-bg" onclick="bulkLevelClose()"></div>
+<div class="sheet" id="setlvl-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:10px">Set age group</div>
+  <div id="setlvl-body"></div>
+  <div class="sheet-actions"><button class="btn" onclick="bulkLevelClose()">Cancel</button></div>
+</div>
+
 <!-- ====== BULK ADD PLAYERS SHEET ====== -->
 <div class="sheet-bg" id="bulk-bg" onclick="closeBulk()"></div>
 <div class="sheet" id="bulk-sheet">
@@ -1586,6 +1604,8 @@ let profileMode = 'view';
 let activeClub = null;
 let activeLevel = null;
 let viewNoClub = false;
+let selMode = false;
+let selIds = new Set();
 let editingProfile = null;
 let filters = { club:'', level:'', pos:'', foot:'', rating:'', status:'' };
 let dbView = 'all';          // 'all' | 'watch'
@@ -1832,10 +1852,57 @@ function deleteClub(name){
   activeClub=null; activeLevel=null; save(); renderTeams();
 }
 function setClubColor(name,col){ const c=ensureClub(name); c.color=(c.color===col?'':col); save(); renderTeams(); }
-function openClub(name){ activeClub=name; activeLevel=null; viewNoClub=false; renderTeams(); }
-function exitClub(){ activeClub=null; activeLevel=null; viewNoClub=false; renderTeams(); }
-function openLevel(lvl){ activeLevel=lvl; renderTeams(); }
-function exitLevel(){ activeLevel=null; renderTeams(); }
+function openClub(name){ activeClub=name; activeLevel=null; viewNoClub=false; selMode=false; selIds=new Set(); renderTeams(); }
+function exitClub(){ activeClub=null; activeLevel=null; viewNoClub=false; selMode=false; selIds=new Set(); renderTeams(); }
+function openLevel(lvl){ activeLevel=lvl; selMode=false; selIds=new Set(); renderTeams(); }
+function exitLevel(){ activeLevel=null; selMode=false; selIds=new Set(); renderTeams(); }
+/* ---- bulk select players & set age group ---- */
+function selCard(p){
+  const on=selIds.has(p.id);
+  return `<div class="tcard selcard ${on?'on':''}" onclick="toggleSel('${p.id}')">
+    <span class="selbox">${on?'✓':''}</span>
+    ${avatarHTML(p,38)}
+    <div class="pc-main"><div class="pc-name">${esc(p.name||'No name')}</div><div class="pc-meta">${[birthYear(p.birth),p.club].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
+  </div>`;
+}
+function startSelect(){ selMode=true; selIds=new Set(); renderTeams(); }
+function cancelSelect(){ selMode=false; selIds=new Set(); renderTeams(); }
+function toggleSel(id){ if(selIds.has(id)) selIds.delete(id); else selIds.add(id); renderTeams(); }
+function selectAllC(){
+  const all=DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel);
+  const allOn=all.every(p=>selIds.has(p.id));
+  if(allOn) all.forEach(p=>selIds.delete(p.id)); else all.forEach(p=>selIds.add(p.id));
+  renderTeams();
+}
+function updateSelBar(total){
+  const sb=document.getElementById('selbar'); if(!sb) return;
+  if(!selMode){ sb.style.display='none'; return; }
+  const all = total>0 && DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel).every(p=>selIds.has(p.id));
+  sb.innerHTML = `
+    <button class="btn" onclick="selectAllC()">${all?'Clear':'Select all'}</button>
+    <button class="btn primary" style="flex:1;justify-content:center" onclick="bulkLevelOpen()" ${selIds.size?'':'disabled'}>Set age group${selIds.size?` (${selIds.size})`:''}</button>`;
+  sb.style.display='flex';
+}
+function bulkLevelOpen(){
+  if(!selIds.size) return;
+  const lvls=clubLevels(activeClub);
+  const chips = lvls.filter(l=>l!==activeLevel).map(l=>`<button class="pf-chip" onclick="bulkLevelApply('${esc(l).replace(/'/g,"\\'")}')">${esc(l)}</button>`).join('')
+    + (activeLevel!==''?`<button class="pf-chip" onclick="bulkLevelApply('')">No age group</button>`:'');
+  document.getElementById('setlvl-body').innerHTML =
+    `<div class="section-lbl" style="margin-top:0">Move ${selIds.size} player${selIds.size!==1?'s':''} to…</div>
+     <div style="display:flex;flex-wrap:wrap;gap:8px">${chips||'<span style="color:var(--mut2);font-size:13px">No other age groups yet.</span>'}</div>
+     <button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="bulkLevelNew()"><span style="font-size:16px">+</span> New age group</button>`;
+  document.getElementById('setlvl-bg').classList.add('show');
+  document.getElementById('setlvl-sheet').classList.add('show');
+}
+function bulkLevelClose(){ document.getElementById('setlvl-bg').classList.remove('show'); document.getElementById('setlvl-sheet').classList.remove('show'); }
+function bulkLevelNew(){ let l=(prompt('New age group (e.g. U17):')||'').trim(); if(!l) return; const c=ensureClub(activeClub); if(!c.levels.includes(l)) c.levels.push(l); bulkLevelApply(l); }
+function bulkLevelApply(level){
+  const c=ensureClub(activeClub); if(level && !c.levels.includes(level)) c.levels.push(level);
+  let n=0; DB.players.forEach(p=>{ if(selIds.has(p.id)){ p.level=level; n++; } });
+  save(); bulkLevelClose(); selMode=false; selIds=new Set(); activeLevel=level; renderTeams();
+  toast(`${n} player${n!==1?'s':''} → ${level||'No age group'}`);
+}
 function openNoClub(){ viewNoClub=true; activeClub=null; activeLevel=null; renderTeams(); }
 function exitNoClub(){ viewNoClub=false; renderTeams(); }
 function renameLevel(club, oldLevel){
@@ -1891,22 +1958,34 @@ function assignApply(level){
 function renderTeams(){
   const top = document.getElementById('teams-top');
   const list = document.getElementById('teams-list');
+  const _sb=document.getElementById('selbar'); if(_sb) _sb.style.display='none';
 
   // STATE C: a club + age group -> players
   if(activeClub && activeLevel!==null){
     const players = DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel)
       .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
     const cn = esc(activeClub).replace(/'/g,"\\'"); const lv = esc(activeLevel).replace(/'/g,"\\'");
-    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="exitLevel()"><span class="chev">‹</span> ${esc(activeClub)}</button></div>
+    let tools;
+    if(selMode){
+      tools = '';
+    } else {
+      tools = `<div class="club-tools">
+        ${players.length?`<button class="btn" onclick="startSelect()">Select players</button>`:''}
+        ${activeLevel?`<button class="btn" onclick="renameLevel('${cn}','${lv}')">Rename</button><button class="btn" onclick="removeLevel('${cn}','${lv}')">Remove</button>`:''}
+      </div>`;
+    }
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="${selMode?'cancelSelect':'exitLevel'}()"><span class="chev">‹</span> ${selMode?'Done selecting':esc(activeClub)}</button></div>
       <div class="team-head">
         ${clubCrest(activeClub,52)}
         <div style="flex:1;min-width:0">
           <div class="sec-title" style="font-size:20px">${esc(activeLevel||'No age group')}</div>
-          <div class="sec-sub" style="margin:2px 0 0">${esc(activeClub)} · ${players.length} player${players.length!==1?'s':''}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${esc(activeClub)} · ${players.length} player${players.length!==1?'s':''}${selMode?` · ${selIds.size} selected`:''}</div>
         </div>
-      </div>
-      ${activeLevel?`<div class="club-tools"><button class="btn" onclick="renameLevel('${cn}','${lv}')">Rename</button><button class="btn" onclick="removeLevel('${cn}','${lv}')">Remove</button></div>`:''}`;
-    list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">No players in this age group</div><div>Add players in the Database and set this club and age group.</div></div>`;
+      </div>${tools}`;
+    list.innerHTML = (players.map(p=> selMode? selCard(p) : playerCard(p)).join('')
+      || `<div class="empty"><div class="et">No players in this age group</div><div>Add players in the Database and set this club and age group.</div></div>`)
+      + (selMode?`<div style="height:78px"></div>`:'');
+    updateSelBar(players.length);
     return;
   }
 
