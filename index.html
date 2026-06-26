@@ -1022,7 +1022,11 @@ body.noTabs .tabbar{display:none}
     <button class="btn" onclick="exportDB()">Export all</button>
     <button class="btn" onclick="importClick()">Import</button>
   </div>
-  <div style="color:var(--mut2);font-size:11px;margin-bottom:4px;line-height:1.55">Includes <b>everything</b>: reports, players, shadow teams, folders and club crests. Save the file to iCloud or send it via AirDrop. Make a copy before each app update.</div>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.55">Includes <b>everything</b>: reports, players, shadow teams, folders and club crests. Save the file to iCloud or send it via AirDrop. Make a copy before each app update.</div>
+
+  <div class="pf-glbl">Data quality</div>
+  <button class="btn" id="dups-btn" style="width:100%;justify-content:space-between;margin-bottom:8px" onclick="openDuplicates()"><span>Possible duplicate players</span><span id="dups-count" class="segcount"></span></button>
+  <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.55">Players with the same or very similar names. Review and remove any accidental copies (e.g. after bulk imports).</div>
 
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Done</button>
@@ -1219,7 +1223,8 @@ body.noTabs .tabbar{display:none}
   <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin-bottom:14px">
     You have <b id="form-current-count" style="color:var(--txt)">0</b> players on the pitch for this team.
   </div>
-  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Import player list (paste)</button>
+  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openLoadSquad()">Load players from my clubs</button>
+  <button class="btn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Import player list (paste)</button>
   <div class="sheet-actions">
     <button class="btn" onclick="closeFormation()">Close</button>
   </div>
@@ -1304,6 +1309,26 @@ body.noTabs .tabbar{display:none}
   <div class="sheet-actions">
     <button class="btn" onclick="closeImport()">Cancel</button>
   </div>
+</div>
+
+<!-- ====== POSSIBLE DUPLICATES SHEET ====== -->
+<div class="sheet-bg" id="dups-bg" onclick="closeDuplicates()"></div>
+<div class="sheet" id="dups-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Possible duplicates</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:12px">Same or very similar names. Open to check, or delete an accidental copy.</div>
+  <div id="dups-body" style="max-height:60dvh;overflow-y:auto"></div>
+  <div class="sheet-actions"><button class="btn primary" onclick="closeDuplicates()">Done</button></div>
+</div>
+
+<!-- ====== LOAD SQUAD FROM CLUBS SHEET ====== -->
+<div class="sheet-bg" id="loadsquad-bg" onclick="closeLoadSquad()"></div>
+<div class="sheet" id="loadsquad-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Load players</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:12px">Players are placed by their preferred position; the rest go to the bench. The club colour is applied too.</div>
+  <div id="loadsquad-body" style="max-height:54dvh;overflow-y:auto"></div>
+  <div class="sheet-actions"><button class="btn" onclick="closeLoadSquad()">Cancel</button></div>
 </div>
 
 <!-- ====== SELECTION ACTION BAR (fixed) ====== -->
@@ -2140,7 +2165,8 @@ function bulkCreate(){
     DB.players.unshift(normalizeProfile({ id:uid(), createdAt:new Date().toISOString(), name:p.name, birth:p.birth||'', club, level }));
   });
   save(); closeBulk(); renderDatabase();
-  toast(`${n} player${n!==1?'s':''} added`);
+  const dups=findDuplicateGroups().length;
+  toast(`${n} player${n!==1?'s':''} added${dups?` · ${dups} possible duplicate${dups!==1?'s':''} to review in Settings`:''}`);
 }
 function newProfile(){
   const p = normalizeProfile({ id:uid(), createdAt:new Date().toISOString() });
@@ -3090,7 +3116,14 @@ function migrate(m){
 
 /* ---------- Team / tabs ---------- */
 function renameTeam(team, val){
-  activeMatch[team].name = val; save(); renderTabs();
+  activeMatch[team].name = val; save();
+  applyClubColorToTeam(team);
+  renderTabs();
+}
+function applyClubColorToTeam(team){
+  const nm=(activeMatch[team].name||'').trim();
+  const col=clubColorOf(nm);
+  if(col){ activeMatch[team].color=col; save(); renderTabs(); renderPitch(); }
 }
 function switchTeam(team){
   activeTeam = team;
@@ -3521,6 +3554,52 @@ function parseList(text){
   let players = hasNum ? numbered.filter(Boolean) : lines.map(l=>({num:'', name:cleanListName(l)}));
   return players.filter(p=>p.name && p.name.length>1).slice(0,30);
 }
+/* ---------- Load squad from a club ---------- */
+const POS_CAT = {GK:'GK',RB:'DEF',CB:'DEF',LB:'DEF',RWB:'DEF',LWB:'DEF',DM:'MID',CM:'MID',AM:'MID',RW:'FWD',LW:'FWD',ST:'FWD'};
+let loadSquadClub = null;
+function openLoadSquad(){ closeFormation(); loadSquadClub=null; renderLoadSquad(); document.getElementById('loadsquad-bg').classList.add('show'); document.getElementById('loadsquad-sheet').classList.add('show'); }
+function closeLoadSquad(){ document.getElementById('loadsquad-bg').classList.remove('show'); document.getElementById('loadsquad-sheet').classList.remove('show'); }
+function renderLoadSquad(){
+  const body=document.getElementById('loadsquad-body');
+  if(!loadSquadClub){
+    const names=allClubNames();
+    body.innerHTML = `<div class="section-lbl" style="margin-top:0">Choose a club</div>`+
+      (names.length? names.map(n=>`<div class="tcard" onclick="loadSquadPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${clubPlayerCount(n)} player${clubPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
+        : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs with players yet. Create players and assign a club first.</div>`);
+  } else {
+    const lvls=clubLevels(loadSquadClub);
+    body.innerHTML = `<div class="section-lbl" style="margin-top:0">${esc(loadSquadClub)} — choose age group</div>`+
+      `<div style="display:flex;flex-wrap:wrap;gap:8px">`+
+      lvls.map(l=>{const n=DB.players.filter(p=>p.club===loadSquadClub&&(p.level||'')===l).length; return `<button class="pf-chip" onclick="doLoadSquad('${esc(l).replace(/'/g,"\\'")}')">${esc(l)} (${n})</button>`;}).join('')+
+      `<button class="pf-chip" onclick="doLoadSquad(null)">All (${clubPlayerCount(loadSquadClub)})</button></div>`+
+      `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="loadSquadClub=null;renderLoadSquad()"><span class="chev" style="font-size:16px">‹</span> Back to clubs</button>`;
+  }
+}
+function loadSquadPickClub(n){ loadSquadClub=n; renderLoadSquad(); }
+function doLoadSquad(level){
+  const players=DB.players.filter(p=>p.club===loadSquadClub && (level==null||(p.level||'')===level));
+  if(!players.length){ toast('No players for that selection'); return; }
+  const t=team();
+  if(t.players.some(p=>(p.name||'').trim()||p.num) && !confirm(`Load ${players.length} player(s)? The current players of this team will be replaced.`)) return;
+  const slots = FORMATIONS[DEFAULT_FORMATION];
+  const pools={GK:[],DEF:[],MID:[],FWD:[],_:[]};
+  players.forEach(p=>{ const cat=POS_CAT[p.pos1]; (pools[cat]||pools._).push(p); });
+  const used=new Set(); const onField=[];
+  slots.forEach(slot=>{
+    let pick=null; const pool=pools[slot.pos];
+    if(pool && pool.length) pick=pool.shift();
+    else if(pools._.length) pick=pools._.shift();
+    if(pick){ used.add(pick.id); const xy=slotToXY(slot,activeTeam); onField.push({id:uid(),num:pick.number||'',name:pick.name||'',pos:slot.pos,notes:'',rate:pick.rating||'',birth:pick.birth||'',sub:false,x:xy.x,y:xy.y,srcId:pick.id}); }
+  });
+  const bench=players.filter(p=>!used.has(p.id)).map(p=>({id:uid(),num:p.number||'',name:p.name||'',pos:'',notes:'',rate:p.rating||'',birth:p.birth||'',sub:true,x:50,y:50,srcId:p.id}));
+  t.players = onField.concat(bench);
+  activeMatch[activeTeam].name = loadSquadClub;
+  const col=clubColorOf(loadSquadClub); if(col) activeMatch[activeTeam].color=col;
+  save(); closeLoadSquad();
+  const nameInput=document.getElementById(activeTeam+'-name'); if(nameInput) nameInput.value=loadSquadClub;
+  switchTeam(activeTeam); renderTabs();
+  toast(`${onField.length} on pitch · ${bench.length} on bench`);
+}
 function doImportList(){
   const list = parseList(document.getElementById('implist-text').value);
   if(!list.length){ toast('No names found in the list'); return; }
@@ -3656,13 +3735,66 @@ function heroUpload(ev){
 
 /* ---------- Settings sheet ---------- */
 function openSettings(){
-  renderThemeRow(); renderSettingsPreviews();
+  renderThemeRow(); renderSettingsPreviews(); updateDupCount();
   document.getElementById('settings-bg').classList.add('show');
   document.getElementById('settings-sheet').classList.add('show');
 }
 function closeSettings(){
   document.getElementById('settings-bg').classList.remove('show');
   document.getElementById('settings-sheet').classList.remove('show');
+}
+/* ---------- Possible duplicate players ---------- */
+function normName(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim(); }
+function editDist(a,b){
+  if(a===b) return 0; const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  let prev=Array.from({length:n+1},(_,i)=>i), cur=new Array(n+1);
+  for(let i=1;i<=m;i++){ cur[0]=i;
+    for(let j=1;j<=n;j++){ const c=a[i-1]===b[j-1]?0:1; cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+c); }
+    [prev,cur]=[cur,prev];
+  }
+  return prev[n];
+}
+function findDuplicateGroups(){
+  const ps=DB.players.filter(p=>(p.name||'').trim());
+  const norm=ps.map(p=>({p,n:normName(p.name)}));
+  const parent={}; const find=x=>{ while(parent[x]!==x) x=parent[x]=parent[parent[x]]; return x; };
+  norm.forEach((_,i)=>parent[i]=i);
+  for(let i=0;i<norm.length;i++) for(let j=i+1;j<norm.length;j++){
+    const a=norm[i].n,b=norm[j].n; if(!a||!b) continue;
+    const thr = a.length<=6?1:2;
+    if(a===b || editDist(a,b)<=thr){ parent[find(i)]=find(j); }
+  }
+  const groups={}; norm.forEach((o,i)=>{ const r=find(i); (groups[r]=groups[r]||[]).push(o.p); });
+  return Object.values(groups).filter(g=>g.length>1);
+}
+function updateDupCount(){
+  const n=findDuplicateGroups().length; const el=document.getElementById('dups-count');
+  if(el) el.textContent = n? n : '';
+}
+function openDuplicates(){
+  renderDuplicates();
+  document.getElementById('dups-bg').classList.add('show');
+  document.getElementById('dups-sheet').classList.add('show');
+}
+function closeDuplicates(){ document.getElementById('dups-bg').classList.remove('show'); document.getElementById('dups-sheet').classList.remove('show'); updateDupCount(); }
+function renderDuplicates(){
+  const groups=findDuplicateGroups(); const body=document.getElementById('dups-body');
+  if(!groups.length){ body.innerHTML=`<div class="empty" style="padding:24px 0"><div class="et">No possible duplicates</div><div>Every player looks unique.</div></div>`; return; }
+  body.innerHTML = groups.map(g=>`<div class="dups-group">
+    <div class="section-lbl" style="margin:0 0 8px">${esc(g[0].name)} — ${g.length} similar</div>
+    ${g.map(p=>`<div class="tcard" style="align-items:center">
+      ${avatarHTML(p,38)}
+      <div class="pc-main"><div class="pc-name">${esc(p.name||'No name')}</div><div class="pc-meta">${[birthYear(p.birth),p.club,p.level].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
+      <button class="btn" onclick="dupOpen('${p.id}')">Open</button>
+      <button class="btn" style="color:var(--danger)" onclick="dupDelete('${p.id}')">Delete</button>
+    </div>`).join('')}
+  </div>`).join('');
+}
+function dupOpen(id){ closeDuplicates(); closeSettings(); openProfile(id,'database'); }
+function dupDelete(id){
+  const p=DB.players.find(x=>x.id===id); if(!p) return;
+  if(!confirm(`Delete "${p.name||'No name'}"? This cannot be undone.`)) return;
+  DB.players=DB.players.filter(x=>x.id!==id); save(); renderDuplicates(); updateDupCount();
 }
 function renderSettingsPreviews(){
   let logo=null,hero=null;
