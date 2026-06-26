@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#ffffff">
-<title>Match Resett</title>
+<title>Match Report</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -111,6 +111,9 @@ header{
 .backbtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);background:var(--surf2);
   display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--txt);cursor:pointer;flex-shrink:0}
 .backbtn:active{background:var(--line2)}
+.backlink{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 14px 0 11px;border-radius:9px;border:1px solid var(--line2);background:var(--surf2);font-size:14px;font-weight:600;color:var(--txt);cursor:pointer}
+.backlink:active{background:var(--line2)}
+.backlink .chev{font-size:18px;line-height:1;margin-top:-1px}
 .section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mut2);margin:16px 2px 9px}
 .section-lbl:first-child{margin-top:0}
 .fcard{
@@ -487,15 +490,17 @@ body.noTabs .tabbar{display:none}
   background:repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0 10%,rgba(0,0,0,.015) 10% 20%)}
 .shpitch svg{position:absolute;inset:0;width:100%;height:100%}
 .shtok{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;width:auto;z-index:1}
-.shtok.filled{width:120px;z-index:2}
+.shtok.filled{width:126px;z-index:2}
 .shtok .slotpos{font-size:9px;font-weight:800;color:#fff;letter-spacing:.04em;background:rgba(0,0,0,.42);padding:1px 8px;border-radius:5px}
 .shcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.22);width:100%;overflow:hidden;display:flex;flex-direction:column}
 .shcard.empty{width:46px;min-height:40px;border-radius:12px;align-items:center;justify-content:center;background:rgba(255,255,255,.78)}
 .shp-row{display:flex;align-items:center;gap:7px;padding:6px 8px;border-bottom:1px solid #eef0f2;border-left:5px solid transparent}
 .shp-row:last-child{border-bottom:none}
 .shp-ord{width:15px;height:15px;border-radius:50%;background:#15181c;color:#fff;font-size:8.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.shp-av{position:relative;flex-shrink:0;width:24px;height:24px}
+.shp-ordbadge{position:absolute;bottom:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:#15181c;color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 .shp-info{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.25;text-align:left}
-.shp-nm{font-size:10px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shp-nm{font-size:9.5px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shp-sub{font-size:8.5px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shtok .empty-slot{width:24px;height:24px;border-radius:50%;border:2px dashed #c4cacf;display:flex;align-items:center;justify-content:center;color:#aeb4ba;font-size:14px}
 /* colour key */
@@ -762,6 +767,33 @@ body.noTabs .tabbar{display:none}
   .pr-gnotes{margin-bottom:16px;break-inside:avoid}
   .pr-gnotes .h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#8a9098;margin-bottom:6px}
   .pr-gnotes .body{font-size:12px;line-height:1.5;color:#3a4048;white-space:pre-wrap;background:#f5f6f7;border:1px solid #e8eaec;border-radius:8px;padding:11px 13px}
+  /* shadow team print */
+  .prs-pitch{position:relative;width:56%;margin:0 auto 16px;aspect-ratio:72/100;border-radius:8px;overflow:hidden;
+    background:repeating-linear-gradient(0deg,#2e7d46 0 9%,#329149 9% 18%);border:1px solid #d9dce0}
+  .prs-pitch svg{position:absolute;inset:0;width:100%;height:100%}
+  .prs-tok{position:absolute;transform:translate(-50%,-50%);width:84px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .prs-pos{font-size:7px;font-weight:800;color:#fff;background:rgba(0,0,0,.45);padding:0 5px;border-radius:3px}
+  .prs-card{background:#fff;border-radius:5px;width:100%;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .prs-card.prs-empty{width:30px;text-align:center;color:#cbd0d5;font-weight:700;font-size:9px;padding:4px 0}
+  .prs-row{display:flex;align-items:center;gap:4px;padding:3px 5px;border-bottom:1px solid #eee;border-left:4px solid transparent}
+  .prs-row:last-child{border-bottom:none}
+  .prs-ord{width:12px;height:12px;border-radius:50%;background:#15181c;color:#fff;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .prs-info{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.2;text-align:left}
+  .prs-nm{font-size:8px;font-weight:700;color:#15181c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .prs-sub{font-size:7px;color:#8a9098;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .prs-legend{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:0 0 16px;padding:10px 12px;background:#f5f6f7;border:1px solid #e8eaec;border-radius:8px}
+  .prs-legend-h,.prs-bk-h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#8a9098}
+  .prs-bk-h{margin:4px 0 8px;border-top:2px solid #15181c;padding-top:10px}
+  .prs-lg{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#3a4048;font-weight:600}
+  .prs-lgdot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .prs-bk{break-inside:avoid;margin-bottom:10px}
+  .prs-bk-pos{font-size:10px;font-weight:800;letter-spacing:.06em;color:#15181c;background:#eef0f2;border-radius:5px;padding:2px 8px;display:inline-block;margin-bottom:5px}
+  .prs-bk-row{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid #eef0f2}
+  .prs-bk-ord{width:18px;height:18px;border-radius:50%;background:#15181c;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .prs-bk-main{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+  .prs-bk-nm{font-size:12px;font-weight:700;color:#15181c}
+  .prs-bk-meta{font-size:10px;color:#8a9098}
+  .prs-bk-col{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#3a4048;font-weight:600;white-space:nowrap}
 }
 </style>
 </head>
@@ -1109,9 +1141,9 @@ body.noTabs .tabbar{display:none}
     </div>
     <div class="modal-body"><pre class="report-pre" id="report-text"></pre></div>
     <div class="modal-foot">
-      <button class="btn" onclick="copyResett()">Copy</button>
+      <button class="btn" onclick="copyReport()">Copy</button>
       <button class="btn" onclick="printPDF()">PDF</button>
-      <button class="btn primary" id="share-btn" onclick="shareResett()">Share → Notes</button>
+      <button class="btn primary" id="share-btn" onclick="shareReport()">Share → Notes</button>
     </div>
   </div>
 </div>
@@ -1241,6 +1273,17 @@ body.noTabs .tabbar{display:none}
   </div>
 </div>
 
+<!-- ====== ASSIGN PLAYER TO CLUB SHEET ====== -->
+<div class="sheet-bg" id="assign-bg" onclick="closeAssign()"></div>
+<div class="sheet" id="assign-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:10px" id="assign-title">Assign</div>
+  <div id="assign-body" style="max-height:52dvh;overflow-y:auto"></div>
+  <div class="sheet-actions">
+    <button class="btn" onclick="closeAssign()">Cancel</button>
+  </div>
+</div>
+
 <!-- ====== SHADOW: COLOUR LEGEND SHEET ====== -->
 <div class="sheet-bg" id="legend-bg" onclick="closeLegend()"></div>
 <div class="sheet" id="legend-sheet">
@@ -1303,7 +1346,7 @@ body.noTabs .tabbar{display:none}
 <script>
 "use strict";
 /* ============================================================
-   Match Resett — scouting match report (offline)
+   Match Report — scouting match report (offline)
    ============================================================ */
 
 const LS_KEY = 'scoutreport_v1';
@@ -1494,6 +1537,7 @@ let currentSection = 'reports';
 let profileReturn = 'database';
 let activeClub = null;
 let activeLevel = null;
+let viewNoClub = false;
 let editingProfile = null;
 let filters = { club:'', level:'', pos:'', foot:'', rating:'', status:'' };
 let dbView = 'all';          // 'all' | 'watch'
@@ -1740,10 +1784,59 @@ function deleteClub(name){
   activeClub=null; activeLevel=null; save(); renderTeams();
 }
 function setClubColor(name,col){ const c=ensureClub(name); c.color=(c.color===col?'':col); save(); renderTeams(); }
-function openClub(name){ activeClub=name; activeLevel=null; renderTeams(); }
-function exitClub(){ activeClub=null; activeLevel=null; renderTeams(); }
+function openClub(name){ activeClub=name; activeLevel=null; viewNoClub=false; renderTeams(); }
+function exitClub(){ activeClub=null; activeLevel=null; viewNoClub=false; renderTeams(); }
 function openLevel(lvl){ activeLevel=lvl; renderTeams(); }
 function exitLevel(){ activeLevel=null; renderTeams(); }
+function openNoClub(){ viewNoClub=true; activeClub=null; activeLevel=null; renderTeams(); }
+function exitNoClub(){ viewNoClub=false; renderTeams(); }
+function renameLevel(club, oldLevel){
+  const nn=(prompt('Rename age group / team:', oldLevel)||'').trim();
+  if(!nn||nn===oldLevel) return;
+  const c=ensureClub(club); c.levels=c.levels.map(l=>l===oldLevel?nn:l); if(!c.levels.includes(nn)) c.levels.push(nn);
+  DB.players.forEach(p=>{ if(p.club===club && (p.level||'')===oldLevel) p.level=nn; });
+  activeLevel=nn; save(); renderTeams();
+}
+function removeLevel(club, lvl){
+  const n=DB.players.filter(p=>p.club===club && (p.level||'')===lvl).length;
+  if(n && !confirm(`${n} player${n!==1?'s':''} in “${lvl}”. Remove this age group and clear it from those players? (Players are kept.)`)) return;
+  const c=clubObj(club); if(c) c.levels=c.levels.filter(l=>l!==lvl);
+  DB.players.forEach(p=>{ if(p.club===club && (p.level||'')===lvl) p.level=''; });
+  activeLevel=null; save(); renderTeams();
+}
+/* ---------- Assign a player to a club (touch, no drag) ---------- */
+let assignPid=null, assignClubName=null;
+function openAssign(pid){ assignPid=pid; assignClubName=null; renderAssign(); document.getElementById('assign-bg').classList.add('show'); document.getElementById('assign-sheet').classList.add('show'); }
+function closeAssign(){ document.getElementById('assign-bg').classList.remove('show'); document.getElementById('assign-sheet').classList.remove('show'); assignPid=null; assignClubName=null; }
+function assignBack(){ assignClubName=null; renderAssign(); }
+function renderAssign(){
+  const p=DB.players.find(x=>x.id===assignPid); const body=document.getElementById('assign-body');
+  if(!p){ closeAssign(); return; }
+  document.getElementById('assign-title').textContent = assignClubName? assignClubName : `Assign ${firstLast(p.name)||'player'}`;
+  if(!assignClubName){
+    const names=allClubNames();
+    body.innerHTML = `<div class="section-lbl" style="margin-top:0">Choose a club</div>`+
+      (names.map(n=>`<div class="tcard" onclick="assignPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,36)}<div class="pc-main"><div class="pc-name">${esc(n)}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')||'')+
+      `<button class="btn" style="width:100%;justify-content:center;margin-top:8px" onclick="assignNewClub()"><span style="font-size:16px">+</span> New club</button>`;
+  } else {
+    const lvls=clubLevels(assignClubName);
+    body.innerHTML = `<div class="section-lbl" style="margin-top:0">Choose age group</div>`+
+      `<div style="display:flex;flex-wrap:wrap;gap:8px">`+
+      lvls.map(l=>`<button class="pf-chip" onclick="assignApply('${esc(l).replace(/'/g,"\\'")}')">${esc(l)}</button>`).join('')+
+      `<button class="pf-chip" onclick="assignApply('')">No age group</button></div>`+
+      `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="assignNewLevel()"><span style="font-size:16px">+</span> New age group</button>`+
+      `<button class="btn" style="width:100%;justify-content:center;margin-top:8px" onclick="assignBack()"><span class="chev" style="font-size:16px">‹</span> Back to clubs</button>`;
+  }
+}
+function assignPickClub(n){ assignClubName=n; renderAssign(); }
+function assignNewClub(){ const n=(prompt('New club name:')||'').trim(); if(!n) return; ensureClub(n); assignClubName=n; save(); renderAssign(); }
+function assignNewLevel(){ const l=(prompt('New age group (e.g. U17):')||'').trim(); if(!l) return; const c=ensureClub(assignClubName); if(!c.levels.includes(l)) c.levels.push(l); save(); assignApply(l); }
+function assignApply(level){
+  const p=DB.players.find(x=>x.id===assignPid); if(!p) return;
+  p.club=assignClubName; p.level=level||'';
+  if(assignClubName){ const c=ensureClub(assignClubName); if(level && !c.levels.includes(level)) c.levels.push(level); }
+  save(); const nm=assignClubName; closeAssign(); renderTeams(); toast('Assigned to '+nm);
+}
 
 function renderTeams(){
   const top = document.getElementById('teams-top');
@@ -1753,15 +1846,33 @@ function renderTeams(){
   if(activeClub && activeLevel!==null){
     const players = DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel)
       .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
-    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitLevel()">‹ ${esc(activeClub)}</div></div>
+    const cn = esc(activeClub).replace(/'/g,"\\'"); const lv = esc(activeLevel).replace(/'/g,"\\'");
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="exitLevel()"><span class="chev">‹</span> ${esc(activeClub)}</button></div>
       <div class="team-head">
         ${clubCrest(activeClub,52)}
         <div style="flex:1;min-width:0">
           <div class="sec-title" style="font-size:20px">${esc(activeLevel||'No age group')}</div>
           <div class="sec-sub" style="margin:2px 0 0">${esc(activeClub)} · ${players.length} player${players.length!==1?'s':''}</div>
         </div>
-      </div>`;
+      </div>
+      ${activeLevel?`<div class="club-tools"><button class="btn" onclick="renameLevel('${cn}','${lv}')">Rename</button><button class="btn" onclick="removeLevel('${cn}','${lv}')">Remove</button></div>`:''}`;
     list.innerHTML = players.map(playerCard).join('') || `<div class="empty"><div class="et">No players in this age group</div><div>Add players in the Database and set this club and age group.</div></div>`;
+    return;
+  }
+
+  // STATE: players without a club
+  if(viewNoClub){
+    const players = DB.players.filter(p=>!(p.club||'').trim()).sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="exitNoClub()"><span class="chev">‹</span> Clubs</button></div>
+      <div class="team-head"><div style="flex:1"><div class="sec-title" style="font-size:21px">Without a club</div>
+      <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''} · tap “Assign” to put them in a club</div></div></div>`;
+    list.innerHTML = players.length ? players.map(p=>`
+      <div class="tcard" style="align-items:center">
+        ${avatarHTML(p,40)}
+        <div class="pc-main"><div class="pc-name">${esc(p.name||'No name')}</div><div class="pc-meta">${[birthYear(p.birth),p.nationality].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
+        <button class="btn primary" onclick="openAssign('${p.id}')">Assign</button>
+      </div>`).join('')
+      : `<div class="empty"><div class="et">Everyone has a club</div><div>No unassigned players right now.</div></div>`;
     return;
   }
 
@@ -1772,18 +1883,19 @@ function renderTeams(){
     const noLevel = DB.players.filter(p=>p.club===activeClub && !(p.level||'').trim()).length;
     const total = clubPlayerCount(activeClub);
     const palette = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
-    top.innerHTML = `<div class="backrow"><div class="backbtn" onclick="exitClub()">‹ Clubs</div></div>
+    const cn = esc(activeClub).replace(/'/g,"\\'");
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="exitClub()"><span class="chev">‹</span> Clubs</button></div>
       <div class="team-head">
-        <span class="team-crest" onclick="clubLogoChoose('${esc(activeClub).replace(/'/g,"\\'")}')">${clubCrest(activeClub,64)}<span class="crest-edit">✎</span></span>
+        <span class="team-crest" onclick="clubLogoChoose('${cn}')">${clubCrest(activeClub,64)}<span class="crest-edit">✎</span></span>
         <div style="flex:1;min-width:0">
           <div class="sec-title" style="font-size:21px">${esc(activeClub)}</div>
           <div class="sec-sub" style="margin:2px 0 0">${total} player${total!==1?'s':''} · ${levels.length} age group${levels.length!==1?'s':''}</div>
         </div>
       </div>
       <div class="club-tools">
-        <span class="club-colors">${palette.map(col=>`<span class="cdot ${clubColorOf(activeClub)===col?'on':''}" style="background:${col}" onclick="setClubColor('${esc(activeClub).replace(/'/g,"\\'")}','${col}')"></span>`).join('')}</span>
-        <button class="btn" onclick="renameClub('${esc(activeClub).replace(/'/g,"\\'")}')">Rename</button>
-        <button class="btn" onclick="deleteClub('${esc(activeClub).replace(/'/g,"\\'")}')">Delete</button>
+        <span class="club-colors">${palette.map(col=>`<span class="cdot ${clubColorOf(activeClub)===col?'on':''}" style="background:${col}" onclick="setClubColor('${cn}','${col}')"></span>`).join('')}</span>
+        <button class="btn" onclick="renameClub('${cn}')">Rename</button>
+        <button class="btn" onclick="deleteClub('${cn}')">Delete</button>
       </div>
       <div class="section-lbl" style="margin-top:18px">Age groups / teams</div>`;
     let html = levels.map(lvl=>{
@@ -1801,7 +1913,7 @@ function renderTeams(){
         <span style="color:var(--mut2);font-size:20px">›</span>
       </div>`;
     }
-    html += `<button class="btn" style="width:100%;justify-content:center;margin-top:6px" onclick="addLevel('${esc(activeClub).replace(/'/g,"\\'")}')"><span style="font-size:16px">+</span> Add age group</button>`;
+    html += `<button class="btn" style="width:100%;justify-content:center;margin-top:6px" onclick="addLevel('${cn}')"><span style="font-size:16px">+</span> Add age group</button>`;
     list.innerHTML = html;
     return;
   }
@@ -1810,16 +1922,30 @@ function renderTeams(){
   top.innerHTML = `<div class="sec-title">Clubs</div><div class="sec-sub">Create clubs and age groups, then assign players and reports to them.</div>
     <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="newClub()"><span style="font-size:17px">+</span> New club</button>`;
   const names = allClubNames();
-  if(!names.length){ list.innerHTML = `<div class="empty"><div class="et">No clubs yet</div><div>Tap “New club” to create one, or add players with a club in the Database.</div></div>`; return; }
-  list.innerHTML = names.map(name=>{
-    const total = clubPlayerCount(name);
-    const lv = clubLevels(name).length;
-    return `<div class="tcard" onclick="openClub('${esc(name).replace(/'/g,"\\'")}')">
-      ${clubCrest(name,44)}
-      <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${total} player${total!==1?'s':''}${lv?` · ${lv} age group${lv!==1?'s':''}`:''}</div></div>
-      <span style="color:var(--mut2);font-size:20px">›</span>
-    </div>`;
-  }).join('');
+  const noClub = DB.players.filter(p=>!(p.club||'').trim()).length;
+  let aHtml = '';
+  if(!names.length){
+    aHtml = `<div class="empty"><div class="et">No clubs yet</div><div>Tap “New club” to create one, or add players with a club in the Database.</div></div>`;
+  } else {
+    aHtml = names.map(name=>{
+      const total = clubPlayerCount(name);
+      const lv = clubLevels(name).length;
+      return `<div class="tcard" onclick="openClub('${esc(name).replace(/'/g,"\\'")}')">
+        ${clubCrest(name,44)}
+        <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${total} player${total!==1?'s':''}${lv?` · ${lv} age group${lv!==1?'s':''}`:''}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }).join('');
+  }
+  if(noClub){
+    aHtml += `<div class="section-lbl" style="margin-top:18px">Unassigned</div>
+      <div class="tcard" onclick="openNoClub()" style="border-style:dashed">
+        <span class="lvl-badge" style="background:var(--surf2);color:var(--mut)">?</span>
+        <div class="pc-main"><div class="pc-name">Players without a club</div><div class="pc-meta">${noClub} player${noClub!==1?'s':''} · tap to assign</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+  }
+  list.innerHTML = aHtml;
 }
 
 /* ---------- Profile (ficha) ---------- */
@@ -2238,7 +2364,7 @@ function renderShadowView(){
         const hex = shColorHex(s.colors[p.id]);
         const sub = [birthYear(p.birth), p.club].filter(Boolean).map(esc).join(' · ');
         return `<div class="shp-row" style="${hex?`border-left:5px solid ${hex}`:'border-left:5px solid transparent'}">
-          <span class="shp-ord">${idx+1}</span>
+          <span class="shp-av">${avatarHTML(p,24)}<span class="shp-ordbadge">${idx+1}</span></span>
           <span class="shp-info"><span class="shp-nm">${esc(firstLast(p.name)||'—')}</span><span class="shp-sub">${sub||'—'}</span></span>
         </div>`;
       }).join('');
@@ -2258,6 +2384,7 @@ function renderShadowView(){
       <div class="sec-title" style="font-size:21px">${esc(s.name)}</div>
       <div class="pf-chips" style="margin-top:12px">${chips}</div>
       <button class="btn" style="margin-top:12px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff" onclick="openLegend()">Edit colour key</button>
+      <button class="btn" style="margin-top:12px;margin-left:8px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff" onclick="exportShadowPDF()">Export PDF</button>
     </div>
     <div class="shwrap">
       <div class="shpitch">
@@ -2339,6 +2466,59 @@ function openLegend(){
 }
 function closeLegend(){ document.getElementById('legend-bg').classList.remove('show'); document.getElementById('legend-sheet').classList.remove('show'); renderShadowView(); }
 function setLegend(key,val){ if(!activeShadow.legend) activeShadow.legend={}; activeShadow.legend[key]=val; save(); }
+
+/* ---------- Shadow team PDF ---------- */
+function exportShadowPDF(){ if(!activeShadow) return; buildShadowPrint(); setTimeout(()=>window.print(),140); }
+function buildShadowPrint(){
+  const s = activeShadow; ensureShadowMeta(s);
+  const f = s.formation||DEFAULT_FORMATION;
+  const slots = FORMATIONS[f]||FORMATIONS[DEFAULT_FORMATION];
+  const d = new Date().toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
+  let toks='';
+  slots.forEach((slot,i)=>{
+    const ids=(s.slots&&s.slots[i])||[];
+    const players=ids.map(id=>DB.players.find(p=>p.id===id)).filter(Boolean);
+    let inner;
+    if(players.length){
+      inner = `<div class="prs-pos">${slot.pos}</div><div class="prs-card">` + players.map((p,idx)=>{
+        const hex=shColorHex(s.colors[p.id]);
+        const sub=[birthYear(p.birth),p.club].filter(Boolean).map(esc).join(' · ');
+        return `<div class="prs-row" style="border-left-color:${hex||'transparent'}"><span class="prs-ord">${idx+1}</span><span class="prs-info"><span class="prs-nm">${esc(firstLast(p.name)||'—')}</span><span class="prs-sub">${sub||'—'}</span></span></div>`;
+      }).join('') + `</div>`;
+    } else {
+      inner = `<div class="prs-pos">${slot.pos}</div><div class="prs-card prs-empty">—</div>`;
+    }
+    toks += `<div class="prs-tok" style="left:${slot.x}%;top:${slot.y}%">${inner}</div>`;
+  });
+  const pitchSVG = `<svg viewBox="0 0 680 1020" preserveAspectRatio="none" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2">
+    <rect x="14" y="14" width="652" height="992" rx="4"/><line x1="14" y1="510" x2="666" y2="510"/>
+    <circle cx="340" cy="510" r="74"/><circle cx="340" cy="510" r="3" fill="rgba(255,255,255,.55)" stroke="none"/>
+    <rect x="200" y="14" width="280" height="132"/><rect x="278" y="14" width="124" height="50"/>
+    <rect x="200" y="874" width="280" height="132"/><rect x="278" y="956" width="124" height="50"/></svg>`;
+  const usedColors=new Set(Object.values(s.colors).filter(Boolean));
+  const legendItems=SHADOW_COLORS.filter(c=>usedColors.has(c.key)||(s.legend[c.key]&&s.legend[c.key].trim()))
+    .map(c=>`<span class="prs-lg"><span class="prs-lgdot" style="background:${c.hex}"></span>${esc(s.legend[c.key]||c.key)}</span>`).join('');
+  let breakdown='';
+  slots.forEach((slot,i)=>{
+    const ids=(s.slots&&s.slots[i])||[];
+    const players=ids.map(id=>DB.players.find(p=>p.id===id)).filter(Boolean);
+    if(!players.length) return;
+    breakdown += `<div class="prs-bk"><span class="prs-bk-pos">${slot.pos}</span>` + players.map((p,idx)=>{
+      const key=s.colors[p.id]; const hex=shColorHex(key);
+      const lab=key?(s.legend[key]||key):'';
+      const meta=[birthYear(p.birth),p.club,p.level].filter(Boolean).map(esc).join(' · ');
+      return `<div class="prs-bk-row"><span class="prs-bk-ord">${idx+1}</span>${avatarHTML(p,26)}<span class="prs-bk-main"><span class="prs-bk-nm">${esc(p.name||'—')}</span><span class="prs-bk-meta">${meta||'—'}</span></span>${hex?`<span class="prs-bk-col"><span class="prs-lgdot" style="background:${hex}"></span>${esc(lab)}</span>`:''}</div>`;
+    }).join('') + `</div>`;
+  });
+  document.getElementById('printRoot').innerHTML = `
+    <div class="pr-head"><div class="pr-brand">SCOUT<span class="thin">REPORT</span></div><div class="pr-kind">Shadow Team</div></div>
+    <div class="pr-title"><div class="pr-teams">${esc(s.name||'Shadow team')}</div><div class="pr-date">${esc(f)} · ${d}</div></div>
+    <div class="prs-pitch">${pitchSVG}${toks}</div>
+    ${legendItems?`<div class="prs-legend"><span class="prs-legend-h">Colour key</span>${legendItems}</div>`:''}
+    <div class="prs-bk-h">By position</div>
+    ${breakdown||'<div class="pr-pnotes" style="padding-left:0">No players assigned yet.</div>'}
+    <div class="pr-foot">Generated with ScoutReport · ${d}</div>`;
+}
 
 /* ---------- Player picker ---------- */
 function openPicker(){
@@ -2449,7 +2629,7 @@ function doImport(mode){
     if(Array.isArray(pendingImport.clubs)){ const have=new Set(DB.clubs.map(c=>c.id)); pendingImport.clubs.forEach(c=>{ if(!have.has(c.id)) DB.clubs.push(c); }); }
   }
   pendingImport = null;
-  save(); closeImport(); currentFolder=null; activeClub=null; activeLevel=null;
+  save(); closeImport(); currentFolder=null; activeClub=null; activeLevel=null; viewNoClub=false;
   showSection(currentSection);
   toast(mode==='replace'?'Data replaced':'Data merged');
 }
@@ -2507,7 +2687,7 @@ function renderHome(){
         <div class="backbtn" onclick="exitFolder()">‹</div>
         <div class="home-title" style="font-size:21px">${esc(f.name)}</div>
       </div>
-      <div class="home-sub">Resetts in this folder.</div>
+      <div class="home-sub">Reports in this folder.</div>
       <div class="home-bar">
         <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Edit folder</button>
         <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
@@ -2661,7 +2841,7 @@ function closeMove(){
 function moveMatchTo(id, folderId){
   const m = DB.matches.find(x=>x.id===id); if(m){ m.folderId = folderId; save(); }
   closeMove(); renderHome();
-  toast('Resett moved');
+  toast('Report moved');
 }
 
 function migrate(m){
@@ -2900,7 +3080,7 @@ function findPlayer(id){
 }
 
 /* ---------- Export ---------- */
-function buildResett(){
+function buildReport(){
   const m = activeMatch;
   const h = m.home.name || 'Home', a = m.away.name || 'Away';
   const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
@@ -2932,12 +3112,12 @@ function fmtP(p){
   return s;
 }
 function openExport(){
-  document.getElementById('report-text').textContent = buildResett();
+  document.getElementById('report-text').textContent = buildReport();
   document.getElementById('export-bg').classList.add('show');
 }
 function closeExport(){ document.getElementById('export-bg').classList.remove('show'); }
-function copyResett(){
-  const txt = buildResett();
+function copyReport(){
+  const txt = buildReport();
   if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>toast('Copied')).catch(()=>fallbackCopy(txt)); }
   else fallbackCopy(txt);
 }
@@ -2947,12 +3127,12 @@ function fallbackCopy(txt){
   ta.remove();
 }
 function printPDF(){
-  buildPrintResett();
+  buildPrintReport();
   closeExport();
   setTimeout(()=>{ window.print(); }, 120);
 }
 
-function buildPrintResett(){
+function buildPrintReport(){
   const m = activeMatch;
   const h = m.home.name || 'Home', a = m.away.name || 'Away';
   const ch = teamColor('home'), ca = teamColor('away');
@@ -3011,7 +3191,7 @@ function buildPrintResett(){
   document.getElementById('printRoot').innerHTML = `
     <div class="pr-head">
       <div class="pr-brand">SCOUT<span class="thin">REPORT</span></div>
-      <div class="pr-kind">Scouting Resett</div>
+      <div class="pr-kind">Scouting Report</div>
     </div>
     <div class="pr-title">
       <div class="pr-teams">
@@ -3027,16 +3207,16 @@ function buildPrintResett(){
     <div class="pr-foot">Generated with ScoutReport · ${d}</div>
   `;
 }
-function shareResett(){
+function shareReport(){
   const m = activeMatch;
   const title = `${m.home.name||'Home'} vs ${m.away.name||'Away'}`;
-  const text = buildResett();
+  const text = buildReport();
   if(navigator.share){
     navigator.share({ title, text })
-      .then(()=>{}).catch(err=>{ if(err && err.name!=='AbortError') copyResett(); });
+      .then(()=>{}).catch(err=>{ if(err && err.name!=='AbortError') copyReport(); });
   } else {
     // Desktop / unsupported: fall back to copy so it can be pasted into Notes
-    copyResett();
+    copyReport();
     toast('Copied — paste into Notes');
   }
 }
