@@ -484,7 +484,7 @@ body.noTabs .tabbar{display:none}
 
 /* shadow field (vertical, one team) */
 .shwrap{padding:14px 14px 30px}
-.shpitch{position:relative;width:100%;max-width:540px;margin:0 auto;aspect-ratio:72/100;border-radius:16px;overflow:visible;
+.shpitch{position:relative;width:100%;max-width:620px;margin:0 auto;aspect-ratio:72/100;border-radius:16px;overflow:visible;
   background:linear-gradient(160deg,#3a9d5d,#2f8a4d 55%,#28793f);border:1px solid rgba(0,0,0,.06);box-shadow:0 8px 24px rgba(20,60,35,.18)}
 .shpitch::before{content:'';position:absolute;inset:0;border-radius:16px;pointer-events:none;
   background:repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0 10%,rgba(0,0,0,.015) 10% 20%)}
@@ -535,6 +535,12 @@ body.noTabs .tabbar{display:none}
 .bulk-nm{flex:1;font-weight:600;font-size:14px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bulk-yr{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
 .bulk-x{color:var(--danger);cursor:pointer;font-size:13px;padding:2px 6px;flex-shrink:0}
+.sh-notes{margin-top:20px}
+.sh-notes-ta{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;font-size:14px;background:var(--surf);color:var(--txt);font-family:inherit;line-height:1.5}
+.assign-chip{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 13px;border:1px solid var(--line2);border-radius:12px;background:var(--surf);cursor:pointer}
+.assign-chip:active{background:var(--surf2)}
+.assign-chip-tx{flex:1;font-size:14px;font-weight:600;color:var(--txt);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.assign-chip-ed{color:var(--mut2);font-size:14px;flex-shrink:0}
 
 /* ============ PRINT / PDF REPORT ============ */
 
@@ -782,10 +788,10 @@ body.noTabs .tabbar{display:none}
   .pr-gnotes .h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#8a9098;margin-bottom:6px}
   .pr-gnotes .body{font-size:12px;line-height:1.5;color:#3a4048;white-space:pre-wrap;background:#f5f6f7;border:1px solid #e8eaec;border-radius:8px;padding:11px 13px}
   /* shadow team print */
-  .prs-pitch{position:relative;width:56%;margin:0 auto 16px;aspect-ratio:72/100;border-radius:8px;overflow:hidden;
+  .prs-pitch{position:relative;width:60%;margin:0 auto 16px;aspect-ratio:72/100;border-radius:8px;overflow:hidden;
     background:repeating-linear-gradient(0deg,#2e7d46 0 9%,#329149 9% 18%);border:1px solid #d9dce0}
   .prs-pitch svg{position:absolute;inset:0;width:100%;height:100%}
-  .prs-tok{position:absolute;transform:translate(-50%,-50%);width:84px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .prs-tok{position:absolute;transform:translate(-50%,-50%);width:92px;display:flex;flex-direction:column;align-items:center;gap:2px}
   .prs-pos{font-size:7px;font-weight:800;color:#fff;background:rgba(0,0,0,.45);padding:0 5px;border-radius:3px}
   .prs-card{background:#fff;border-radius:5px;width:100%;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.3)}
   .prs-card.prs-empty{width:30px;text-align:center;color:#cbd0d5;font-weight:700;font-size:9px;padding:4px 0}
@@ -808,6 +814,9 @@ body.noTabs .tabbar{display:none}
   .prs-bk-nm{font-size:12px;font-weight:700;color:#15181c}
   .prs-bk-meta{font-size:10px;color:#8a9098}
   .prs-bk-col{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#3a4048;font-weight:600;white-space:nowrap}
+  .prs-notes{margin:0 0 18px;break-inside:avoid}
+  .prs-notes-h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#8a9098;margin-bottom:6px}
+  .prs-notes-b{font-size:12px;line-height:1.55;color:#2a2f36;white-space:pre-wrap;background:#f5f6f7;border:1px solid #e8eaec;border-left:3px solid #15181c;border-radius:8px;padding:12px 14px}
 }
 </style>
 </head>
@@ -838,6 +847,7 @@ body.noTabs .tabbar{display:none}
     <button class="iconbtn" title="Voltar" onclick="profileBack()">‹</button>
   </div>
   <div id="shadow-actions" style="display:none;gap:8px">
+    <button class="iconbtn" title="Export PDF" onclick="exportShadowPDF()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M5 21h14"/></svg></button>
     <button class="iconbtn" title="Rename" onclick="renameShadow()">✎</button>
     <button class="iconbtn" title="Delete" onclick="deleteShadow()">🗑</button>
     <button class="iconbtn" title="Voltar" onclick="closeShadow()">‹</button>
@@ -1393,43 +1403,43 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7
    plus a default position label. Order roughly GK -> defence -> midfield -> attack. */
 const FORMATIONS = {
   '4-3-3': [
-    {x:50,y:90,pos:'GK'},
-    {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:30,y:54,pos:'MID'},{x:50,y:58,pos:'MID'},{x:70,y:54,pos:'MID'},
-    {x:22,y:30,pos:'FWD'},{x:50,y:24,pos:'FWD'},{x:78,y:30,pos:'FWD'}
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:25,y:53,pos:'MID'},{x:50,y:58,pos:'MID'},{x:75,y:53,pos:'MID'},
+    {x:18,y:29,pos:'FWD'},{x:50,y:24,pos:'FWD'},{x:82,y:29,pos:'FWD'}
   ],
   '4-4-2': [
-    {x:50,y:90,pos:'GK'},
-    {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:18,y:50,pos:'MID'},{x:40,y:53,pos:'MID'},{x:60,y:53,pos:'MID'},{x:82,y:50,pos:'MID'},
-    {x:38,y:26,pos:'FWD'},{x:62,y:26,pos:'FWD'}
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:13,y:49,pos:'MID'},{x:38,y:53,pos:'MID'},{x:62,y:53,pos:'MID'},{x:87,y:49,pos:'MID'},
+    {x:35,y:25,pos:'FWD'},{x:65,y:25,pos:'FWD'}
   ],
   '4-2-3-1': [
-    {x:50,y:90,pos:'GK'},
-    {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:38,y:60,pos:'MID'},{x:62,y:60,pos:'MID'},
-    {x:22,y:40,pos:'MID'},{x:50,y:38,pos:'MID'},{x:78,y:40,pos:'MID'},
-    {x:50,y:22,pos:'FWD'}
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:35,y:60,pos:'MID'},{x:65,y:60,pos:'MID'},
+    {x:18,y:39,pos:'MID'},{x:50,y:37,pos:'MID'},{x:82,y:39,pos:'MID'},
+    {x:50,y:21,pos:'FWD'}
   ],
   '3-4-3': [
-    {x:50,y:90,pos:'GK'},
-    {x:28,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:72,y:76,pos:'DEF'},
-    {x:15,y:52,pos:'MID'},{x:39,y:55,pos:'MID'},{x:61,y:55,pos:'MID'},{x:85,y:52,pos:'MID'},
-    {x:24,y:28,pos:'FWD'},{x:50,y:24,pos:'FWD'},{x:76,y:28,pos:'FWD'}
+    {x:50,y:91,pos:'GK'},
+    {x:25,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:75,y:76,pos:'DEF'},
+    {x:12,y:51,pos:'MID'},{x:38,y:55,pos:'MID'},{x:62,y:55,pos:'MID'},{x:88,y:51,pos:'MID'},
+    {x:18,y:28,pos:'FWD'},{x:50,y:24,pos:'FWD'},{x:82,y:28,pos:'FWD'}
   ],
   '3-5-2': [
-    {x:50,y:90,pos:'GK'},
-    {x:28,y:77,pos:'DEF'},{x:50,y:79,pos:'DEF'},{x:72,y:77,pos:'DEF'},
-    {x:13,y:54,pos:'MID'},{x:35,y:57,pos:'MID'},{x:50,y:50,pos:'MID'},{x:65,y:57,pos:'MID'},{x:87,y:54,pos:'MID'},
-    {x:40,y:26,pos:'FWD'},{x:60,y:26,pos:'FWD'}
+    {x:50,y:91,pos:'GK'},
+    {x:25,y:77,pos:'DEF'},{x:50,y:79,pos:'DEF'},{x:75,y:77,pos:'DEF'},
+    {x:11,y:53,pos:'MID'},{x:33,y:57,pos:'MID'},{x:50,y:49,pos:'MID'},{x:67,y:57,pos:'MID'},{x:89,y:53,pos:'MID'},
+    {x:37,y:25,pos:'FWD'},{x:63,y:25,pos:'FWD'}
   ],
   '4-1-2-1-2': [
-    {x:50,y:90,pos:'GK'},
-    {x:18,y:74,pos:'DEF'},{x:39,y:77,pos:'DEF'},{x:61,y:77,pos:'DEF'},{x:82,y:74,pos:'DEF'},
-    {x:50,y:60,pos:'MID'},
-    {x:30,y:48,pos:'MID'},{x:70,y:48,pos:'MID'},
-    {x:50,y:36,pos:'MID'},
-    {x:40,y:24,pos:'FWD'},{x:60,y:24,pos:'FWD'}
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:50,y:61,pos:'MID'},
+    {x:25,y:47,pos:'MID'},{x:75,y:47,pos:'MID'},
+    {x:50,y:35,pos:'MID'},
+    {x:37,y:23,pos:'FWD'},{x:63,y:23,pos:'FWD'}
   ]
 };
 const DEFAULT_FORMATION = '4-3-3';
@@ -1572,6 +1582,7 @@ const LEVELS = ['U13','U15','U16','U17','U19','U23','Senior'];
 
 let currentSection = 'reports';
 let profileReturn = 'database';
+let profileMode = 'view';
 let activeClub = null;
 let activeLevel = null;
 let viewNoClub = false;
@@ -1843,7 +1854,7 @@ function removeLevel(club, lvl){
 }
 /* ---------- Assign a player to a club (touch, no drag) ---------- */
 let assignPid=null, assignClubName=null;
-function openAssign(pid){ assignPid=pid; assignClubName=null; renderAssign(); document.getElementById('assign-bg').classList.add('show'); document.getElementById('assign-sheet').classList.add('show'); }
+function openAssign(pid){ assignPid=pid; const p=DB.players.find(x=>x.id===pid); assignClubName=(p&&p.club&&allClubNames().includes(p.club))?p.club:null; renderAssign(); document.getElementById('assign-bg').classList.add('show'); document.getElementById('assign-sheet').classList.add('show'); }
 function closeAssign(){ document.getElementById('assign-bg').classList.remove('show'); document.getElementById('assign-sheet').classList.remove('show'); assignPid=null; assignClubName=null; }
 function assignBack(){ assignClubName=null; renderAssign(); }
 function renderAssign(){
@@ -1872,7 +1883,9 @@ function assignApply(level){
   const p=DB.players.find(x=>x.id===assignPid); if(!p) return;
   p.club=assignClubName; p.level=level||'';
   if(assignClubName){ const c=ensureClub(assignClubName); if(level && !c.levels.includes(level)) c.levels.push(level); }
-  save(); const nm=assignClubName; closeAssign(); renderTeams(); toast('Assigned to '+nm);
+  save(); const nm=assignClubName; closeAssign();
+  if(document.getElementById('profile').classList.contains('show')) renderProfileScreen(); else renderTeams();
+  toast('Assigned to '+nm);
 }
 
 function renderTeams(){
@@ -2265,6 +2278,14 @@ function renderProfileView(){
     <div class="pv-body">
       <div class="pv-stats">${stats}</div>
 
+      <div class="pv-block"><div class="pv-block-t">Club &amp; age group</div>
+        <button class="assign-chip" onclick="openAssign('${p.id}')">
+          ${p.club?clubCrest(p.club,26):'<span class="lvl-badge" style="width:26px;height:26px;border-radius:8px;font-size:10px;background:var(--surf2);color:var(--mut)">?</span>'}
+          <span class="assign-chip-tx">${p.club?esc(p.club):'Set club'}${p.level?` · <b>${esc(p.level)}</b>`:' · <span style="color:var(--mut2)">no age group</span>'}</span>
+          <span class="assign-chip-ed">✎</span>
+        </button>
+      </div>
+
       ${positions.length?`<div class="pv-block"><div class="pv-block-t">Positions</div><div class="pv-posrow"><div class="pv-chips">${chips}<div class="pv-poslegend">${posLegend(p)}</div></div><div class="posfield pv-pitch">${renderPosFieldRO(p)}</div></div></div>`:''}
 
       ${links?`<div class="pv-block"><div class="pv-block-t">Links</div><div class="pv-links">${links}</div></div>`:''}
@@ -2416,11 +2437,13 @@ function ensureShadowMeta(s){
   if(!s) return;
   if(!s.colors || typeof s.colors!=='object') s.colors = {};
   if(!s.legend || typeof s.legend!=='object') s.legend = Object.assign({}, DEFAULT_LEGEND);
+  if(typeof s.notes!=='string') s.notes = '';
 }
+function setShadowNotes(v){ if(activeShadow){ activeShadow.notes=v; save(); } }
 function newShadow(){
   const name = (prompt('Shadow team name (e.g. U17 target XI):')||'').trim();
   if(!name) return;
-  const s = { id:uid(), name, formation:DEFAULT_FORMATION, createdAt:new Date().toISOString(), slots:{}, colors:{}, legend:Object.assign({},DEFAULT_LEGEND) };
+  const s = { id:uid(), name, formation:DEFAULT_FORMATION, createdAt:new Date().toISOString(), slots:{}, colors:{}, legend:Object.assign({},DEFAULT_LEGEND), notes:'' };
   DB.shadows.unshift(s); save();
   openShadow(s.id);
 }
@@ -2497,6 +2520,8 @@ function renderShadowView(){
     }).join('') + `</div>`;
   });
   const bkBox = bk? `<div class="sh-bklist"><div class="dash-lbl" style="margin:0 0 10px">By position</div>${bk}</div>` : '';
+  const notesBox = `<div class="sh-notes"><div class="dash-lbl" style="margin:0 0 9px">Notes / observations</div>
+    <textarea class="sh-notes-ta" placeholder="Context, scouting priorities, gaps to fill, recommendations… (included in the PDF)" oninput="setShadowNotes(this.value)">${esc(s.notes||'')}</textarea></div>`;
   document.getElementById('shadowview').innerHTML = `
     <div class="pf-hero" style="padding:16px">
       <div class="sec-title" style="font-size:21px">${esc(s.name)}</div>
@@ -2518,6 +2543,7 @@ function renderShadowView(){
       </div>
       ${legendBox}
       ${bkBox}
+      ${notesBox}
     </div>`;
 }
 function shPlayerMeta(p){ return [birthYear(p.birth), p.club, p.level].filter(Boolean).map(esc).join(' · '); }
@@ -2636,6 +2662,7 @@ function buildShadowPrint(){
     <div class="pr-head"><div class="pr-brand">SCOUT<span class="thin">REPORT</span></div><div class="pr-kind">Shadow Team</div></div>
     <div class="pr-title"><div class="pr-teams">${esc(s.name||'Shadow team')}</div><div class="pr-date">${esc(f)} · ${d}</div></div>
     <div class="prs-pitch">${pitchSVG}${toks}</div>
+    ${(s.notes&&s.notes.trim())?`<div class="prs-notes"><div class="prs-notes-h">Notes / observations</div><div class="prs-notes-b">${esc(s.notes.trim())}</div></div>`:''}
     ${legendItems?`<div class="prs-legend"><span class="prs-legend-h">Colour key</span>${legendItems}</div>`:''}
     <div class="prs-bk-h">By position</div>
     ${breakdown||'<div class="pr-pnotes" style="padding-left:0">No players assigned yet.</div>'}
