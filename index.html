@@ -1075,7 +1075,7 @@ body.noTabs .tabbar{display:none}
   <div id="stor-text" style="font-size:12px;color:var(--mut);margin:8px 2px 0;font-variant-numeric:tabular-nums"></div>
   <div id="stor-break" style="margin:11px 2px 0"></div>
   <div id="stor-warn" style="font-size:11.5px;line-height:1.5;margin:8px 2px 0;display:none"></div>
-  <div style="color:var(--mut2);font-size:11px;margin:6px 2px 14px;line-height:1.55">Your scouting data is tiny — typically a few KB even for hundreds of players. It's <b>photos and images</b> that fill space. Everything lives in this browser (~5&nbsp;MB, shared by all your sites on this domain). Export a backup regularly and you'll never lose anything.</div>
+  <div style="color:var(--mut2);font-size:11px;margin:6px 2px 14px;line-height:1.55">Data is stored offline in this browser using its large-capacity store (typically hundreds of MB to several GB). Your scouting data is tiny — photos are what take space, and there's plenty. Still, export a backup regularly: it's the only thing that protects you if the device is wiped or runs critically low on space.</div>
   <button class="btn" id="cleanup-btn" style="width:100%;justify-content:space-between;margin-bottom:22px;display:none" onclick="openCleanup()"><span>Free up space from other apps</span><span id="cleanup-count" class="segcount"></span></button>
 
   <div class="pf-glbl">Data quality</div>
@@ -1626,7 +1626,25 @@ function numColor(hex){
 }
 function isLight(hex){ return numColor(hex)==='#15181c'; }
 
-let DB = load();
+/* ---------- IndexedDB storage (large, offline) ---------- */
+const IDB_NAME='scoutreport_db', IDB_STORE='kv';
+let _idbP=null;
+function idbOpen(){
+  if(_idbP) return _idbP;
+  _idbP=new Promise((res,rej)=>{
+    let req; try{ req=indexedDB.open(IDB_NAME,1); }catch(e){ rej(e); return; }
+    req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE); };
+    req.onsuccess=()=>res(req.result);
+    req.onerror=()=>rej(req.error);
+  });
+  return _idbP;
+}
+function idbGet(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const rq=tx.objectStore(IDB_STORE).get(key); rq.onsuccess=()=>res(rq.result==null?null:rq.result); rq.onerror=()=>rej(rq.error); })); }
+function idbSet(key,val){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(val,key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error); })); }
+function idbDel(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).delete(key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); })); }
+function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, clubs:[], notDup:[] }; }
+
+let DB = emptyDB();
 let activeMatch = null;   // match object
 let activeTeam = 'home';  // 'home' | 'away'
 let editingId = null;     // player id being edited
@@ -1693,8 +1711,15 @@ function normalizeProfile(p){
   if(LEVEL_MIGRATE[p.level]) p.level = LEVEL_MIGRATE[p.level];
   return p;
 }
-function save(){
-  try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ toast('Error saving'); }
+let _saving=false, _dirty=false, _saveErr=false;
+function save(){ _dirty=true; _flushSave(); }
+async function _flushSave(){
+  if(_saving) return; _saving=true;
+  try{
+    while(_dirty){ _dirty=false; const snap=JSON.stringify(DB); await idbSet(LS_KEY, snap); }
+    if(_saveErr){ _saveErr=false; }
+  }catch(e){ if(!_saveErr){ _saveErr=true; toast('Could not save — please export a backup'); } }
+  finally{ _saving=false; }
 }
 
 /* ===================== PLAYER DATABASE (Fase 1) ===================== */
@@ -3072,6 +3097,7 @@ function normalizeDB(d){
   d.shadows = Array.isArray(d.shadows)? d.shadows : [];
   d.clubLogos = (d.clubLogos && typeof d.clubLogos==='object')? d.clubLogos : {};
   d.clubs = Array.isArray(d.clubs)? d.clubs : [];
+  if(!Array.isArray(d.notDup)) d.notDup = [];
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
   migrateMatches(d.matches);
   d.players.forEach(normalizeProfile);
@@ -3081,7 +3107,7 @@ function closeImport(){ document.getElementById('import-bg').classList.remove('s
 function doImport(mode){
   if(!pendingImport) return;
   if(mode==='replace'){
-    try{ localStorage.setItem(LS_KEY+'_backup', JSON.stringify(DB)); }catch(e){}
+    try{ idbSet(LS_KEY+'_backup', JSON.stringify(DB)); }catch(e){}
     DB = pendingImport;
   } else {
     const ids = new Set(DB.matches.map(m=>m.id));
@@ -4012,7 +4038,7 @@ function closeSettings(){
   document.getElementById('settings-sheet').classList.remove('show');
 }
 /* ---------- About / guide / what's new ---------- */
-const APP_VERSION = '1.0';
+const APP_VERSION = '1.1';
 const ABOUT_GUIDE = [
   ['Home', 'Quick actions, your watchlist and section shortcuts on one screen. Tap the gear for settings.'],
   ['Match reports', 'Build a game report on a pitch with formations. Drag players, rate them (A–D), add notes, and export a clean PDF. Name a team after one of your clubs to load its squad or pick players position by position.'],
@@ -4024,6 +4050,14 @@ const ABOUT_GUIDE = [
   ['Backup & storage', 'Export everything to a file (save to iCloud/Files) and import it on another device. The storage meter shows how full this browser is.']
 ];
 const ABOUT_NEWS = [
+  ['1.1', 'June 2026', [
+    'Much larger storage: data now lives in the browser\u2019s large-capacity store (hundreds of MB to several GB) — the old ~5 MB limit is gone. Your existing data migrates automatically.',
+    'Storage screen now shows real usage vs available space, with a breakdown by type.',
+    'Player profile: Club & age group and Links moved into the header to save space; new "Watch urgently" status.',
+    'Outstanding ability on profiles (quick chips + free text).',
+    'Duplicates: "Not duplicates" button to keep verified pairs out of the list.',
+    'Tool to clear leftover data from your other apps on this domain.'
+  ]],
   ['1.0', 'June 2026', [
     'Match reports: load a club squad onto the pitch, or pick players from the club position by position; the club colour is applied automatically.',
     'Player profiles: Suggested vs Final ratings, with a pop-up of the last 5 match ratings.',
@@ -4107,24 +4141,16 @@ function storageBreakdown(){
   const matches=sz(JSON.stringify(DB.matches||[]));
   const shadows=sz(JSON.stringify(DB.shadows||[]));
   let crests=0; if(DB.clubLogos) Object.values(DB.clubLogos).forEach(v=>crests+=sz(v)); (DB.clubs||[]).forEach(c=>{ if(c&&c.logo) crests+=sz(c.logo); });
-  let header=0,logo=0,theme=0,mainKey=0;
+  let header=0,logo=0;
   try{ header=sz(localStorage.getItem(HERO_KEY)); }catch(e){}
   try{ logo=sz(localStorage.getItem(LOGO_KEY)); }catch(e){}
-  try{ theme=sz(localStorage.getItem(THEME_KEY)); }catch(e){}
-  try{ mainKey=sz(localStorage.getItem(LS_KEY)); }catch(e){}
-  const total=storageBytes();
-  const other=Math.max(0, total - (mainKey+header+logo+theme));
-  return {photos,playersText,matches,shadows,crests,header,logo,other,total,nPhotos:players.filter(p=>p.photo).length,nPlayers:players.length};
+  let other=0; try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(!isScoutKey(k)){ other+=sz(k)+sz(localStorage.getItem(k)); } } }catch(e){}
+  return {photos,playersText,matches,shadows,crests,header,logo,other,nPhotos:players.filter(p=>p.photo).length,nPlayers:players.length};
 }
+function fmtSize(x){ return x>=1024*1024*1024? (x/1024/1024/1024).toFixed(2)+' GB' : x>=1024*1024? (x/1024/1024).toFixed(x>=10*1024*1024?0:1)+' MB' : Math.max(1,Math.round(x/1024))+' KB'; }
 function updateStorageMeter(){
   const fill=document.getElementById('stor-fill'); if(!fill) return;
-  const used=storageBytes(); const LIMIT=5*1024*1024; const pct=Math.min(100, used/LIMIT*100);
-  fill.style.width=pct.toFixed(1)+'%';
-  let col='var(--accent)'; if(pct>=85) col='var(--danger)'; else if(pct>=65) col='#f5a623';
-  fill.style.background=col;
-  const kb=x=> x>=1024*1024? (x/1024/1024).toFixed(2)+' MB' : Math.max(1,Math.round(x/1024))+' KB';
-  document.getElementById('stor-text').innerHTML=`<b>${(used/1024/1024).toFixed(2)} MB</b> used of ~5 MB &nbsp;·&nbsp; ${pct.toFixed(0)}%`;
-  // breakdown
+  // breakdown (sync, from in-memory data)
   const bd=storageBreakdown();
   const rows=[
     ['Player photos', bd.photos, bd.nPhotos?`${bd.nPhotos} photo${bd.nPhotos!==1?'s':''}`:''],
@@ -4140,15 +4166,26 @@ function updateStorageMeter(){
   const box=document.getElementById('stor-break');
   box.innerHTML = rows.map(([label,bytes,sub])=>`
     <div class="stor-line">
-      <div class="stor-line-top"><span>${label}${sub?` <span style="color:var(--mut2)">· ${sub}</span>`:''}</span><span class="stor-line-v">${kb(bytes)}</span></div>
+      <div class="stor-line-top"><span>${label}${sub?` <span style="color:var(--mut2)">· ${sub}</span>`:''}</span><span class="stor-line-v">${fmtSize(bytes)}</span></div>
       <div class="stor-line-bar"><div style="width:${Math.max(3,bytes/maxv*100).toFixed(0)}%;height:100%;border-radius:4px;background:${label.startsWith('Other')?'var(--mut2)':'var(--accent)'}"></div></div>
     </div>`).join('') || '<div style="color:var(--mut2);font-size:12px">Almost empty — nothing to worry about.</div>';
-  const warn=document.getElementById('stor-warn');
-  if(pct>=85){ warn.style.display='block'; warn.style.color='var(--danger)'; warn.innerHTML='⚠︎ Storage almost full — export a backup now, then remove some photos or old reports to free space.'; }
-  else if(pct>=65){ warn.style.display='block'; warn.style.color='#b5790a'; warn.innerHTML='Storage is filling up. A good time to export a backup.'; }
-  else if(bd.other>150*1024){ warn.style.display='block'; warn.style.color='var(--mut)'; warn.innerHTML='Note: “Other apps on this domain” is space used by your other sites on furtas1991.github.io — not by ScoutReport.'; }
-  else { warn.style.display='none'; }
   updateCleanupBtn();
+  // real usage / quota from the Storage API (IndexedDB-backed, much larger)
+  const apply=(usage,quota)=>{
+    quota=quota||5*1024*1024; const pct=Math.min(100, usage/quota*100);
+    fill.style.width=Math.max(0.5,pct).toFixed(1)+'%';
+    let col='var(--accent)'; if(pct>=85) col='var(--danger)'; else if(pct>=65) col='#f5a623';
+    fill.style.background=col;
+    document.getElementById('stor-text').innerHTML=`<b>${fmtSize(usage)}</b> used of ${fmtSize(quota)} available &nbsp;·&nbsp; ${pct<1?pct.toFixed(1):pct.toFixed(0)}%`;
+    const warn=document.getElementById('stor-warn');
+    if(pct>=85){ warn.style.display='block'; warn.style.color='var(--danger)'; warn.innerHTML='⚠︎ Storage almost full — export a backup now and free some space.'; }
+    else if(pct>=65){ warn.style.display='block'; warn.style.color='#b5790a'; warn.innerHTML='Storage is filling up. A good time to export a backup.'; }
+    else if(bd.other>150*1024){ warn.style.display='block'; warn.style.color='var(--mut)'; warn.innerHTML='Note: “Other apps on this domain” is space used by your other sites on this domain — not by ScoutReport. Use the button below to clear it.'; }
+    else { warn.style.display='none'; }
+  };
+  if(navigator.storage && navigator.storage.estimate){
+    navigator.storage.estimate().then(est=>apply(est.usage||0, est.quota||5*1024*1024)).catch(()=>apply(storageBytes(),5*1024*1024));
+  } else { apply(storageBytes(), 5*1024*1024); }
 }
 /* ---------- Possible duplicate players ---------- */
 function normName(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim(); }
@@ -4284,7 +4321,20 @@ applyTheme(getTheme());
 applyLogo();
 applyHero();
 document.addEventListener('click',e=>{ if(!e.target.closest('.rt-card.has-pop')) document.querySelectorAll('.rt-card.open').forEach(c=>c.classList.remove('open')); });
-showSection('dashboard');
+bootData();
+async function bootData(){
+  let raw=null;
+  try{ raw=await idbGet(LS_KEY); }catch(e){}
+  if(raw==null){
+    // first run on IndexedDB → migrate any existing localStorage data
+    let ls=null; try{ ls=localStorage.getItem(LS_KEY); }catch(e){}
+    if(ls!=null){ raw=ls; try{ await idbSet(LS_KEY, ls); }catch(e){} }
+  }
+  let parsed=null; if(raw!=null){ try{ parsed=JSON.parse(raw); }catch(e){} }
+  try{ DB = normalizeDB(parsed||emptyDB()); }
+  catch(e){ DB = normalizeDB(emptyDB()); }
+  showSection('dashboard');
+}
 </script>
 </body>
 </html>
