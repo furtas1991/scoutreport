@@ -531,9 +531,10 @@ body.noTabs .tabbar{display:none}
 .sh-bk-nm{font-weight:700;font-size:14px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sh-bk-meta{font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sh-bk-col{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--mut);font-weight:600;white-space:nowrap;flex-shrink:0}
-.bulk-row{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line)}
-.bulk-nm{flex:1;font-weight:600;font-size:14px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bulk-yr{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
+.bulk-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.bulk-nm-in{flex:1;min-width:0;border:1px solid var(--line2);border-radius:8px;padding:8px 10px;font-size:14px;font-weight:600;background:var(--surf);color:var(--txt);font-family:inherit}
+.bulk-yr-in{width:66px;flex-shrink:0;border:1px solid var(--line2);border-radius:8px;padding:8px 6px;font-size:13px;text-align:center;background:var(--surf);color:var(--txt);font-family:inherit;font-variant-numeric:tabular-nums}
+.bulk-nm-in:focus,.bulk-yr-in:focus{outline:none;border-color:var(--accent)}
 .bulk-x{color:var(--danger);cursor:pointer;font-size:13px;padding:2px 6px;flex-shrink:0}
 .sh-notes{margin-top:20px}
 .sh-notes-ta{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;font-size:14px;background:var(--surf);color:var(--txt);font-family:inherit;line-height:1.5}
@@ -562,7 +563,7 @@ body.noTabs .tabbar{display:none}
 /* ============ DASHBOARD (Home) ============ */
 #dashboard{flex:1;overflow-y:auto;display:none;flex-direction:column}
 #dashboard.show{display:flex}
-.dash-hero{position:relative;overflow:hidden;min-height:178px;display:flex;align-items:flex-end;
+.dash-hero{position:relative;overflow:hidden;min-height:132px;display:flex;align-items:flex-end;
   background:linear-gradient(150deg,#23262b 0%,#15171b 60%,#0f1114 100%)}
 .dash-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;display:none}
 .dash-hero.has-img .dash-hero-img{display:block}
@@ -573,9 +574,9 @@ body.noTabs .tabbar{display:none}
   color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s ease}
 .dash-settings:active{transform:scale(.94)}
 .dash-settings svg{width:19px;height:19px}
-.dash-hero-content{position:relative;z-index:1;width:100%;padding:20px 18px 18px}
+.dash-hero-content{position:relative;z-index:1;width:100%;padding:14px 18px 13px}
 .dash-brand{display:flex;align-items:center;gap:13px}
-.dash-mark{width:48px;height:48px;border-radius:13px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+.dash-mark{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .dash-mark svg{width:27px;height:27px}
 .dash-mark img{width:100%;height:100%;object-fit:contain}
@@ -583,19 +584,19 @@ body.noTabs .tabbar{display:none}
 .dash-wm span{font-weight:300}
 .dash-tag{font-size:12px;color:rgba(255,255,255,.78);letter-spacing:.04em;margin-top:5px;font-weight:500}
 
-.dash-body{padding:20px 16px 36px;flex:1}
-.dash-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mut2);margin:0 2px 11px}
-.dash-lbl:not(:first-child){margin-top:24px}
+.dash-body{padding:14px 16px 22px;flex:1}
+.dash-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mut2);margin:0 2px 9px}
+.dash-lbl:not(:first-child){margin-top:15px}
 .dash-quick{display:flex;gap:9px}
-.qbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--surf);border:1px solid var(--line);
-  border-radius:var(--r-lg);padding:16px 6px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer;box-shadow:var(--sh-1);
+.qbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:12px 6px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer;box-shadow:var(--sh-1);
   transition:transform .12s ease,box-shadow .16s ease;letter-spacing:-.01em;text-align:center}
 .qbtn:active{transform:translateY(1px) scale(.985)}
 .qic{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--accent)}
 .qic svg{width:25px;height:25px}
 
-.watch-hero{display:flex;align-items:center;gap:13px;margin-top:24px;background:var(--accent-d);
-  border:1px solid var(--accent);border-radius:var(--r-lg);padding:15px 16px;cursor:pointer;box-shadow:var(--sh-1);transition:transform .12s ease}
+.watch-hero{display:flex;align-items:center;gap:13px;margin-top:14px;background:var(--accent-d);
+  border:1px solid var(--accent);border-radius:var(--r-lg);padding:12px 15px;cursor:pointer;box-shadow:var(--sh-1);transition:transform .12s ease}
 .watch-hero:active{transform:translateY(1px) scale(.992)}
 .wh-star{width:40px;height:40px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
 .wh-main{flex:1;min-width:0}
@@ -604,21 +605,21 @@ body.noTabs .tabbar{display:none}
 .wh-go{color:var(--accent-ink);opacity:.65;font-size:24px;font-weight:300}
 
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.navcard{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;cursor:pointer;
-  box-shadow:var(--sh-1);transition:transform .12s ease,box-shadow .16s ease;position:relative;min-height:104px;display:flex;flex-direction:column}
+.navcard{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;cursor:pointer;
+  box-shadow:var(--sh-1);transition:transform .12s ease,box-shadow .16s ease;position:relative;min-height:84px;display:flex;flex-direction:column}
 .navcard:active{transform:translateY(1px) scale(.99)}
-.nc-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:auto}
+.nc-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:auto}
 .nc-ic svg{width:21px;height:21px}
 .nc-rep{background:#e7f0fe;color:#1d6fe0}
 .nc-team{background:#e9f7ef;color:#2ba96b}
 .nc-db{background:#f3ecfd;color:#7c3aed}
 .nc-sh{background:#fdeccf;color:#c4830c}
-.nc-name{font-weight:700;font-size:14.5px;letter-spacing:-.3px;margin-top:12px}
+.nc-name{font-weight:700;font-size:14.5px;letter-spacing:-.3px;margin-top:8px}
 .nc-count{position:absolute;top:16px;right:16px;font-size:22px;font-weight:800;letter-spacing:-1px;color:var(--txt);font-variant-numeric:tabular-nums}
 
 .rec-ic{width:30px;height:30px;border-radius:9px;background:var(--surf2);display:flex;align-items:center;justify-content:center;color:var(--mut);flex-shrink:0}
 .rec-ic svg{width:17px;height:17px}
-.dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;cursor:pointer;box-shadow:var(--sh-1)}
+.dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:11px;margin-bottom:7px;cursor:pointer;box-shadow:var(--sh-1)}
 .dash-recent-card:active{border-color:var(--line2)}
 
 /* settings */
@@ -718,6 +719,23 @@ body.noTabs .tabbar{display:none}
 .pv-status .statusdot{width:8px;height:8px;border-radius:50%}
 .pv-body{padding:18px 16px 36px}
 .pv-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:18px}
+.rt-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rt-card{position:relative;background:var(--surf);border:1px solid var(--line2);border-radius:var(--r-lg);padding:13px 14px;text-align:center}
+.rt-card.has-pop{cursor:pointer}
+.rt-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mut2);margin-bottom:9px}
+.rt-i{color:var(--accent);font-weight:400}
+.rt-val{display:flex;align-items:center;justify-content:center;gap:9px;min-height:36px}
+.rt-score{font-size:20px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums}
+.rt-empty{font-size:22px;color:var(--mut2);font-weight:700}
+.rt-sub{font-size:11px;color:var(--mut2);margin-top:7px}
+.sugg-pop{display:none;position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:240px;background:var(--txt);color:var(--bg);border-radius:12px;padding:10px 12px;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.28);text-align:left}
+.sugg-pop::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--txt)}
+.rt-card.has-pop:hover .sugg-pop,.rt-card.open .sugg-pop{display:block}
+.sugg-pop-h{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.6;margin-bottom:7px}
+.sugg-pop-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 0}
+.stor-meter{height:10px;border-radius:6px;background:var(--surf2);overflow:hidden;border:1px solid var(--line2)}
+.stor-fill{height:100%;width:0;border-radius:6px;transition:width .4s ease,background .3s ease}
+.sp-when{font-size:12.5px;font-weight:600;white-space:nowrap}
 .pv-stat{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:var(--sh-1)}
 .pv-stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut2);font-weight:700;margin-bottom:6px}
 .pv-stat-v{font-size:15px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;min-height:30px}
@@ -1024,6 +1042,12 @@ body.noTabs .tabbar{display:none}
   </div>
   <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.55">Includes <b>everything</b>: reports, players, shadow teams, folders and club crests. Save the file to iCloud or send it via AirDrop. Make a copy before each app update.</div>
 
+  <div class="pf-glbl">Storage</div>
+  <div class="stor-meter"><div class="stor-fill" id="stor-fill"></div></div>
+  <div id="stor-text" style="font-size:12px;color:var(--mut);margin:8px 2px 0;font-variant-numeric:tabular-nums"></div>
+  <div id="stor-warn" style="font-size:11.5px;line-height:1.5;margin:6px 2px 0;display:none"></div>
+  <div style="color:var(--mut2);font-size:11px;margin:6px 2px 22px;line-height:1.55">This app stores everything inside this browser (about a 5&nbsp;MB limit). As it fills, export a backup and clear what you don't need. Player photos take the most space.</div>
+
   <div class="pf-glbl">Data quality</div>
   <button class="btn" id="dups-btn" style="width:100%;justify-content:space-between;margin-bottom:8px" onclick="openDuplicates()"><span>Possible duplicate players</span><span id="dups-count" class="segcount"></span></button>
   <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.55">Players with the same or very similar names. Review and remove any accidental copies (e.g. after bulk imports).</div>
@@ -1123,6 +1147,7 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="sheet-bg" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
   <div class="grip"></div>
+  <button class="btn primary" id="ed-pickclub" style="display:none;width:100%;justify-content:center;margin-bottom:13px" onclick="openEdPicker()"></button>
   <div class="sheet-row">
     <div class="field num" style="flex:0 0 66px">
       <label class="flbl">No.</label>
@@ -1167,6 +1192,16 @@ body.noTabs .tabbar{display:none}
     <button class="btn danger" onclick="deletePlayer()">Delete</button>
     <button class="btn primary" onclick="closeSheet()">Done</button>
   </div>
+</div>
+
+<!-- ====== EDITOR: PICK FROM CLUB SHEET ====== -->
+<div class="sheet-bg" id="edpick-bg" onclick="closeEdPicker()"></div>
+<div class="sheet" id="edpick-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:10px" id="edpick-title">From club</div>
+  <div class="si" style="margin-bottom:12px"><input id="edpick-search" placeholder="Search name…" oninput="edPickRender(this.value)"></div>
+  <div id="edpick-list" style="max-height:52dvh;overflow-y:auto"></div>
+  <div class="sheet-actions"><button class="btn" onclick="closeEdPicker()">Cancel</button></div>
 </div>
 
 <!-- ====== EXPORT MODAL ====== -->
@@ -1632,7 +1667,7 @@ let viewNoClub = false;
 let selMode = false;
 let selIds = new Set();
 let editingProfile = null;
-let filters = { club:'', level:'', pos:'', foot:'', rating:'', status:'' };
+let filters = { club:'', level:'', foot:'', status:'', posSet:[], ratingSet:[], yearMin:'', yearMax:'' };
 let dbView = 'all';          // 'all' | 'watch'
 let activeShadow = null;     // shadow team being viewed
 let shadowSlotIndex = null;  // slot index being edited
@@ -1679,7 +1714,7 @@ function renderDashboard(){
   document.getElementById('wh-sub').textContent = watch? `${watch} player${watch!==1?'s':''} watched` : 'No players yet';
   applyLogo(); applyHero();
   // recent reports
-  const recent = DB.matches.slice(0,3);
+  const recent = DB.matches.slice(0,1);
   const rc = document.getElementById('dash-recent');
   if(recent.length){
     rc.innerHTML = `<div class="dash-lbl">Recent reports</div>` + recent.map(m=>{
@@ -1703,12 +1738,16 @@ function matchesFilters(p, q){
   }
   if(filters.club && p.club!==filters.club) return false;
   if(filters.level && p.level!==filters.level) return false;
-  if(filters.pos && !profilePositions(p).includes(filters.pos)) return false;
   if(filters.foot && p.foot!==filters.foot) return false;
-  if(filters.rating && p.rating!==filters.rating) return false;
   if(filters.status && p.status!==filters.status) return false;
+  if(filters.posSet && filters.posSet.length){ const pp=profilePositions(p); if(!filters.posSet.some(x=>pp.includes(x))) return false; }
+  if(filters.ratingSet && filters.ratingSet.length){ if(!filters.ratingSet.includes(p.rating)) return false; }
+  const yr = parseInt(birthYear(p.birth),10);
+  if(filters.yearMin){ if(!yr || yr < +filters.yearMin) return false; }
+  if(filters.yearMax){ if(!yr || yr > +filters.yearMax) return false; }
   return true;
 }
+function filtersActive(){ return !!(filters.club||filters.level||filters.foot||filters.status||(filters.posSet&&filters.posSet.length)||(filters.ratingSet&&filters.ratingSet.length)||filters.yearMin||filters.yearMax); }
 function isWatch(p){ return !!p.watch; }
 function toggleWatch(id, ev){
   if(ev) ev.stopPropagation();
@@ -1776,28 +1815,51 @@ function statusSlug(s){ return {'Not scouted':'nao-observado','To scout':'a-obse
 function distinct(key){ return [...new Set(DB.players.map(p=>p[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt')); }
 function renderActiveFilters(){
   const wrap = document.getElementById('active-filters');
-  const labels = {club:'Club',level:'Age group',pos:'Position',foot:'Pé',rating:'Aval.',status:'Status'};
-  const active = Object.keys(filters).filter(k=>filters[k]);
+  const active=[];
+  if(filters.club) active.push(['club',`Club: ${filters.club}`]);
+  if(filters.level) active.push(['level',`Age: ${filters.level}`]);
+  if(filters.posSet&&filters.posSet.length) active.push(['posSet',`Pos: ${filters.posSet.join(', ')}`]);
+  if(filters.ratingSet&&filters.ratingSet.length) active.push(['ratingSet',`Rating: ${filters.ratingSet.join(', ')}`]);
+  if(filters.yearMin||filters.yearMax) active.push(['year',`Born: ${filters.yearMin||'…'}–${filters.yearMax||'…'}`]);
+  if(filters.foot) active.push(['foot',`Foot: ${filters.foot}`]);
+  if(filters.status) active.push(['status',`${filters.status}`]);
   document.getElementById('filter-dot').style.display = active.length? 'block':'none';
-  wrap.innerHTML = active.map(k=>`<span class="fchip-active"><b>${labels[k]}:</b> ${esc(filters[k])} <span class="x" onclick="clearFilter('${k}')">✕</span></span>`).join('');
+  wrap.innerHTML = active.map(([k,lbl])=>`<span class="fchip-active"><b>${esc(lbl)}</b> <span class="x" onclick="clearFilter('${k}')">✕</span></span>`).join('');
 }
+const POS_LINES = { GK:['GK'], DEF:['RB','CB','LB','RWB','LWB'], MID:['DM','CM','AM'], FWD:['RW','LW','ST'] };
 function openFilters(){
-  const opt = (key,val)=>`<button class="pf-chip ${filters[key]===val?'on':''}" onclick="setFilter('${key}','${esc(val)}')">${esc(val)}</button>`;
-  const grp = (title,key,vals)=> vals.length? `<div class="pf-group"><div class="pf-glbl">${title}</div><div class="pf-chips">${vals.map(v=>opt(key,v)).join('')}</div></div>`:'';
+  const optS = (key,val)=>`<button class="pf-chip ${filters[key]===val?'on':''}" onclick="setFilter('${key}','${esc(val)}')">${esc(val)}</button>`;
+  const optM = (key,val)=>`<button class="pf-chip ${filters[key].includes(val)?'on':''}" onclick="toggleFilter('${key}','${esc(val)}')">${esc(val)}</button>`;
+  const grpS = (title,key,vals)=> vals.length? `<div class="pf-group"><div class="pf-glbl">${title}</div><div class="pf-chips">${vals.map(v=>optS(key,v)).join('')}</div></div>`:'';
+  const lineBtns = Object.keys(POS_LINES).map(l=>{
+    const on = POS_LINES[l].every(x=>filters.posSet.includes(x));
+    return `<button class="pf-chip ${on?'on':''}" style="font-weight:800" onclick="toggleLine('${l}')">${l}</button>`;
+  }).join('');
   document.getElementById('filters-body').innerHTML =
-    grp('Club','club',distinct('club')) +
-    grp('Age group','level',distinct('level')) +
-    `<div class="pf-group"><div class="pf-glbl">Position</div><div class="pf-chips">${POSITIONS.map(v=>opt('pos',v)).join('')}</div></div>` +
-    `<div class="pf-group"><div class="pf-glbl">Foot</div><div class="pf-chips">${FEET.map(v=>opt('foot',v)).join('')}</div></div>` +
-    `<div class="pf-group"><div class="pf-glbl">Rating</div><div class="pf-chips">${['A','B','C','D'].map(v=>opt('rating',v)).join('')}</div></div>` +
-    `<div class="pf-group"><div class="pf-glbl">Status</div><div class="pf-chips">${STATUSES.map(v=>opt('status',v)).join('')}</div></div>`;
+    grpS('Club','club',distinct('club')) +
+    grpS('Age group','level',distinct('level')) +
+    `<div class="pf-group"><div class="pf-glbl">Position</div>
+       <div class="pf-chips" style="margin-bottom:7px">${lineBtns}</div>
+       <div class="pf-chips">${POSITIONS.map(v=>optM('posSet',v)).join('')}</div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Birth year</div>
+       <div style="display:flex;gap:8px;align-items:center">
+         <input class="pf-in" id="f-ymin" inputmode="numeric" maxlength="4" placeholder="From" value="${esc(filters.yearMin)}" oninput="setYear('min',this.value)" style="flex:1">
+         <span style="color:var(--mut2)">–</span>
+         <input class="pf-in" id="f-ymax" inputmode="numeric" maxlength="4" placeholder="To" value="${esc(filters.yearMax)}" oninput="setYear('max',this.value)" style="flex:1">
+       </div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Rating</div><div class="pf-chips">${['A','B','C','D'].map(v=>optM('ratingSet',v)).join('')}</div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Foot</div><div class="pf-chips">${FEET.map(v=>optS('foot',v)).join('')}</div></div>` +
+    `<div class="pf-group"><div class="pf-glbl">Status</div><div class="pf-chips">${STATUSES.map(v=>optS('status',v)).join('')}</div></div>`;
   document.getElementById('filters-bg').classList.add('show');
   document.getElementById('filters-sheet').classList.add('show');
 }
 function closeFilters(){ document.getElementById('filters-bg').classList.remove('show'); document.getElementById('filters-sheet').classList.remove('show'); }
 function setFilter(key,val){ filters[key] = (filters[key]===val)?'':val; openFilters(); renderDatabase(); }
-function clearFilter(key){ filters[key]=''; renderDatabase(); }
-function clearFilters(){ Object.keys(filters).forEach(k=>filters[k]=''); openFilters(); renderDatabase(); }
+function toggleFilter(key,val){ const a=filters[key]; const i=a.indexOf(val); if(i>=0) a.splice(i,1); else a.push(val); openFilters(); renderDatabase(); }
+function toggleLine(line){ const ps=POS_LINES[line]; const on=ps.every(x=>filters.posSet.includes(x)); ps.forEach(x=>{ const i=filters.posSet.indexOf(x); if(on){ if(i>=0) filters.posSet.splice(i,1); } else if(i<0) filters.posSet.push(x); }); openFilters(); renderDatabase(); }
+function setYear(which,val){ val=(val||'').replace(/[^0-9]/g,'').slice(0,4); if(which==='min') filters.yearMin=val; else filters.yearMax=val; renderDatabase(); }
+function clearFilter(key){ if(key==='year'){ filters.yearMin=''; filters.yearMax=''; } else if(key==='posSet'||key==='ratingSet'){ filters[key]=[]; } else { filters[key]=''; } renderDatabase(); }
+function clearFilters(){ filters={ club:'', level:'', foot:'', status:'', posSet:[], ratingSet:[], yearMin:'', yearMax:'' }; openFilters(); renderDatabase(); }
 
 /* ---------- Teams ---------- */
 /* ---------- Clubs & teams ---------- */
@@ -2107,27 +2169,41 @@ const BULK_SKIP = /^(plantel|guarda[- ]?redes?|defesas?|m[ée]dios?|avan[çc]ado
 const BULK_POS = /\b(GR|GK|DC|DD|DE|CB|RB|LB|RWB|LWB|DM|CM|AM|RW|LW|ST|MC|MD|MO|ED|EE|AV|PL|EXT|DEF|MID|FWD)\b/gi;
 function bulkParse(text){
   const out=[]; const seen=new Set(); const nowY=new Date().getFullYear();
-  (text||'').split(/\r?\n/).forEach(raw=>{
+  let pending=null; // name awaiting an age on a following line
+  const push=(name,birth,est)=>{ if(!name||name.length<2) return; const k=name.toLowerCase(); if(seen.has(k)) return; seen.add(k); out.push({name,birth:birth||'',est:!!est}); };
+  const lines=(text||'').split(/\r?\n/);
+  for(let raw of lines){
     let line=raw.replace(/\t/g,' ').replace(/\s{2,}/g,' ').trim();
-    if(!line) return;
-    if(BULK_SKIP.test(line.trim())) return;
-    let birth='', est=false;
-    let m=line.match(/(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})/); // full date
-    if(m){ const dd=('0'+m[1]).slice(-2),mm=('0'+m[2]).slice(-2); if(+m[1]<=31&&+m[2]<=12){ birth=`${m[3]}-${mm}-${dd}`; line=line.replace(m[0],' '); } }
-    if(!birth){ const y=line.match(/\b(19[5-9]\d|20[0-2]\d)\b/); if(y){ birth=`${y[1]}-01-01`; line=line.replace(y[0],' '); } }
-    if(!birth){ const a=line.match(/\b(1[3-9]|[2-4]\d)\b/); if(a){ const age=+a[1]; birth=`${nowY-age}-01-01`; est=true; line=line.replace(a[0],' '); } }
-    line=line.replace(/^\s*\d{1,3}\s+/,' ');        // leading shirt number
-    line=line.replace(BULK_POS,' ');                 // position tokens
-    line=line.replace(/\([^)]*\)/g,' ');             // anything in ()
-    line=line.replace(/[€$£][\d.,]+\s?(m|k|mil|milhões)?/gi,' '); // market values
-    line=line.replace(/\b[A-Z]{3}\b/g,' ');          // 3-letter country codes
-    line=line.replace(/\b(anos?|years?\s*old|years?|yrs?|y\/?o)\b/gi,' '); // age words
+    if(!line) continue;
+    if(/^[-–—_.•·*]+$/.test(line)) continue;     // separator lines
+    if(BULK_SKIP.test(line)) continue;            // section headers
+    // extract a birth indication from this line
+    let birth='', est=false, hadDate=false, ageVal=null;
+    let m=line.match(/(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})/);
+    if(m && +m[1]<=31 && +m[2]<=12){ birth=`${m[3]}-${('0'+m[2]).slice(-2)}-${('0'+m[1]).slice(-2)}`; line=line.replace(m[0],' '); hadDate=true; }
+    if(!birth){ const y=line.match(/\b(19[5-9]\d|20[0-2]\d)\b/); if(y){ birth=`${y[1]}-01-01`; line=line.replace(y[0],' '); hadDate=true; } }
+    if(!birth){ const a=line.match(/\b(1[3-9]|[2-4]\d)\b/); if(a){ ageVal=+a[1]; line=line.replace(a[0],' '); } }
+    // clean leftovers to isolate a possible name
+    line=line.replace(/^\s*\d{1,3}\s+/,' ').replace(BULK_POS,' ').replace(/\([^)]*\)/g,' ')
+             .replace(/[€$£][\d.,]+\s?(m|k|mil|milh[õo]es)?/gi,' ').replace(/\b[A-Z]{3}\b/g,' ')
+             .replace(/\b(anos?|years?\s*old|years?|yrs?|y\/?o)\b/gi,' ');
     const nm=line.match(/[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ.'’\- ]*[A-Za-zÀ-ÿ.'’]/);
     let name=nm? nm[0].replace(/\s{2,}/g,' ').trim() : '';
-    if(!name || name.length<2 || !/[A-Za-zÀ-ÿ]{2,}/.test(name)) return;
-    const k=name.toLowerCase(); if(seen.has(k)) return; seen.add(k);
-    out.push({name, birth, est});
-  });
+    if(name && (name.length<2 || !/[A-Za-zÀ-ÿ]{2,}/.test(name))) name='';
+    const hasAge = (ageVal!=null) || hadDate;
+    const toBirth = ()=>{ if(birth) return [birth,false]; if(ageVal!=null) return [`${nowY-ageVal}-01-01`,true]; return ['',false]; };
+
+    if(name && hasAge){                 // name + age on the same line
+      if(pending){ push(pending,'',false); pending=null; }
+      const [b,e]=toBirth(); push(name,b,e);
+    } else if(name && !hasAge){          // name only -> hold, flush previous nameless-pending
+      if(pending) push(pending,'',false);
+      pending=name;
+    } else if(!name && hasAge){          // age only -> attach to the held name
+      if(pending){ const [b,e]=toBirth(); push(pending,b,e); pending=null; }
+    }
+  }
+  if(pending) push(pending,'',false);
   return out;
 }
 let bulkList=[];
@@ -2143,26 +2219,42 @@ function openBulk(){
 }
 function closeBulk(){ document.getElementById('bulk-bg').classList.remove('show'); document.getElementById('bulk-sheet').classList.remove('show'); }
 function bulkPreview(){ bulkList = bulkParse(document.getElementById('bulk-text').value); renderBulkList(); }
+function updateBulkBtn(){
+  const n=bulkList.filter(p=>(p.name||'').trim()).length;
+  const btn=document.getElementById('bulk-create');
+  btn.textContent = `Create ${n} player${n!==1?'s':''}`; btn.disabled = !n;
+}
 function renderBulkList(){
   const el=document.getElementById('bulk-preview');
-  const btn=document.getElementById('bulk-create');
-  btn.textContent = `Create ${bulkList.length} player${bulkList.length!==1?'s':''}`;
-  btn.disabled = !bulkList.length;
-  if(!bulkList.length){ el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:6px 2px">Paste a list above — one player per line. Each line should have a name and an age, year, or date.</div>`; return; }
-  el.innerHTML = bulkList.map((p,i)=>`<div class="bulk-row">
-    <span class="bulk-nm">${esc(p.name)}</span>
-    <span class="bulk-yr">${p.birth?(birthYear(p.birth)+(p.est?' (est.)':'')):'no year'}</span>
-    <span class="bulk-x" onclick="bulkRemove(${i})">✕</span></div>`).join('');
+  if(!bulkList.length){ updateBulkBtn(); el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:6px 2px">Paste a list above — one player per line. The app reads names with an age, year, or date; you can fix anything below before creating.</div>`; return; }
+  const anyEst = bulkList.some(p=>p.est);
+  el.innerHTML =
+    (anyEst?`<div style="color:var(--mut2);font-size:11.5px;margin:0 2px 8px;line-height:1.45">Years shown with “~” were estimated from age — edit any that are off.</div>`:'') +
+    bulkList.map((p,i)=>`<div class="bulk-row">
+      <input class="bulk-nm-in" value="${esc(p.name)}" placeholder="Player name" oninput="bulkEdit(${i},'name',this.value)">
+      <input class="bulk-yr-in" value="${p.birth?(p.est?'~':'')+birthYear(p.birth):''}" inputmode="numeric" maxlength="5" placeholder="Year" oninput="bulkEdit(${i},'year',this.value)">
+      <span class="bulk-x" onclick="bulkRemove(${i})">✕</span>
+    </div>`).join('') +
+    `<button class="btn" style="width:100%;justify-content:center;margin-top:9px" onclick="bulkAddRow()"><span style="font-size:16px">+</span> Add a line</button>`;
+  updateBulkBtn();
 }
+function bulkEdit(i,field,val){
+  if(!bulkList[i]) return;
+  if(field==='name'){ bulkList[i].name = val; }
+  else { const y=(val||'').replace(/[^0-9]/g,'').slice(0,4); bulkList[i].birth = y? `${y}-01-01` : ''; bulkList[i].est=false; }
+  updateBulkBtn();
+}
+function bulkAddRow(){ bulkList.push({name:'',birth:'',est:false}); renderBulkList(); const el=document.getElementById('bulk-preview'); el.scrollTop=el.scrollHeight; }
 function bulkRemove(i){ bulkList.splice(i,1); renderBulkList(); }
 function bulkCreate(){
-  if(!bulkList.length) return;
+  const items = bulkList.filter(p=>(p.name||'').trim());
+  if(!items.length){ toast('No names to add'); return; }
   const club=(document.getElementById('bulk-club').value||'').trim();
   const level=(document.getElementById('bulk-level').value||'').trim();
   if(club){ const c=ensureClub(club); if(level && !c.levels.includes(level)) c.levels.push(level); }
-  const n=bulkList.length;
-  bulkList.forEach(p=>{
-    DB.players.unshift(normalizeProfile({ id:uid(), createdAt:new Date().toISOString(), name:p.name, birth:p.birth||'', club, level }));
+  const n=items.length;
+  items.forEach(p=>{
+    DB.players.unshift(normalizeProfile({ id:uid(), createdAt:new Date().toISOString(), name:p.name.trim(), birth:p.birth||'', club, level }));
   });
   save(); closeBulk(); renderDatabase();
   const dups=findDuplicateGroups().length;
@@ -2336,6 +2428,31 @@ function renderPosFieldRO(p){
   }).join('');
   return lines + pts;
 }
+const RNUM = {A:4,B:3,C:2,D:1};
+function numToRating(s){ return s>=3.5?'A':s>=2.5?'B':s>=1.5?'C':'D'; }
+function playerMatchRatings(pid){
+  const out=[];
+  (DB.matches||[]).forEach(m=>{
+    ['home','away'].forEach(side=>{
+      (m[side].players||[]).forEach(pl=>{
+        if(pl.srcId===pid && pl.rate){
+          const opp = side==='home' ? (m.away.name||'') : (m.home.name||'');
+          out.push({ rate:pl.rate, date:m.createdAt, opp, matchId:m.id });
+        }
+      });
+    });
+  });
+  out.sort((a,b)=> String(b.date||'').localeCompare(String(a.date||'')));
+  return out;
+}
+function suggestedRating(pid){
+  const all=playerMatchRatings(pid); if(!all.length) return null;
+  const vals=all.map(o=>RNUM[o.rate]).filter(Boolean); if(!vals.length) return null;
+  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  return { letter:numToRating(avg), score:Math.round(avg*10)/10, count:all.length, recent:all.slice(0,5) };
+}
+function fmtObsDate(d){ return d? new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '—'; }
+function toggleSuggPop(e){ e.stopPropagation(); const c=e.currentTarget; c.classList.toggle('open'); }
 function renderProfileView(){
   const p = editingProfile; if(!p) return;
   const yr = birthYear(p.birth), age = ageFromBirth(p.birth);
@@ -2350,11 +2467,32 @@ function renderProfileView(){
   const chips = positions.map((c,i)=>`<span class="pv-pos">${c}</span>`).join('');
   const stat = (l,v)=> v? `<div class="pv-stat"><div class="pv-stat-l">${l}</div><div class="pv-stat-v">${v}</div></div>` : '';
   const stats = [
-    stat('Rating', p.rating? `<span class="pc-rate ${p.rating}" style="display:inline-flex;width:30px;height:30px;font-size:15px">${p.rating}</span>` : '—'),
     stat('Foot', p.foot? esc(p.foot) : '—'),
     stat('Height', p.height? esc(p.height)+' cm' : '—'),
     stat('Body type', p.biotype? esc(p.biotype) : '—')
   ].join('');
+  const sugg = suggestedRating(p.id);
+  const ratingsBlock = `
+    <div class="pv-block"><div class="pv-block-t">Ratings</div>
+      <div class="rt-row">
+        <div class="rt-card ${sugg?'has-pop':''}" ${sugg?'onclick="toggleSuggPop(event)"':''}>
+          <div class="rt-lbl">Suggested${sugg?' <span class="rt-i">ⓘ</span>':''}</div>
+          ${sugg
+            ? `<div class="rt-val"><span class="pc-rate ${sugg.letter}" style="width:34px;height:34px;font-size:17px">${sugg.letter}</span><span class="rt-score">${sugg.score.toFixed(1)}</span></div>
+               <div class="rt-sub">avg of ${sugg.count} match${sugg.count!==1?'es':''}</div>
+               <div class="sugg-pop">
+                 <div class="sugg-pop-h">Last ${sugg.recent.length} observation${sugg.recent.length!==1?'s':''}</div>
+                 ${sugg.recent.map(r=>`<div class="sugg-pop-row"><span class="sp-when">${fmtObsDate(r.date)}${r.opp?` · ${esc(r.opp)}`:''}</span><span class="pc-rate ${r.rate}" style="width:22px;height:22px;font-size:12px">${r.rate}</span></div>`).join('')}
+               </div>`
+            : `<div class="rt-val rt-empty">—</div><div class="rt-sub">No match ratings yet</div>`}
+        </div>
+        <div class="rt-card">
+          <div class="rt-lbl">Final</div>
+          <div class="rt-val">${p.rating? `<span class="pc-rate ${p.rating}" style="width:34px;height:34px;font-size:17px">${p.rating}</span>` : '<span class="rt-empty">—</span>'}</div>
+          <div class="rt-sub">set by you</div>
+        </div>
+      </div>
+    </div>`;
 
   const links = [['Zerozero',p.links.zerozero],['Transfermarkt',p.links.transfermarkt],['FPF',p.links.fpf]]
     .filter(x=>x[1]).map(x=>`<a class="pv-link" href="${esc(x[1])}" target="_blank" rel="noopener">${x[0]} <span>↗</span></a>`).join('');
@@ -2381,7 +2519,9 @@ function renderProfileView(){
     </div>
 
     <div class="pv-body">
-      <div class="pv-stats">${stats}</div>
+      <div class="pv-stats" style="grid-template-columns:repeat(3,1fr)">${stats}</div>
+
+      ${ratingsBlock}
 
       <div class="pv-block"><div class="pv-block-t">Club &amp; age group</div>
         <button class="assign-chip" onclick="openAssign('${p.id}')">
@@ -3270,10 +3410,61 @@ function openEditor(id, focusNum){
   document.querySelectorAll('#ed-pos .pchip').forEach(c=>c.classList.toggle('on', c.dataset.p===p.pos));
   document.querySelectorAll('#ed-rate .rchip').forEach(c=>c.classList.toggle('on', c.dataset.r===(p.rate||'')));
   setSubSwitch(p.sub);
+  // pick-from-club button
+  const club=teamClub(); const btn=document.getElementById('ed-pickclub');
+  if(btn){
+    const avail = club? DB.players.filter(x=>x.club===club && !usedSrcIds().has(x.id)).length : 0;
+    if(club && avail){ btn.textContent = `Pick from ${club} (${avail})`; btn.style.display='flex'; }
+    else btn.style.display='none';
+  }
   renderPitch();
   document.getElementById('sheet-bg').classList.add('show');
   document.getElementById('sheet').classList.add('show');
   if(focusNum){ setTimeout(()=>{ const n=document.getElementById('ed-num'); n.focus(); }, 250); }
+}
+function teamClub(){ const nm=(activeMatch&&activeMatch[activeTeam]&&activeMatch[activeTeam].name||'').trim(); return allClubNames().includes(nm)? nm : null; }
+function usedSrcIds(){ const s=new Set(); if(!activeMatch) return s; ['home','away'].forEach(tk=>activeMatch[tk].players.forEach(p=>{ if(p.srcId) s.add(p.srcId); })); return s; }
+function openEdPicker(){
+  const club=teamClub(); if(!club) return;
+  document.getElementById('edpick-title').textContent = 'From '+club;
+  document.getElementById('edpick-search').value='';
+  edPickRender('');
+  document.getElementById('edpick-bg').classList.add('show');
+  document.getElementById('edpick-sheet').classList.add('show');
+}
+function closeEdPicker(){ document.getElementById('edpick-bg').classList.remove('show'); document.getElementById('edpick-sheet').classList.remove('show'); }
+function edPickRender(q){
+  const club=teamClub(); const used=usedSrcIds();
+  let list=DB.players.filter(p=>p.club===club && !used.has(p.id));
+  q=(q||'').toLowerCase().trim(); if(q) list=list.filter(p=>(p.name+' '+(p.level||'')).toLowerCase().includes(q));
+  list.sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
+  const el=document.getElementById('edpick-list');
+  if(!list.length){ el.innerHTML=`<div style="color:var(--mut2);font-size:13px;padding:8px 2px">No more players available from this club.</div>`; return; }
+  el.innerHTML=list.map(p=>{
+    const meta=[birthYear(p.birth),p.level,(p.pos1||'')].filter(Boolean).map(esc).join(' · ');
+    const r=p.rating||'';
+    return `<div class="pcard" style="margin-bottom:8px" onclick="edPick('${p.id}')">
+      ${avatarHTML(p,30)}
+      ${r?`<div class="pc-rate ${r}" style="width:26px;height:26px;font-size:13px">${r}</div>`:''}
+      <div class="pc-main"><div class="pc-name">${esc(p.name||'No name')}</div><div class="pc-meta">${meta||'—'}</div></div>
+    </div>`;
+  }).join('');
+}
+function edPick(id){
+  const src=DB.players.find(x=>x.id===id); const p=findPlayer(editingId); if(!src||!p) return;
+  p.name=src.name||''; p.birth=birthYear(src.birth)||''; p.rate=src.rating||''; if(src.number) p.num=src.number; p.srcId=src.id;
+  if(!p.pos){ p.pos=POS_CAT[src.pos1]||''; }
+  save(); closeEdPicker();
+  document.getElementById('ed-name').value=p.name;
+  document.getElementById('ed-birth').value=p.birth;
+  document.getElementById('ed-num').value=p.num;
+  document.querySelectorAll('#ed-pos .pchip').forEach(c=>c.classList.toggle('on', c.dataset.p===p.pos));
+  document.querySelectorAll('#ed-rate .rchip').forEach(c=>c.classList.toggle('on', c.dataset.r===(p.rate||'')));
+  // refresh pick button availability
+  const club=teamClub(); const btn=document.getElementById('ed-pickclub');
+  if(btn && club){ const avail=DB.players.filter(x=>x.club===club && !usedSrcIds().has(x.id)).length; btn.textContent=`Pick from ${club} (${avail})`; btn.style.display=avail?'flex':'none'; }
+  renderPitch(); renderBench();
+  toast((p.name||'Player')+' added');
 }
 function closeSheet(){
   document.getElementById('sheet-bg').classList.remove('show');
@@ -3589,9 +3780,9 @@ function doLoadSquad(level){
     let pick=null; const pool=pools[slot.pos];
     if(pool && pool.length) pick=pool.shift();
     else if(pools._.length) pick=pools._.shift();
-    if(pick){ used.add(pick.id); const xy=slotToXY(slot,activeTeam); onField.push({id:uid(),num:pick.number||'',name:pick.name||'',pos:slot.pos,notes:'',rate:pick.rating||'',birth:pick.birth||'',sub:false,x:xy.x,y:xy.y,srcId:pick.id}); }
+    if(pick){ used.add(pick.id); const xy=slotToXY(slot,activeTeam); onField.push({id:uid(),num:pick.number||'',name:pick.name||'',pos:slot.pos,notes:'',rate:pick.rating||'',birth:birthYear(pick.birth)||'',sub:false,x:xy.x,y:xy.y,srcId:pick.id}); }
   });
-  const bench=players.filter(p=>!used.has(p.id)).map(p=>({id:uid(),num:p.number||'',name:p.name||'',pos:'',notes:'',rate:p.rating||'',birth:p.birth||'',sub:true,x:50,y:50,srcId:p.id}));
+  const bench=players.filter(p=>!used.has(p.id)).map(p=>({id:uid(),num:p.number||'',name:p.name||'',pos:'',notes:'',rate:p.rating||'',birth:birthYear(p.birth)||'',sub:true,x:50,y:50,srcId:p.id}));
   t.players = onField.concat(bench);
   activeMatch[activeTeam].name = loadSquadClub;
   const col=clubColorOf(loadSquadClub); if(col) activeMatch[activeTeam].color=col;
@@ -3735,13 +3926,37 @@ function heroUpload(ev){
 
 /* ---------- Settings sheet ---------- */
 function openSettings(){
-  renderThemeRow(); renderSettingsPreviews(); updateDupCount();
+  renderThemeRow(); renderSettingsPreviews(); updateDupCount(); updateStorageMeter();
   document.getElementById('settings-bg').classList.add('show');
   document.getElementById('settings-sheet').classList.add('show');
 }
 function closeSettings(){
   document.getElementById('settings-bg').classList.remove('show');
   document.getElementById('settings-sheet').classList.remove('show');
+}
+/* ---------- Storage usage meter ---------- */
+function storageBytes(){
+  let total=0;
+  try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); const v=localStorage.getItem(k)||''; total += (new Blob([k]).size) + (new Blob([v]).size); } }catch(e){}
+  return total;
+}
+function photoBytes(){
+  let n=0,b=0; (DB.players||[]).forEach(p=>{ if(p.photo){ n++; b+=new Blob([p.photo]).size; } });
+  return {n,b};
+}
+function updateStorageMeter(){
+  const fill=document.getElementById('stor-fill'); if(!fill) return;
+  const used=storageBytes(); const LIMIT=5*1024*1024; const pct=Math.min(100, used/LIMIT*100);
+  fill.style.width=pct.toFixed(1)+'%';
+  let col='var(--accent)'; if(pct>=85) col='var(--danger)'; else if(pct>=65) col='#f5a623';
+  fill.style.background=col;
+  const ph=photoBytes();
+  const mb=x=> (x/1024/1024).toFixed(2);
+  document.getElementById('stor-text').innerHTML=`<b>${mb(used)} MB</b> used of ~5 MB &nbsp;·&nbsp; ${pct.toFixed(0)}%${ph.n?` &nbsp;·&nbsp; ${ph.n} photo${ph.n!==1?'s':''} (${mb(ph.b)} MB)`:''}`;
+  const warn=document.getElementById('stor-warn');
+  if(pct>=85){ warn.style.display='block'; warn.style.color='var(--danger)'; warn.innerHTML='⚠︎ Storage almost full — export a backup now, then remove some photos or old reports to free space.'; }
+  else if(pct>=65){ warn.style.display='block'; warn.style.color='#b5790a'; warn.innerHTML='Storage is filling up. A good time to export a backup.'; }
+  else { warn.style.display='none'; }
 }
 /* ---------- Possible duplicate players ---------- */
 function normName(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim(); }
@@ -3865,6 +4080,7 @@ document.getElementById('pitch').addEventListener('touchmove', e=>{ e.preventDef
 applyTheme(getTheme());
 applyLogo();
 applyHero();
+document.addEventListener('click',e=>{ if(!e.target.closest('.rt-card.has-pop')) document.querySelectorAll('.rt-card.open').forEach(c=>c.classList.remove('open')); });
 showSection('dashboard');
 </script>
 </body>
