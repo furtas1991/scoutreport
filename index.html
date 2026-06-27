@@ -410,7 +410,7 @@ body.noTabs .tabbar{display:none}
 .pc-meta{color:var(--mut);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc-pos{display:inline-block;background:var(--surf2);border:1px solid var(--line2);border-radius:5px;padding:0 5px;font-size:11px;font-weight:700;color:var(--mut);margin-left:4px}
 .statusdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.st-nao-observado{background:#b4bac1}.st-a-observar{background:#f5a623}.st-observado{background:#2ba96b}
+.st-nao-observado{background:#b4bac1}.st-a-observar{background:#f5a623}.st-observado{background:#2ba96b}.st-urgente{background:#e5484d}
 
 /* team (club) card */
 .tcard{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:14px 15px;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:9px}
@@ -734,8 +734,15 @@ body.noTabs .tabbar{display:none}
 .sugg-pop-h{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.6;margin-bottom:7px}
 .sugg-pop-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 0}
 .abil-chips{display:flex;flex-wrap:wrap;gap:7px}
+.dups-grouphead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 9px}
+.dups-keep{color:#1d8a4e;border-color:rgba(43,169,107,.4);font-size:12.5px;padding:7px 11px;flex-shrink:0}
+.dups-keep:active{background:rgba(43,169,107,.1)}
 .abil-chip{background:var(--accent-d);border:1px solid var(--accent);color:var(--txt);border-radius:8px;padding:6px 11px;font-size:12.5px;font-weight:700}
 .stor-meter{height:10px;border-radius:6px;background:var(--surf2);overflow:hidden;border:1px solid var(--line2)}
+.stor-line{margin-bottom:9px}
+.stor-line-top{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--txt);margin-bottom:4px}
+.stor-line-v{color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0;font-weight:600}
+.stor-line-bar{height:6px;border-radius:4px;background:var(--surf2);overflow:hidden}
 .about-tabs{display:flex;gap:6px;background:var(--surf2);border-radius:10px;padding:4px;margin:14px 0 4px}
 .about-tab{flex:1;border:none;background:transparent;color:var(--mut);font-weight:700;font-size:13px;padding:8px;border-radius:8px;cursor:pointer}
 .about-tab.on{background:var(--surf);color:var(--txt);box-shadow:var(--sh-1)}
@@ -1059,8 +1066,10 @@ body.noTabs .tabbar{display:none}
   <div class="pf-glbl">Storage</div>
   <div class="stor-meter"><div class="stor-fill" id="stor-fill"></div></div>
   <div id="stor-text" style="font-size:12px;color:var(--mut);margin:8px 2px 0;font-variant-numeric:tabular-nums"></div>
-  <div id="stor-warn" style="font-size:11.5px;line-height:1.5;margin:6px 2px 0;display:none"></div>
-  <div style="color:var(--mut2);font-size:11px;margin:6px 2px 22px;line-height:1.55">This app stores everything inside this browser (about a 5&nbsp;MB limit). As it fills, export a backup and clear what you don't need. Player photos take the most space.</div>
+  <div id="stor-break" style="margin:11px 2px 0"></div>
+  <div id="stor-warn" style="font-size:11.5px;line-height:1.5;margin:8px 2px 0;display:none"></div>
+  <div style="color:var(--mut2);font-size:11px;margin:6px 2px 14px;line-height:1.55">Your scouting data is tiny — typically a few KB even for hundreds of players. It's <b>photos and images</b> that fill space. Everything lives in this browser (~5&nbsp;MB, shared by all your sites on this domain). Export a backup regularly and you'll never lose anything.</div>
+  <button class="btn" id="cleanup-btn" style="width:100%;justify-content:space-between;margin-bottom:22px;display:none" onclick="openCleanup()"><span>Free up space from other apps</span><span id="cleanup-count" class="segcount"></span></button>
 
   <div class="pf-glbl">Data quality</div>
   <button class="btn" id="dups-btn" style="width:100%;justify-content:space-between;margin-bottom:8px" onclick="openDuplicates()"><span>Possible duplicate players</span><span id="dups-count" class="segcount"></span></button>
@@ -1072,6 +1081,19 @@ body.noTabs .tabbar{display:none}
 
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Done</button>
+  </div>
+</div>
+
+<!-- ====== CLEANUP OTHER APPS' DATA SHEET ====== -->
+<div class="sheet-bg" id="cleanup-bg" onclick="closeCleanup()"></div>
+<div class="sheet" id="cleanup-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Other apps on this domain</div>
+  <div style="color:var(--mut);font-size:12.5px;line-height:1.5;margin-bottom:13px">These belong to your <b>other sites</b> on furtas1991.github.io and share this browser's space. Deleting one frees space but removes that app's saved data — back it up there first if you need it. Your ScoutReport data is never touched here.</div>
+  <div id="cleanup-list" style="max-height:48dvh;overflow-y:auto"></div>
+  <div class="sheet-actions" style="flex-direction:column;gap:8px">
+    <button class="btn" id="cleanup-all" style="width:100%;justify-content:center;color:var(--danger)" onclick="clearOtherKeys()">Delete all other apps' data</button>
+    <button class="btn primary" style="width:100%;justify-content:center" onclick="closeCleanup()">Done</button>
   </div>
 </div>
 
@@ -1617,6 +1639,7 @@ function load(){
   d.shadows = d.shadows || [];
   if(!d.clubLogos || typeof d.clubLogos!=='object') d.clubLogos = {};
   if(!Array.isArray(d.clubs)) d.clubs = [];
+  if(!Array.isArray(d.notDup)) d.notDup = [];
   try{
     d.matches.forEach(m=>{
       if(m.folderId === undefined) m.folderId = null;
@@ -1671,7 +1694,7 @@ function save(){
 const POSITIONS = ['GK','RB','CB','LB','RWB','LWB','DM','CM','AM','RW','LW','ST'];
 const POS_FULL = {GK:'Goalkeeper',CB:'Centre-back',RB:'Right-back',LB:'Left-back',RWB:'Right wing-back',LWB:'Left wing-back',DM:'Defensive midfielder',CM:'Central midfielder',AM:'Attacking midfielder',RW:'Right winger',LW:'Left winger',ST:'Striker'};
 const FEET = ['Right','Left','Two-footed'];
-const STATUSES = ['Not scouted','To scout','Scouted'];
+const STATUSES = ['Not scouted','To scout','Watch urgently','Scouted'];
 const BIOTYPES = ['Ectomorph','Mesomorph','Endomorph'];
 const COUNTRY_ISO = {
   'portugal':'PT','espanha':'ES','frança':'FR','franca':'FR','inglaterra':'GB','reino unido':'GB','escócia':'GB','escocia':'GB','país de gales':'GB','pais de gales':'GB','irlanda':'IE','irlanda do norte':'GB',
@@ -1842,7 +1865,7 @@ function avatarHTML(p, size){
   const ini = (p.name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() || '?';
   return `<span class="avatar" style="${s}">${esc(ini)}</span>`;
 }
-function statusSlug(s){ return {'Not scouted':'nao-observado','To scout':'a-observar','Scouted':'observado'}[s]||''; }
+function statusSlug(s){ return {'Not scouted':'nao-observado','To scout':'a-observar','Watch urgently':'urgente','Scouted':'observado'}[s]||''; }
 
 /* ---------- Filters ---------- */
 function distinct(key){ return [...new Set(DB.players.map(p=>p[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt')); }
@@ -4038,19 +4061,94 @@ function photoBytes(){
   let n=0,b=0; (DB.players||[]).forEach(p=>{ if(p.photo){ n++; b+=new Blob([p.photo]).size; } });
   return {n,b};
 }
+/* ---------- Other apps' data cleanup ---------- */
+function isScoutKey(k){ return typeof k==='string' && k.indexOf('scoutreport')===0; }
+function otherKeys(){
+  const out=[];
+  try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(!isScoutKey(k)){ const v=localStorage.getItem(k)||''; out.push({key:k, bytes:new Blob([k]).size+new Blob([v]).size}); } } }catch(e){}
+  return out.sort((a,b)=>b.bytes-a.bytes);
+}
+function updateCleanupBtn(){
+  const ks=otherKeys(); const btn=document.getElementById('cleanup-btn'); if(!btn) return;
+  if(ks.length){ const total=ks.reduce((s,x)=>s+x.bytes,0); btn.style.display='flex'; document.getElementById('cleanup-count').textContent = (total>=1024*1024?(total/1024/1024).toFixed(1)+' MB':Math.round(total/1024)+' KB'); }
+  else btn.style.display='none';
+}
+function openCleanup(){ renderCleanup(); document.getElementById('cleanup-bg').classList.add('show'); document.getElementById('cleanup-sheet').classList.add('show'); }
+function closeCleanup(){ document.getElementById('cleanup-bg').classList.remove('show'); document.getElementById('cleanup-sheet').classList.remove('show'); updateStorageMeter(); }
+function renderCleanup(){
+  const ks=otherKeys(); const box=document.getElementById('cleanup-list');
+  const kb=x=> x>=1024*1024? (x/1024/1024).toFixed(2)+' MB' : Math.max(1,Math.round(x/1024))+' KB';
+  if(!ks.length){ box.innerHTML=`<div class="empty" style="padding:20px 0"><div class="et">Nothing else here</div><div>No other apps have stored data in this browser.</div></div>`; document.getElementById('cleanup-all').style.display='none'; return; }
+  document.getElementById('cleanup-all').style.display='flex';
+  box.innerHTML = ks.map(o=>`<div class="tcard" style="align-items:center">
+    <div class="pc-main"><div class="pc-name" style="font-family:monospace;font-size:13px">${esc(o.key)}</div><div class="pc-meta">${kb(o.bytes)}</div></div>
+    <button class="btn" style="color:var(--danger)" onclick="deleteOtherKey('${esc(o.key).replace(/'/g,"\\'")}')">Delete</button>
+  </div>`).join('');
+}
+function deleteOtherKey(k){
+  if(isScoutKey(k)) return;
+  if(!confirm(`Delete "${k}"? This removes that app's saved data from this browser. It cannot be undone.`)) return;
+  try{ localStorage.removeItem(k); }catch(e){}
+  renderCleanup(); updateCleanupBtn();
+  toast('Freed up space');
+}
+function clearOtherKeys(){
+  const ks=otherKeys(); if(!ks.length) return;
+  if(!confirm(`Delete data from ${ks.length} other app${ks.length!==1?'s':''}? Your ScoutReport data is kept. This cannot be undone.`)) return;
+  ks.forEach(o=>{ try{ localStorage.removeItem(o.key); }catch(e){} });
+  renderCleanup(); updateCleanupBtn();
+  toast('Other apps\u2019 data cleared');
+}
+function storageBreakdown(){
+  const sz=s=> s? new Blob([s]).size : 0;
+  const players=DB.players||[];
+  let photos=0; players.forEach(p=>{ if(p.photo) photos+=sz(p.photo); });
+  const playersText=Math.max(0, sz(JSON.stringify(players))-photos);
+  const matches=sz(JSON.stringify(DB.matches||[]));
+  const shadows=sz(JSON.stringify(DB.shadows||[]));
+  let crests=0; if(DB.clubLogos) Object.values(DB.clubLogos).forEach(v=>crests+=sz(v)); (DB.clubs||[]).forEach(c=>{ if(c&&c.logo) crests+=sz(c.logo); });
+  let header=0,logo=0,theme=0,mainKey=0;
+  try{ header=sz(localStorage.getItem(HERO_KEY)); }catch(e){}
+  try{ logo=sz(localStorage.getItem(LOGO_KEY)); }catch(e){}
+  try{ theme=sz(localStorage.getItem(THEME_KEY)); }catch(e){}
+  try{ mainKey=sz(localStorage.getItem(LS_KEY)); }catch(e){}
+  const total=storageBytes();
+  const other=Math.max(0, total - (mainKey+header+logo+theme));
+  return {photos,playersText,matches,shadows,crests,header,logo,other,total,nPhotos:players.filter(p=>p.photo).length,nPlayers:players.length};
+}
 function updateStorageMeter(){
   const fill=document.getElementById('stor-fill'); if(!fill) return;
   const used=storageBytes(); const LIMIT=5*1024*1024; const pct=Math.min(100, used/LIMIT*100);
   fill.style.width=pct.toFixed(1)+'%';
   let col='var(--accent)'; if(pct>=85) col='var(--danger)'; else if(pct>=65) col='#f5a623';
   fill.style.background=col;
-  const ph=photoBytes();
-  const mb=x=> (x/1024/1024).toFixed(2);
-  document.getElementById('stor-text').innerHTML=`<b>${mb(used)} MB</b> used of ~5 MB &nbsp;·&nbsp; ${pct.toFixed(0)}%${ph.n?` &nbsp;·&nbsp; ${ph.n} photo${ph.n!==1?'s':''} (${mb(ph.b)} MB)`:''}`;
+  const kb=x=> x>=1024*1024? (x/1024/1024).toFixed(2)+' MB' : Math.max(1,Math.round(x/1024))+' KB';
+  document.getElementById('stor-text').innerHTML=`<b>${(used/1024/1024).toFixed(2)} MB</b> used of ~5 MB &nbsp;·&nbsp; ${pct.toFixed(0)}%`;
+  // breakdown
+  const bd=storageBreakdown();
+  const rows=[
+    ['Player photos', bd.photos, bd.nPhotos?`${bd.nPhotos} photo${bd.nPhotos!==1?'s':''}`:''],
+    ['Player data', bd.playersText, bd.nPlayers?`${bd.nPlayers} player${bd.nPlayers!==1?'s':''}`:''],
+    ['Match reports', bd.matches, ''],
+    ['Shadow teams', bd.shadows, ''],
+    ['Club crests', bd.crests, ''],
+    ['Header image', bd.header, ''],
+    ['App logo', bd.logo, ''],
+    ['Other apps on this domain', bd.other, '']
+  ].filter(r=>r[1]>512).sort((a,b)=>b[1]-a[1]);
+  const maxv=Math.max(1,...rows.map(r=>r[1]));
+  const box=document.getElementById('stor-break');
+  box.innerHTML = rows.map(([label,bytes,sub])=>`
+    <div class="stor-line">
+      <div class="stor-line-top"><span>${label}${sub?` <span style="color:var(--mut2)">· ${sub}</span>`:''}</span><span class="stor-line-v">${kb(bytes)}</span></div>
+      <div class="stor-line-bar"><div style="width:${Math.max(3,bytes/maxv*100).toFixed(0)}%;height:100%;border-radius:4px;background:${label.startsWith('Other')?'var(--mut2)':'var(--accent)'}"></div></div>
+    </div>`).join('') || '<div style="color:var(--mut2);font-size:12px">Almost empty — nothing to worry about.</div>';
   const warn=document.getElementById('stor-warn');
   if(pct>=85){ warn.style.display='block'; warn.style.color='var(--danger)'; warn.innerHTML='⚠︎ Storage almost full — export a backup now, then remove some photos or old reports to free space.'; }
   else if(pct>=65){ warn.style.display='block'; warn.style.color='#b5790a'; warn.innerHTML='Storage is filling up. A good time to export a backup.'; }
+  else if(bd.other>150*1024){ warn.style.display='block'; warn.style.color='var(--mut)'; warn.innerHTML='Note: “Other apps on this domain” is space used by your other sites on furtas1991.github.io — not by ScoutReport.'; }
   else { warn.style.display='none'; }
+  updateCleanupBtn();
 }
 /* ---------- Possible duplicate players ---------- */
 function normName(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim(); }
@@ -4063,6 +4161,8 @@ function editDist(a,b){
   }
   return prev[n];
 }
+function dupPairKey(a,b){ return [a,b].sort().join('|'); }
+function dupIsDismissed(a,b){ return Array.isArray(DB.notDup) && DB.notDup.includes(dupPairKey(a,b)); }
 function findDuplicateGroups(){
   const ps=DB.players.filter(p=>(p.name||'').trim());
   const norm=ps.map(p=>({p,n:normName(p.name)}));
@@ -4071,10 +4171,16 @@ function findDuplicateGroups(){
   for(let i=0;i<norm.length;i++) for(let j=i+1;j<norm.length;j++){
     const a=norm[i].n,b=norm[j].n; if(!a||!b) continue;
     const thr = a.length<=6?1:2;
-    if(a===b || editDist(a,b)<=thr){ parent[find(i)]=find(j); }
+    if((a===b || editDist(a,b)<=thr) && !dupIsDismissed(norm[i].p.id,norm[j].p.id)){ parent[find(i)]=find(j); }
   }
   const groups={}; norm.forEach((o,i)=>{ const r=find(i); (groups[r]=groups[r]||[]).push(o.p); });
   return Object.values(groups).filter(g=>g.length>1);
+}
+function dupKeepGroup(ids){
+  if(!Array.isArray(DB.notDup)) DB.notDup=[];
+  for(let i=0;i<ids.length;i++) for(let j=i+1;j<ids.length;j++){ const k=dupPairKey(ids[i],ids[j]); if(!DB.notDup.includes(k)) DB.notDup.push(k); }
+  save(); renderDuplicates(); updateDupCount();
+  toast('Marked as not duplicates');
 }
 function updateDupCount(){
   const n=findDuplicateGroups().length; const el=document.getElementById('dups-count');
@@ -4090,7 +4196,10 @@ function renderDuplicates(){
   const groups=findDuplicateGroups(); const body=document.getElementById('dups-body');
   if(!groups.length){ body.innerHTML=`<div class="empty" style="padding:24px 0"><div class="et">No possible duplicates</div><div>Every player looks unique.</div></div>`; return; }
   body.innerHTML = groups.map(g=>`<div class="dups-group">
-    <div class="section-lbl" style="margin:0 0 8px">${esc(g[0].name)} — ${g.length} similar</div>
+    <div class="dups-grouphead">
+      <div class="section-lbl" style="margin:0">${esc(g[0].name)} — ${g.length} similar</div>
+      <button class="btn dups-keep" onclick="dupKeepGroup(${JSON.stringify(g.map(p=>p.id)).replace(/"/g,'&quot;')})">✓ Not duplicates</button>
+    </div>
     ${g.map(p=>`<div class="tcard" style="align-items:center">
       ${avatarHTML(p,38)}
       <div class="pc-main"><div class="pc-name">${esc(p.name||'No name')}</div><div class="pc-meta">${[birthYear(p.birth),p.club,p.level].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
