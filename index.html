@@ -710,6 +710,13 @@ body.noTabs .tabbar{display:none}
 .pv-hero-main{flex:1;min-width:0}
 .pv-name{font-size:23px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
 .pv-meta{font-size:13.5px;color:rgba(255,255,255,.8);margin-top:5px;font-weight:500}
+.pv-metabtn{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:9px;padding:5px 11px;font-size:13.5px;font-weight:600;margin-top:6px;cursor:pointer;max-width:100%}
+.pv-metabtn b{font-weight:800}
+.pv-meta-ed{opacity:.55;font-size:12px;flex-shrink:0}
+.pv-hero-links{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+.pv-hlink{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:9px;padding:7px 12px;font-size:12.5px;font-weight:600;text-decoration:none}
+.pv-hlink:active{background:rgba(255,255,255,.2)}
+.pv-hlink span{opacity:.7;font-size:11px}
 .pv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
 .pv-tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:600}
 .pv-hero-actions{position:relative;display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
@@ -2523,7 +2530,7 @@ function renderProfileView(){
   const flag = countryFlag(p.nationality);
   const positions = profilePositions(p);
   const w = isWatch(p);
-  const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Club por definir';
+  const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Set club & age group';
   const clubLogo = p.club && DB.clubLogos && DB.clubLogos[p.club];
   const ageStr = yr ? `${yr}${age!=null?` · ${age} yrs`:''}` : '';
   const natStr = p.nationality ? `${flag?flag+' ':''}${esc(p.nationality)}` : '';
@@ -2560,6 +2567,8 @@ function renderProfileView(){
 
   const links = [['Zerozero',p.links.zerozero],['Transfermarkt',p.links.transfermarkt],['FPF',p.links.fpf]]
     .filter(x=>x[1]).map(x=>`<a class="pv-link" href="${esc(x[1])}" target="_blank" rel="noopener">${x[0]} <span>↗</span></a>`).join('');
+  const heroLinks = [['Zerozero',p.links.zerozero],['Transfermarkt',p.links.transfermarkt],['FPF',p.links.fpf]]
+    .filter(x=>x[1]).map(x=>`<a class="pv-hlink" href="${esc(x[1])}" target="_blank" rel="noopener">${x[0]} <span>↗</span></a>`).join('');
 
   document.getElementById('profile').innerHTML = `
     <div class="pv-hero">
@@ -2568,7 +2577,7 @@ function renderProfileView(){
         ${avatarHTML(p, 86)}
         <div class="pv-hero-main">
           <div class="pv-name">${esc(p.name||'No name')}</div>
-          <div class="pv-meta">${meta}</div>
+          <button class="pv-metabtn" onclick="openAssign('${p.id}')">${(p.club||p.level)?[p.club?esc(p.club):null,p.level?`<b>${esc(p.level)}</b>`:null].filter(Boolean).join(' · '):'Set club &amp; age group'} <span class="pv-meta-ed">✎</span></button>
           <div class="pv-tags">
             ${ageStr?`<span class="pv-tag">${ageStr}</span>`:''}
             ${natStr?`<span class="pv-tag">${natStr}</span>`:''}
@@ -2579,6 +2588,7 @@ function renderProfileView(){
       <div class="pv-hero-actions">
         <button class="pv-watch ${w?'on':''}" onclick="toggleWatchView()">${w?'★ In watchlist':'☆ Add to watchlist'}</button>
         ${p.status?`<span class="pv-status"><span class="statusdot st-${statusSlug(p.status)}"></span>${esc(p.status)}</span>`:''}
+        ${heroLinks?`<div class="pv-hero-links">${heroLinks}</div>`:''}
       </div>
     </div>
 
@@ -2592,17 +2602,7 @@ function renderProfileView(){
         ${p.strengthsText?`<div class="pv-notes" style="margin-top:${p.strengths.length?'10px':'0'}">${esc(p.strengthsText)}</div>`:''}
       </div>`:''}
 
-      <div class="pv-block"><div class="pv-block-t">Club &amp; age group</div>
-        <button class="assign-chip" onclick="openAssign('${p.id}')">
-          ${p.club?clubCrest(p.club,26):'<span class="lvl-badge" style="width:26px;height:26px;border-radius:8px;font-size:10px;background:var(--surf2);color:var(--mut)">?</span>'}
-          <span class="assign-chip-tx">${p.club?esc(p.club):'Set club'}${p.level?` · <b>${esc(p.level)}</b>`:' · <span style="color:var(--mut2)">no age group</span>'}</span>
-          <span class="assign-chip-ed">✎</span>
-        </button>
-      </div>
-
       ${positions.length?`<div class="pv-block"><div class="pv-block-t">Positions</div><div class="pv-posrow"><div class="pv-chips">${chips}<div class="pv-poslegend">${posLegend(p)}</div></div><div class="posfield pv-pitch">${renderPosFieldRO(p)}</div></div></div>`:''}
-
-      ${links?`<div class="pv-block"><div class="pv-block-t">Links</div><div class="pv-links">${links}</div></div>`:''}
 
       ${p.notes?`<div class="pv-block"><div class="pv-block-t">Notes</div><div class="pv-notes">${esc(p.notes)}</div></div>`:''}
 
