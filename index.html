@@ -703,7 +703,7 @@ body.noTabs .tabbar{display:none}
 .pl-item b{display:inline-block;min-width:24px;color:var(--accent)}
 
 /* profile read view */
-.pv-hero{position:relative;overflow:hidden;padding:22px 18px 18px;background:linear-gradient(160deg,#23262b,#15171b);color:#fff}
+.pv-hero{position:relative;overflow:hidden;flex-shrink:0;padding:22px 18px 20px;background:linear-gradient(160deg,#23262b,#15171b);color:#fff}
 .pv-hero-bg{position:absolute;inset:0;background:radial-gradient(120% 90% at 80% 0%,rgba(255,255,255,.08),transparent 60%)}
 .pv-hero-row{position:relative;display:flex;gap:15px;align-items:center}
 .pv-hero .avatar{border:2px solid rgba(255,255,255,.25);box-shadow:0 6px 18px rgba(0,0,0,.3)}
@@ -733,7 +733,21 @@ body.noTabs .tabbar{display:none}
 .rt-card.has-pop:hover .sugg-pop,.rt-card.open .sugg-pop{display:block}
 .sugg-pop-h{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.6;margin-bottom:7px}
 .sugg-pop-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 0}
+.abil-chips{display:flex;flex-wrap:wrap;gap:7px}
+.abil-chip{background:var(--accent-d);border:1px solid var(--accent);color:var(--txt);border-radius:8px;padding:6px 11px;font-size:12.5px;font-weight:700}
 .stor-meter{height:10px;border-radius:6px;background:var(--surf2);overflow:hidden;border:1px solid var(--line2)}
+.about-tabs{display:flex;gap:6px;background:var(--surf2);border-radius:10px;padding:4px;margin:14px 0 4px}
+.about-tab{flex:1;border:none;background:transparent;color:var(--mut);font-weight:700;font-size:13px;padding:8px;border-radius:8px;cursor:pointer}
+.about-tab.on{background:var(--surf);color:var(--txt);box-shadow:var(--sh-1)}
+.ab-feat{padding:11px 0;border-bottom:1px solid var(--line)}
+.ab-feat-t{font-weight:700;font-size:14.5px;color:var(--txt);margin-bottom:3px}
+.ab-feat-d{font-size:13px;color:var(--mut);line-height:1.5}
+.ab-ver{padding:6px 0 12px}
+.ab-ver-h{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.ab-ver-tag{font-weight:800;font-size:13px;color:var(--accent-ink);background:var(--accent);padding:2px 9px;border-radius:7px}
+.ab-ver-date{font-size:12px;color:var(--mut2)}
+.ab-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:7px}
+.ab-list li{font-size:13px;color:var(--txt);line-height:1.45}
 .stor-fill{height:100%;width:0;border-radius:6px;transition:width .4s ease,background .3s ease}
 .sp-when{font-size:12.5px;font-weight:600;white-space:nowrap}
 .pv-stat{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:var(--sh-1)}
@@ -1052,12 +1066,30 @@ body.noTabs .tabbar{display:none}
   <button class="btn" id="dups-btn" style="width:100%;justify-content:space-between;margin-bottom:8px" onclick="openDuplicates()"><span>Possible duplicate players</span><span id="dups-count" class="segcount"></span></button>
   <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.55">Players with the same or very similar names. Review and remove any accidental copies (e.g. after bulk imports).</div>
 
+  <div class="pf-glbl">About</div>
+  <button class="btn" style="width:100%;justify-content:space-between;margin-bottom:8px" onclick="openAbout()"><span>Guide &amp; what's new</span><span class="chev" style="font-size:18px;color:var(--mut2)">›</span></button>
+  <div id="set-ver" style="color:var(--mut2);font-size:11px;text-align:center;margin:14px 0 4px"></div>
+
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Done</button>
   </div>
 </div>
 
-<!-- ====== MATCH ====== -->
+<!-- ====== ABOUT / GUIDE SHEET ====== -->
+<div class="sheet-bg" id="about-bg" onclick="closeAbout()"></div>
+<div class="sheet" id="about-sheet">
+  <div class="grip"></div>
+  <div style="display:flex;align-items:center;gap:11px;margin-bottom:3px">
+    <div class="dash-mark" style="width:38px;height:38px"></div>
+    <div><div style="font-weight:800;font-size:18px;letter-spacing:-.3px">ScoutReport</div><div id="about-ver" style="color:var(--mut);font-size:12px"></div></div>
+  </div>
+  <div class="about-tabs">
+    <button class="about-tab on" id="abt-guide" onclick="aboutTab('guide')">Guide</button>
+    <button class="about-tab" id="abt-news" onclick="aboutTab('news')">What's new</button>
+  </div>
+  <div id="about-body" style="max-height:60dvh;overflow-y:auto;padding-top:4px"></div>
+  <div class="sheet-actions"><button class="btn primary" onclick="closeAbout()">Done</button></div>
+</div>
 <div id="match">
   <div class="teamhead">
     <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
@@ -1616,6 +1648,7 @@ function normalizeProfile(p){
   if(!p.links) p.links = {}; p.links.zerozero = p.links.zerozero||'';
   p.links.transfermarkt = p.links.transfermarkt||''; p.links.fpf = p.links.fpf||'';
   p.notes = p.notes||''; if(!Array.isArray(p.obs)) p.obs = [];
+  if(!Array.isArray(p.strengths)) p.strengths = []; p.strengthsText = p.strengthsText||'';
   p.photo = p.photo||''; p.watch = !!p.watch;
   if(!p.createdAt) p.createdAt = new Date().toISOString();
   // migrate old PT values
@@ -2268,6 +2301,7 @@ function newProfile(){
 function openProfile(id, from, mode){
   editingProfile = DB.players.find(p=>p.id===id);
   if(!editingProfile) return;
+  normalizeProfile(editingProfile);
   profileReturn = from || 'database';
   profileMode = mode || 'view';
   ['dashboard','home','match','teams','database','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
@@ -2372,6 +2406,12 @@ function renderProfile(){
     </div>
 
     <div class="pf-group">
+      <div class="pf-glbl">Outstanding ability <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--mut2)">· what he's really good at</span></div>
+      <div class="pf-chips" id="pf-abil">${ABILITIES.map(a=>`<button class="pf-chip ${p.strengths.includes(a)?'on':''}" onclick="toggleStrength('${esc(a).replace(/'/g,"\\'")}')">${esc(a)}</button>`).join('')}</div>
+      <textarea class="pf-in" id="pf-strtext" placeholder="Add detail in your own words…" style="min-height:70px;margin-top:11px" oninput="pfField('strengthsText',this.value)">${esc(p.strengthsText)}</textarea>
+    </div>
+
+    <div class="pf-group">
       <div class="pf-glbl">Links</div>
       <div class="linkrow"><span class="ico">ZZ</span><input class="pf-in" placeholder="zerozero.pt/..." value="${esc(p.links.zerozero)}" oninput="pfLink('zerozero',this.value)">${p.links.zerozero?`<a class="open" href="${esc(p.links.zerozero)}" target="_blank" rel="noopener">Open</a>`:''}</div>
       <div class="linkrow"><span class="ico">TM</span><input class="pf-in" placeholder="transfermarkt..." value="${esc(p.links.transfermarkt)}" oninput="pfLink('transfermarkt',this.value)">${p.links.transfermarkt?`<a class="open" href="${esc(p.links.transfermarkt)}" target="_blank" rel="noopener">Open</a>`:''}</div>
@@ -2453,6 +2493,7 @@ function suggestedRating(pid){
 }
 function fmtObsDate(d){ return d? new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '—'; }
 function toggleSuggPop(e){ e.stopPropagation(); const c=e.currentTarget; c.classList.toggle('open'); }
+const ABILITIES = ['Pace','Acceleration','Dribbling / 1v1','Finishing','Passing / Vision','Long passing','Crossing','Set pieces','Heading / Aerial','Tackling','Marking','Positioning','Pressing / Work rate','Stamina','Strength / Physical','First touch','Composure','Leadership','Game intelligence','Two-footed','Recovery pace','Off-the-ball movement'];
 function renderProfileView(){
   const p = editingProfile; if(!p) return;
   const yr = birthYear(p.birth), age = ageFromBirth(p.birth);
@@ -2523,6 +2564,11 @@ function renderProfileView(){
 
       ${ratingsBlock}
 
+      ${(p.strengths.length||p.strengthsText)?`<div class="pv-block"><div class="pv-block-t">Outstanding ability</div>
+        ${p.strengths.length?`<div class="abil-chips">${p.strengths.map(s=>`<span class="abil-chip">${esc(s)}</span>`).join('')}</div>`:''}
+        ${p.strengthsText?`<div class="pv-notes" style="margin-top:${p.strengths.length?'10px':'0'}">${esc(p.strengthsText)}</div>`:''}
+      </div>`:''}
+
       <div class="pv-block"><div class="pv-block-t">Club &amp; age group</div>
         <button class="assign-chip" onclick="openAssign('${p.id}')">
           ${p.club?clubCrest(p.club,26):'<span class="lvl-badge" style="width:26px;height:26px;border-radius:8px;font-size:10px;background:var(--surf2);color:var(--mut)">?</span>'}
@@ -2548,6 +2594,13 @@ function toggleWatchView(){
   renderProfileView();
 }
 function pfField(k,v){ editingProfile[k]=v; save(); if(k==='birth'||k==='club'||k==='level') updatePfSub(); }
+function toggleStrength(a){
+  const p=editingProfile; if(!p) return;
+  const i=p.strengths.indexOf(a); if(i>=0) p.strengths.splice(i,1); else p.strengths.push(a);
+  save();
+  const box=document.getElementById('pf-abil');
+  if(box) box.innerHTML = ABILITIES.map(x=>`<button class="pf-chip ${p.strengths.includes(x)?'on':''}" onclick="toggleStrength('${esc(x).replace(/'/g,"\\'")}')">${esc(x)}</button>`).join('');
+}
 function updatePfSub(){
   const p=editingProfile, yr=birthYear(p.birth), age=ageFromBirth(p.birth);
   const sub=[p.club,p.level,yr?(yr+(age!=null?` · ${age} yrs`:'')):''].filter(Boolean).join('  ·  ');
@@ -3927,12 +3980,53 @@ function heroUpload(ev){
 /* ---------- Settings sheet ---------- */
 function openSettings(){
   renderThemeRow(); renderSettingsPreviews(); updateDupCount(); updateStorageMeter();
+  const sv=document.getElementById('set-ver'); if(sv) sv.textContent='ScoutReport · Version '+APP_VERSION;
   document.getElementById('settings-bg').classList.add('show');
   document.getElementById('settings-sheet').classList.add('show');
 }
 function closeSettings(){
   document.getElementById('settings-bg').classList.remove('show');
   document.getElementById('settings-sheet').classList.remove('show');
+}
+/* ---------- About / guide / what's new ---------- */
+const APP_VERSION = '1.0';
+const ABOUT_GUIDE = [
+  ['Home', 'Quick actions, your watchlist and section shortcuts on one screen. Tap the gear for settings.'],
+  ['Match reports', 'Build a game report on a pitch with formations. Drag players, rate them (A–D), add notes, and export a clean PDF. Name a team after one of your clubs to load its squad or pick players position by position.'],
+  ['Player database', 'A profile for each player: photo, positions, foot, ratings, links and observations. Search and filter by club, age group, position, birth-year range and rating. Paste a whole squad to add players in bulk.'],
+  ['Clubs & age groups', 'Organise players by club, then by age group. Use “Select players” to move many players to an age group at once.'],
+  ['Shadow teams', 'Build depth charts by position with colour coding and notes, and export them to PDF.'],
+  ['Ratings', 'Each profile shows a Suggested rating — the average of the ratings you gave that player across match reports — next to your manual Final rating.'],
+  ['Watchlist', 'Star players to keep them one tap away on Home.'],
+  ['Backup & storage', 'Export everything to a file (save to iCloud/Files) and import it on another device. The storage meter shows how full this browser is.']
+];
+const ABOUT_NEWS = [
+  ['1.0', 'June 2026', [
+    'Match reports: load a club squad onto the pitch, or pick players from the club position by position; the club colour is applied automatically.',
+    'Player profiles: Suggested vs Final ratings, with a pop-up of the last 5 match ratings.',
+    'Database: advanced filters (birth-year range, multi-position with line shortcuts, multi-rating).',
+    'Bulk import: tolerant parser for zerozero (mobile) and Transfermarkt formats, with a fully editable preview.',
+    'Clubs: club → age group → players, with bulk age-group assignment and one-tap assign from a profile.',
+    'Duplicate detection for same/similar names, reviewable in Settings.',
+    'Shadow teams: professional PDF export.',
+    'Storage meter and a compact, single-screen Home.'
+  ]]
+];
+let aboutMode='guide';
+function openAbout(){ aboutMode='guide'; document.getElementById('about-ver').textContent='Version '+APP_VERSION; aboutTab('guide'); document.getElementById('about-bg').classList.add('show'); document.getElementById('about-sheet').classList.add('show'); }
+function closeAbout(){ document.getElementById('about-bg').classList.remove('show'); document.getElementById('about-sheet').classList.remove('show'); }
+function aboutTab(mode){
+  aboutMode=mode;
+  document.getElementById('abt-guide').classList.toggle('on',mode==='guide');
+  document.getElementById('abt-news').classList.toggle('on',mode==='news');
+  const body=document.getElementById('about-body');
+  if(mode==='guide'){
+    body.innerHTML = ABOUT_GUIDE.map(([t,d])=>`<div class="ab-feat"><div class="ab-feat-t">${esc(t)}</div><div class="ab-feat-d">${esc(d)}</div></div>`).join('');
+  } else {
+    body.innerHTML = ABOUT_NEWS.map(([v,date,items])=>`<div class="ab-ver">
+      <div class="ab-ver-h"><span class="ab-ver-tag">v${esc(v)}</span><span class="ab-ver-date">${esc(date)}</span></div>
+      <ul class="ab-list">${items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('');
+  }
 }
 /* ---------- Storage usage meter ---------- */
 function storageBytes(){
