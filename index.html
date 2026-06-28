@@ -151,13 +151,21 @@ header{
   display:flex;align-items:stretch;border-bottom:1px solid var(--line);
   background:var(--surf);flex-shrink:0;
 }
+.thalf{display:flex;flex-direction:column;flex:1;min-width:0}
+.trow1{display:flex;align-items:center;padding:6px 8px 2px}
 .tname{
   flex:1;min-width:0;background:transparent;border:none;color:var(--txt);
-  font-size:15px;font-weight:700;padding:11px 12px;text-align:center;outline:none;
+  font-size:15px;font-weight:700;padding:5px 6px;text-align:center;outline:none;
   letter-spacing:-.3px;
 }
 .tname::placeholder{color:var(--mut2);font-weight:600}
-.vs{display:flex;align-items:center;color:var(--mut2);font-size:11px;font-weight:800;padding:0 6px;letter-spacing:.1em}
+.tkind-row{display:flex;gap:4px;padding:2px 8px 5px;justify-content:center}
+.tkind-btn{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;border:1.5px solid var(--line2);background:transparent;color:var(--mut);cursor:pointer;transition:all .15s}
+.tkind-btn.on{background:var(--accent-d);border-color:var(--accent);color:var(--accent-ink)}
+.tsugg{display:flex;flex-wrap:wrap;gap:4px;padding:0 8px 6px;min-height:0}
+.tsugg-chip{font-size:11px;padding:2px 7px;border-radius:10px;border:1px solid var(--line2);background:var(--surf2);cursor:pointer;color:var(--txt);white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
+.tsugg-chip:active{background:var(--line)}
+.vs{display:flex;align-items:center;color:var(--mut2);font-size:11px;font-weight:800;padding:0 4px;letter-spacing:.1em;align-self:flex-start;padding-top:14px}
 
 /* tabs */
 .tabs{display:flex;background:var(--surf);border-bottom:1px solid var(--line);flex-shrink:0;position:relative}
@@ -1296,12 +1304,29 @@ body.noTabs .tabbar{display:none}
 </div>
 <div id="match">
   <div class="teamhead">
-    <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
-    <input class="tname" id="home-name" list="dl-teamnames" placeholder="Home team" oninput="renameTeam('home',this.value)">
+    <div class="thalf" id="thalf-home">
+      <div class="trow1">
+        <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
+        <input class="tname" id="home-name" placeholder="Home team" oninput="renameTeam('home',this.value)" autocomplete="off">
+      </div>
+      <div class="tkind-row" id="tkind-home">
+        <button class="tkind-btn on" id="tkb-home-club" onclick="setTeamKind('home','club')">🏟 Club</button>
+        <button class="tkind-btn" id="tkb-home-nt" onclick="setTeamKind('home','nt')">🌍 NT</button>
+      </div>
+      <div class="tsugg" id="tsugg-home"></div>
+    </div>
     <span class="vs">VS</span>
-    <input class="tname" id="away-name" list="dl-teamnames" placeholder="Away team" oninput="renameTeam('away',this.value)">
-    <datalist id="dl-teamnames"></datalist>
-    <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
+    <div class="thalf" id="thalf-away">
+      <div class="trow1">
+        <input class="tname" id="away-name" placeholder="Away team" oninput="renameTeam('away',this.value)" autocomplete="off">
+        <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
+      </div>
+      <div class="tkind-row" id="tkind-away">
+        <button class="tkind-btn on" id="tkb-away-club" onclick="setTeamKind('away','club')">🏟 Club</button>
+        <button class="tkind-btn" id="tkb-away-nt" onclick="setTeamKind('away','nt')">🌍 NT</button>
+      </div>
+      <div class="tsugg" id="tsugg-away"></div>
+    </div>
   </div>
 
   <div class="tabs">
@@ -3738,6 +3763,9 @@ function openMatch(id){
   activeMatch = DB.matches.find(m=>m.id===id);
   if(!activeMatch) return;
   migrate(activeMatch);
+  // ensure kind field exists
+  if(!activeMatch.home.kind) activeMatch.home.kind='club';
+  if(!activeMatch.away.kind) activeMatch.away.kind='club';
   activeTeam='home';
   ['dashboard','home','teams','database','profile','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
   document.getElementById('match').classList.add('show');
@@ -3745,8 +3773,7 @@ function openMatch(id){
   setHeader('match');
   document.getElementById('home-name').value = activeMatch.home.name;
   document.getElementById('away-name').value = activeMatch.away.name;
-  const dlt=document.getElementById('dl-teamnames');
-  if(dlt) dlt.innerHTML = allClubNames().map(c=>`<option value="${esc(c)}">`).join('');
+  initTeamHeader();
   switchTeam('home');
   renderTabs();
 }
@@ -3952,13 +3979,58 @@ function migrate(m){
 /* ---------- Team / tabs ---------- */
 function renameTeam(team, val){
   activeMatch[team].name = val; save();
-  applyClubColorToTeam(team);
+  applyTeamColorByName(team);
+  renderTeamSuggestions(team);
   renderTabs();
 }
-function applyClubColorToTeam(team){
+function setTeamKind(team, kind){
+  if(!activeMatch[team].kind) activeMatch[team].kind = 'club';
+  activeMatch[team].kind = kind; save();
+  renderTeamKindUI(team);
+  renderTeamSuggestions(team);
+}
+function renderTeamKindUI(team){
+  const kind = (activeMatch[team]&&activeMatch[team].kind)||'club';
+  ['club','nt'].forEach(k=>{
+    const btn=document.getElementById('tkb-'+team+'-'+k);
+    if(btn) btn.classList.toggle('on', kind===k);
+  });
+}
+function renderTeamSuggestions(team){
+  const el=document.getElementById('tsugg-'+team); if(!el) return;
+  const kind=(activeMatch[team]&&activeMatch[team].kind)||'club';
+  const val=(activeMatch[team]&&activeMatch[team].name||'').trim().toLowerCase();
+  const names = kind==='nt' ? allNTNames() : allClubNames();
+  const filtered = val ? names.filter(n=>n.toLowerCase().includes(val)).slice(0,5) : names.slice(0,5);
+  el.innerHTML = filtered.map(n=>{
+    const crest = kind==='nt' ? ntCrest(n,18) : clubCrest(n,18);
+    return `<span class="tsugg-chip" onclick="pickTeamName('${team}','${esc(n).replace(/'/g,"\\'")}')">${crest}<span style="overflow:hidden;text-overflow:ellipsis">${esc(n)}</span></span>`;
+  }).join('');
+}
+function pickTeamName(team, name){
+  activeMatch[team].name = name; save();
+  const inp=document.getElementById(team+'-name'); if(inp) inp.value=name;
+  applyTeamColorByName(team);
+  renderTeamSuggestions(team);
+  renderTabs();
+}
+function applyTeamColorByName(team){
   const nm=(activeMatch[team].name||'').trim();
-  const col=clubColorOf(nm);
+  const kind=(activeMatch[team].kind)||'club';
+  let col = kind==='nt' ? ntColorOf(nm) : clubColorOf(nm);
+  if(!col && kind==='club') col = clubColorOf(nm); // fallback
+  if(!col && kind==='nt') col = ntColorOf(nm);
   if(col){ activeMatch[team].color=col; save(); renderTabs(); renderPitch(); }
+}
+function applyClubColorToTeam(team){ applyTeamColorByName(team); }
+function initTeamHeader(){
+  ['home','away'].forEach(team=>{
+    if(activeMatch && activeMatch[team]){
+      if(!activeMatch[team].kind) activeMatch[team].kind='club';
+      renderTeamKindUI(team);
+      renderTeamSuggestions(team);
+    }
+  });
 }
 function switchTeam(team){
   activeTeam = team;
@@ -4442,8 +4514,16 @@ function parseList(text){
 }
 /* ---------- Load squad from a club ---------- */
 const POS_CAT = {GK:'GK',RB:'DEF',CB:'DEF',LB:'DEF',RWB:'DEF',LWB:'DEF',DM:'MID',CM:'MID',AM:'MID',RW:'FWD',LW:'FWD',ST:'FWD'};
-let loadSquadClub = null, loadSquadNT = null;
-function openLoadSquad(){ closeFormation(); loadSquadClub=null; loadSquadNT=null; renderLoadSquad(); document.getElementById('loadsquad-bg').classList.add('show'); document.getElementById('loadsquad-sheet').classList.add('show'); }
+let loadSquadClub = null, loadSquadNT = null, loadSquadTab = 'clubs';
+function openLoadSquad(){
+  closeFormation(); loadSquadClub=null; loadSquadNT=null;
+  // pre-select tab based on active team kind
+  const kind = (activeMatch&&activeMatch[activeTeam]&&activeMatch[activeTeam].kind)||'club';
+  loadSquadTab = kind==='nt' ? 'nt' : 'clubs';
+  renderLoadSquad();
+  document.getElementById('loadsquad-bg').classList.add('show');
+  document.getElementById('loadsquad-sheet').classList.add('show');
+}
 function closeLoadSquad(){ document.getElementById('loadsquad-bg').classList.remove('show'); document.getElementById('loadsquad-sheet').classList.remove('show'); }
 function ntPlayerCount(nt){ return DB.players.filter(p=>p.nt===nt).length; }
 function allNTNames(){
@@ -4586,29 +4666,38 @@ function renderLoadSquad(){
       lvls.map(l=>{const n=DB.players.filter(p=>p.club===loadSquadClub&&(p.level||'')===l).length; return `<button class="pf-chip" onclick="doLoadSquad('${esc(l).replace(/'/g,"\\'")}')">${esc(l)} (${n})</button>`;}).join('')+
       `<button class="pf-chip" onclick="doLoadSquad(null)">All (${clubPlayerCount(loadSquadClub)})</button></div>`+
       `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="loadSquadClub=null;renderLoadSquad()"><span class="chev" style="font-size:16px">‹</span> Back</button>`;
-  } else if(loadSquadNT){
+    return;
+  }
+  if(loadSquadNT){
     const lvls=ntLevels(loadSquadNT);
     body.innerHTML = `<div class="section-lbl" style="margin-top:0">${esc(loadSquadNT)} — choose level</div>`+
       `<div style="display:flex;flex-wrap:wrap;gap:8px">`+
       lvls.map(l=>{const n=DB.players.filter(p=>p.nt===loadSquadNT&&(p.ntLevel||'')===l).length; return `<button class="pf-chip" onclick="doLoadSquadNT('${esc(l).replace(/'/g,"\\'")}')">${esc(l)} (${n})</button>`;}).join('')+
       `<button class="pf-chip" onclick="doLoadSquadNT(null)">All (${ntPlayerCount(loadSquadNT)})</button></div>`+
       `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="loadSquadNT=null;renderLoadSquad()"><span class="chev" style="font-size:16px">‹</span> Back</button>`;
-  } else {
-    const names=allClubNames(); const nts=allNTNames();
-    let html=`<div class="section-lbl" style="margin-top:0">Clubs</div>`;
-    html += names.length? names.map(n=>`<div class="tcard" onclick="loadSquadPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${clubPlayerCount(n)} player${clubPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
-      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs with players yet.</div>`;
-    if(nts.length){
-      html += `<div class="section-lbl" style="margin-top:18px">National teams</div>`+
-        nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')">${ntCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('');
-    }
-    const comps=DB.competitions||[];
-    if(comps.length){
-      html += `<div class="section-lbl" style="margin-top:18px">Competitions</div>`+
-        comps.map(c=>`<div class="tcard" onclick="doLoadComp('${c.id}')"><span class="nt-badge" style="background:rgba(245,166,35,.15);color:#b5790a">🏆</span><div class="pc-main"><div class="pc-name">${esc(c.name||'Untitled')}</div><div class="pc-meta">${(c.squad||[]).length} called up</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('');
-    }
-    body.innerHTML=html;
+    return;
   }
+  const names=allClubNames(); const nts=allNTNames(); const comps=DB.competitions||[];
+  // tabs
+  const tabs=[
+    {id:'clubs',label:'Clubs',count:names.length},
+    {id:'nt',label:'NT',count:nts.length},
+    {id:'comps',label:'Competitions',count:comps.length}
+  ].filter(t=>t.count>0||t.id==='clubs'||t.id==='nt');
+  let html=`<div class="cal-seg" style="margin-bottom:12px;max-width:100%">${
+    tabs.map(t=>`<button class="${loadSquadTab===t.id?'on':''}" onclick="loadSquadTab='${t.id}';renderLoadSquad()">${t.label}${t.count?` (${t.count})`:''}</button>`).join('')
+  }</div>`;
+  if(loadSquadTab==='clubs'){
+    html += names.length? names.map(n=>`<div class="tcard" onclick="loadSquadPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${clubPlayerCount(n)} player${clubPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
+      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs yet.</div>`;
+  } else if(loadSquadTab==='nt'){
+    html += nts.length? nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')">${ntCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
+      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No national teams yet.</div>`;
+  } else {
+    html += comps.length? comps.map(c=>`<div class="tcard" onclick="doLoadComp('${c.id}')"><span class="nt-badge" style="background:rgba(245,166,35,.15);color:#b5790a">🏆</span><div class="pc-main"><div class="pc-name">${esc(c.name||'Untitled')}</div><div class="pc-meta">${(c.squad||[]).length} called up</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
+      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No competitions yet.</div>`;
+  }
+  body.innerHTML=html;
 }
 function loadSquadPickClub(n){ loadSquadClub=n; loadSquadNT=null; renderLoadSquad(); }
 function loadSquadPickNT(n){ loadSquadNT=n; loadSquadClub=null; renderLoadSquad(); }
