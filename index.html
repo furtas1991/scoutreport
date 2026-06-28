@@ -711,6 +711,23 @@ body.noTabs .tabbar{display:none}
 .rec-ic svg{width:17px;height:17px}
 .dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:11px;margin-bottom:7px;cursor:pointer;box-shadow:var(--sh-1)}
 .dash-recent-card:active{border-color:var(--line2)}
+/* Quick Links */
+.ql-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
+.ql-card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:12px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.ql-card:active{transform:scale(.97);box-shadow:none}
+.ql-img{width:48px;height:48px;border-radius:10px;background:var(--surf2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.ql-name{font-size:11.5px;font-weight:700;text-align:center;line-height:1.3;color:var(--txt)}
+.ql-count{font-size:10px;color:var(--mut2);font-weight:600}
+.ql-empty{color:var(--mut2);font-size:13px;padding:8px 2px}
+.ql-add{display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line2);border-radius:14px;cursor:pointer;color:var(--mut2);font-size:22px;min-height:88px}
+.ql-add:active{background:var(--surf2)}
+/* Link folder sheet */
+.lf-row{display:flex;align-items:center;gap:8px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.lf-row:last-child{border-bottom:none}
+.lf-link{flex:1;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lf-link:active{opacity:.7}
+.lf-ext{font-size:11px;opacity:.6;flex-shrink:0}
+.lf-edit-btn{flex-shrink:0;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--surf2);color:var(--mut);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
 
 /* settings */
 .theme-row{display:flex;gap:12px;flex-wrap:wrap}
@@ -1072,6 +1089,9 @@ body.noTabs .tabbar{display:none}
     </div>
 
     <div id="dash-recent"></div>
+
+    <div class="dash-lbl" style="margin-top:20px">Quick links <button class="btn" style="float:right;padding:3px 9px;font-size:11px;margin-top:-3px" onclick="openLinkFolderEdit(null)">+ Folder</button></div>
+    <div class="ql-grid" id="dash-links"></div>
   </div>
 </div>
 
@@ -1209,6 +1229,53 @@ body.noTabs .tabbar{display:none}
 </div>
 
 <!-- ====== COMPETITIONS: LIST ====== -->
+<!-- ====== QUICK LINKS: FOLDER VIEW ====== -->
+<div class="sheet-bg" id="lf-bg" onclick="closeLinkFolder()"></div>
+<div class="sheet" id="lf-sheet">
+  <div class="grip"></div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:13px">
+    <div style="font-weight:800;font-size:17px;flex:1" id="lf-title"></div>
+    <button class="btn" onclick="openLinkEdit(activeLinkFolder&&activeLinkFolder.id,null)"><span style="font-size:16px">+</span> Add link</button>
+    <button class="btn" onclick="closeLinkFolder();openLinkFolderEdit(activeLinkFolder&&activeLinkFolder.id)">✎</button>
+  </div>
+  <div id="lf-body" style="max-height:60dvh;overflow-y:auto"></div>
+  <div class="sheet-actions" style="margin-top:10px"><button class="btn primary" onclick="closeLinkFolder()">Done</button></div>
+</div>
+
+<!-- ====== QUICK LINKS: FOLDER EDIT ====== -->
+<div class="sheet-bg" id="lfe-bg" onclick="closeLinkFolderEdit()"></div>
+<div class="sheet" id="lfe-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:17px;margin-bottom:13px" id="lfe-title">New folder</div>
+  <div class="field"><label class="flbl">Name</label><input class="inp" id="lfe-name" placeholder="e.g. Portugal" autocomplete="off"></div>
+  <div class="field" style="margin-top:11px"><label class="flbl">Emoji</label><input class="inp" id="lfe-emoji" placeholder="🔗" style="max-width:80px" autocomplete="off"></div>
+  <div style="margin-top:14px;display:flex;align-items:center;gap:10px">
+    <div id="lfe-img-preview"></div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <button class="btn" onclick="lfImgChoose()">📷 Choose image</button>
+      <button class="btn" onclick="removeLfImg()" style="color:var(--danger)">Remove image</button>
+    </div>
+  </div>
+  <input type="file" id="lf-img-input" accept="image/*" style="display:none" onchange="lfImgUpload(event)">
+  <div class="sheet-actions" style="gap:8px;margin-top:16px">
+    <button class="btn" id="lfe-del" style="color:var(--danger)" onclick="deleteLinkFolder()">Delete</button>
+    <button class="btn primary" style="flex:1;justify-content:center" onclick="saveLinkFolderEdit()">Save</button>
+  </div>
+</div>
+
+<!-- ====== QUICK LINKS: LINK EDIT ====== -->
+<div class="sheet-bg" id="le-bg" onclick="closeLinkEdit()"></div>
+<div class="sheet" id="le-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:17px;margin-bottom:13px" id="le-title">New link</div>
+  <div class="field"><label class="flbl">Name</label><input class="inp" id="le-name" placeholder="e.g. FPF" autocomplete="off"></div>
+  <div class="field" style="margin-top:11px"><label class="flbl">URL</label><input class="inp" id="le-url" placeholder="https://…" autocomplete="off" inputmode="url"></div>
+  <div class="sheet-actions" style="gap:8px;margin-top:16px">
+    <button class="btn" id="le-del" style="color:var(--danger)" onclick="deleteLink()">Delete</button>
+    <button class="btn primary" style="flex:1;justify-content:center" onclick="saveLinkEdit()">Save</button>
+  </div>
+</div>
+
 <div class="sheet-bg" id="comp-bg" onclick="closeCompetitions()"></div>
 <div class="sheet" id="comp-sheet">
   <div class="grip"></div>
@@ -1876,7 +1943,7 @@ function idbOpen(){
 function idbGet(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const rq=tx.objectStore(IDB_STORE).get(key); rq.onsuccess=()=>res(rq.result==null?null:rq.result); rq.onerror=()=>rej(rq.error); })); }
 function idbSet(key,val){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(val,key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error); })); }
 function idbDel(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).delete(key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); })); }
-function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, ntLogos:{}, ntInfo:{}, clubs:[], notDup:[], events:[], competitions:[] }; }
+function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, ntLogos:{}, ntInfo:{}, clubs:[], notDup:[], events:[], competitions:[], linkFolders:[] }; }
 
 let DB = emptyDB();
 let activeMatch = null;   // match object
@@ -2066,6 +2133,7 @@ function renderDashboard(){
       </div>`;
     }).join('');
   } else rc.innerHTML='';
+  renderQuickLinks();
 }
 function dashNewMatch(){ currentFolder=null; newMatch(); }
 function goWatchlist(){ showSection('database'); setDbView('watch'); }
@@ -3774,6 +3842,183 @@ function importFile(ev){
   reader.onerror = ()=>toast('Could not read the file');
   reader.readAsText(file);
 }
+/* ================================================================
+   QUICK LINKS
+   ================================================================ */
+function defaultLinkFolders(){
+  return [
+    { id:uid(), name:'Streams', emoji:'📺', image:'', links:[
+      {id:uid(),name:'YouTube FPF',url:'https://www.youtube.com/@fpfoficial'},
+      {id:uid(),name:'UEFA TV',url:'https://www.youtube.com/@UEFA'},
+      {id:uid(),name:'LaLiga YouTube',url:'https://www.youtube.com/@LaLiga'},
+      {id:uid(),name:'DAZN Portugal',url:'https://www.dazn.com'},
+    ]},
+    { id:uid(), name:'Portugal', emoji:'🇵🇹', image:'', links:[
+      {id:uid(),name:'FPF',url:'https://www.fpf.pt'},
+      {id:uid(),name:'Liga Portugal',url:'https://www.ligaportugal.pt'},
+      {id:uid(),name:'Zerozero',url:'https://www.zerozero.pt'},
+      {id:uid(),name:'Sporting CP',url:'https://www.sporting.pt'},
+      {id:uid(),name:'SL Benfica',url:'https://www.slbenfica.pt'},
+      {id:uid(),name:'FC Porto',url:'https://www.fcporto.pt'},
+    ]},
+    { id:uid(), name:'España', emoji:'🇪🇸', image:'', links:[
+      {id:uid(),name:'RFEF',url:'https://rfef.es'},
+      {id:uid(),name:'Real Madrid',url:'https://www.realmadrid.com'},
+      {id:uid(),name:'FC Barcelona',url:'https://www.fcbarcelona.com'},
+      {id:uid(),name:'Atlético de Madrid',url:'https://www.atleticodemadrid.com'},
+    ]},
+    { id:uid(), name:'Competitions', emoji:'🏆', image:'', links:[
+      {id:uid(),name:'Liga Revelação (Sub23)',url:'https://www.ligaportugal.pt'},
+      {id:uid(),name:'CN Sub19 PT',url:'https://www.fpf.pt'},
+      {id:uid(),name:'CN Sub17 PT',url:'https://www.fpf.pt'},
+      {id:uid(),name:'División Honor Sub19 ES',url:'https://rfef.es'},
+      {id:uid(),name:'UEFA Youth League',url:'https://www.uefa.com/uefayouthl\eague'},
+    ]},
+    { id:uid(), name:'Databases', emoji:'🔍', image:'', links:[
+      {id:uid(),name:'Transfermarkt',url:'https://www.transfermarkt.pt'},
+      {id:uid(),name:'Sofascore',url:'https://www.sofascore.com'},
+      {id:uid(),name:'Soccerway',url:'https://int.soccerway.com'},
+      {id:uid(),name:'Wyscout',url:'https://www.wyscout.com'},
+    ]},
+  ];
+}
+
+let activeLinkFolder = null;
+let editingLinkFolder = null;
+let editingLink = null;
+
+function renderQuickLinks(){
+  const el = document.getElementById('dash-links'); if(!el) return;
+  const folders = DB.linkFolders||[];
+  if(!folders.length){
+    el.innerHTML=`<div class="ql-empty">No link folders yet. <button class="btn" style="display:inline;padding:2px 8px;font-size:12px" onclick="openLinkFolderEdit(null)">Add one</button></div>`;
+    return;
+  }
+  el.innerHTML = folders.map(f=>{
+    const img = f.image ? `<img src="${f.image}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">` : `<span style="font-size:22px">${esc(f.emoji||'🔗')}</span>`;
+    return `<div class="ql-card" onclick="openLinkFolder('${f.id}')">
+      <div class="ql-img">${img}</div>
+      <div class="ql-name">${esc(f.name)}</div>
+      <div class="ql-count">${(f.links||[]).length}</div>
+    </div>`;
+  }).join('');
+}
+
+function openLinkFolder(id){
+  activeLinkFolder = (DB.linkFolders||[]).find(f=>f.id===id); if(!activeLinkFolder) return;
+  renderLinkFolderSheet();
+  document.getElementById('lf-bg').classList.add('show');
+  document.getElementById('lf-sheet').classList.add('show');
+}
+function closeLinkFolder(){
+  document.getElementById('lf-bg').classList.remove('show');
+  document.getElementById('lf-sheet').classList.remove('show');
+  activeLinkFolder=null;
+}
+function renderLinkFolderSheet(){
+  const f=activeLinkFolder; if(!f) return;
+  const img = f.image ? `<img src="${f.image}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">` : `<span style="font-size:28px">${esc(f.emoji||'🔗')}</span>`;
+  document.getElementById('lf-title').textContent = f.name;
+  const body = document.getElementById('lf-body');
+  const links = f.links||[];
+  body.innerHTML = links.map(l=>`
+    <div class="lf-row">
+      <a class="lf-link" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}<span class="lf-ext">↗</span></a>
+      <button class="lf-edit-btn" onclick="openLinkEdit('${f.id}','${l.id}')">✎</button>
+    </div>`).join('')
+    || `<div class="ql-empty">No links yet.</div>`;
+}
+
+/* ---- Folder edit sheet ---- */
+function openLinkFolderEdit(id){
+  editingLinkFolder = id ? (DB.linkFolders||[]).find(f=>f.id===id) : null;
+  const isNew = !editingLinkFolder;
+  if(isNew) editingLinkFolder = {id:uid(),name:'',emoji:'🔗',image:'',links:[]};
+  document.getElementById('lfe-title').textContent = isNew?'New folder':'Edit folder';
+  document.getElementById('lfe-name').value = editingLinkFolder.name;
+  document.getElementById('lfe-emoji').value = editingLinkFolder.emoji||'🔗';
+  const img = document.getElementById('lfe-img-preview');
+  img.innerHTML = editingLinkFolder.image ? `<img src="${editingLinkFolder.image}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">` : '';
+  document.getElementById('lfe-del').style.display = isNew?'none':'';
+  document.getElementById('lfe-bg').classList.add('show');
+  document.getElementById('lfe-sheet').classList.add('show');
+}
+function closeLinkFolderEdit(){
+  document.getElementById('lfe-bg').classList.remove('show');
+  document.getElementById('lfe-sheet').classList.remove('show');
+  editingLinkFolder=null;
+}
+function saveLinkFolderEdit(){
+  const name=document.getElementById('lfe-name').value.trim();
+  const emoji=document.getElementById('lfe-emoji').value.trim()||'🔗';
+  if(!name){ toast('Name is required'); return; }
+  editingLinkFolder.name=name; editingLinkFolder.emoji=emoji;
+  if(!DB.linkFolders) DB.linkFolders=[];
+  if(!DB.linkFolders.find(f=>f.id===editingLinkFolder.id)) DB.linkFolders.push(editingLinkFolder);
+  save(); closeLinkFolderEdit(); renderQuickLinks();
+}
+function deleteLinkFolder(){
+  if(!editingLinkFolder||!confirm('Delete this folder and all its links?')) return;
+  DB.linkFolders=(DB.linkFolders||[]).filter(f=>f.id!==editingLinkFolder.id);
+  save(); closeLinkFolderEdit(); closeLinkFolder(); renderQuickLinks();
+}
+let pendingLfImg=null;
+function lfImgChoose(){ pendingLfImg='folder'; document.getElementById('lf-img-input').click(); }
+function lfImgUpload(ev){
+  const file=ev.target.files&&ev.target.files[0]; ev.target.value='';
+  if(!file||!editingLinkFolder) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const tmp=new Image(); tmp.onload=()=>{
+      const max=200,c=document.createElement('canvas');
+      const sc=Math.min(max/tmp.width,max/tmp.height,1);
+      c.width=Math.round(tmp.width*sc); c.height=Math.round(tmp.height*sc);
+      c.getContext('2d').drawImage(tmp,0,0,c.width,c.height);
+      editingLinkFolder.image=c.toDataURL('image/jpeg',0.85);
+      const prev=document.getElementById('lfe-img-preview');
+      prev.innerHTML=`<img src="${editingLinkFolder.image}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`;
+    };
+    tmp.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function removeLfImg(){ if(editingLinkFolder){editingLinkFolder.image=''; document.getElementById('lfe-img-preview').innerHTML='';} }
+
+/* ---- Link edit sheet ---- */
+function openLinkEdit(folderId, linkId){
+  const folder=(DB.linkFolders||[]).find(f=>f.id===folderId); if(!folder) return;
+  activeLinkFolder=folder;
+  editingLink = linkId ? (folder.links||[]).find(l=>l.id===linkId) : null;
+  const isNew=!editingLink;
+  if(isNew) editingLink={id:uid(),name:'',url:''};
+  document.getElementById('le-title').textContent=isNew?'New link':'Edit link';
+  document.getElementById('le-name').value=editingLink.name;
+  document.getElementById('le-url').value=editingLink.url;
+  document.getElementById('le-del').style.display=isNew?'none':'';
+  document.getElementById('le-bg').classList.add('show');
+  document.getElementById('le-sheet').classList.add('show');
+}
+function closeLinkEdit(){
+  document.getElementById('le-bg').classList.remove('show');
+  document.getElementById('le-sheet').classList.remove('show');
+  editingLink=null;
+}
+function saveLinkEdit(){
+  const name=document.getElementById('le-name').value.trim();
+  const url=document.getElementById('le-url').value.trim();
+  if(!name||!url){ toast('Name and URL are required'); return; }
+  if(!url.startsWith('http')) { toast('URL must start with http:// or https://'); return; }
+  editingLink.name=name; editingLink.url=url;
+  if(!activeLinkFolder.links) activeLinkFolder.links=[];
+  if(!activeLinkFolder.links.find(l=>l.id===editingLink.id)) activeLinkFolder.links.push(editingLink);
+  save(); closeLinkEdit(); renderLinkFolderSheet(); renderQuickLinks();
+}
+function deleteLink(){
+  if(!editingLink||!activeLinkFolder||!confirm('Delete this link?')) return;
+  activeLinkFolder.links=(activeLinkFolder.links||[]).filter(l=>l.id!==editingLink.id);
+  save(); closeLinkEdit(); renderLinkFolderSheet(); renderQuickLinks();
+}
+
 function normalizeDB(d){
   d.folders = Array.isArray(d.folders)? d.folders : [];
   d.matches = Array.isArray(d.matches)? d.matches : [];
@@ -3786,6 +4031,8 @@ function normalizeDB(d){
   if(!Array.isArray(d.notDup)) d.notDup = [];
   if(!Array.isArray(d.events)) d.events = [];
   if(!Array.isArray(d.competitions)) d.competitions = [];
+  if(!Array.isArray(d.linkFolders)) d.linkFolders = [];
+  if(d.linkFolders.length===0) d.linkFolders = defaultLinkFolders();
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
   migrateMatches(d.matches);
   d.players.forEach(normalizeProfile);
