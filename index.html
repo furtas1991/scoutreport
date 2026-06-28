@@ -779,6 +779,9 @@ body.noTabs .tabbar{display:none}
 .pv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
 .pv-tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:600}
 .nt-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:rgba(124,58,237,.15);color:#7c3aed;font-size:11px;font-weight:800;flex-shrink:0}
+.td-block{background:var(--surf);border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-top:12px;display:flex;flex-direction:column;gap:9px}
+.td-row{display:flex;gap:9px;font-size:13.5px;color:var(--txt);line-height:1.45}
+.td-ic{flex-shrink:0;font-size:14px;opacity:.85}
 .pv-tag-nt{background:rgba(124,58,237,.32);border-color:rgba(124,58,237,.5)}
 .pv-hero-actions{position:relative;display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
 .pv-watch{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:8px 13px;font-size:13px;font-weight:700;cursor:pointer}
@@ -1100,6 +1103,7 @@ body.noTabs .tabbar{display:none}
 <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="photoUpload(event)">
 <input type="file" id="hero-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="heroUpload(event)">
 <input type="file" id="clublogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="clubLogoUpload(event)">
+<input type="file" id="ntlogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="ntLogoUpload(event)">
 
 <!-- ====== SETTINGS SHEET ====== -->
 <div class="sheet-bg" id="settings-bg" onclick="closeSettings()"></div>
@@ -1154,6 +1158,21 @@ body.noTabs .tabbar{display:none}
 
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Done</button>
+  </div>
+</div>
+
+<!-- ====== CLUB / NT DETAILS SHEET ====== -->
+<div class="sheet-bg" id="details-bg" onclick="closeTeamDetails()"></div>
+<div class="sheet" id="details-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:13px;color:var(--mut2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Details</div>
+  <div id="td-title" style="font-weight:800;font-size:18px;margin-bottom:14px">—</div>
+  <div class="field"><label class="flbl">Location / city</label><input class="inp" id="td-location" placeholder="e.g. Madrid, Spain" autocomplete="off"></div>
+  <div class="field" style="margin-top:11px"><label class="flbl">Contacts</label><textarea class="inp" id="td-contacts" style="min-height:64px" placeholder="People, phone, email…"></textarea></div>
+  <div class="field" style="margin-top:11px"><label class="flbl">Notes</label><textarea class="inp" id="td-notes" style="min-height:72px" placeholder="Anything useful about this team…"></textarea></div>
+  <div class="sheet-actions" style="gap:8px;margin-top:14px">
+    <button class="btn" onclick="closeTeamDetails()">Cancel</button>
+    <button class="btn primary" style="flex:1;justify-content:center" onclick="saveTeamDetails()">Save</button>
   </div>
 </div>
 
@@ -1803,7 +1822,7 @@ function idbOpen(){
 function idbGet(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const rq=tx.objectStore(IDB_STORE).get(key); rq.onsuccess=()=>res(rq.result==null?null:rq.result); rq.onerror=()=>rej(rq.error); })); }
 function idbSet(key,val){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(val,key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error); })); }
 function idbDel(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).delete(key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); })); }
-function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, clubs:[], notDup:[], events:[], competitions:[] }; }
+function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, ntLogos:{}, ntInfo:{}, clubs:[], notDup:[], events:[], competitions:[] }; }
 
 let DB = emptyDB();
 let activeMatch = null;   // match object
@@ -1898,11 +1917,24 @@ const COUNTRY_ISO = {
   'croácia':'HR','croacia':'HR','sérvia':'RS','servia':'RS','polónia':'PL','polonia':'PL','dinamarca':'DK','suécia':'SE','suecia':'SE','noruega':'NO','finlândia':'FI','finlandia':'FI','grécia':'GR','grecia':'GR','turquia':'TR','rússia':'RU','russia':'RU','ucrânia':'UA','ucrania':'UA',
   'estados unidos':'US','eua':'US','canadá':'CA','canada':'CA','japão':'JP','japao':'JP','coreia do sul':'KR','austrália':'AU','australia':'AU',
   'nigéria':'NG','nigeria':'NG','gana':'GH','senegal':'SN','camarões':'CM','camaroes':'CM','costa do marfim':'CI','marrocos':'MA','argélia':'DZ','argelia':'DZ','tunísia':'TN','tunisia':'TN','egito':'EG','áfrica do sul':'ZA','africa do sul':'ZA',
-  'roménia':'RO','romenia':'RO','hungria':'HU','chéquia':'CZ','chequia':'CZ','república checa':'CZ','eslováquia':'SK','eslovaquia':'SK','eslovénia':'SI','eslovenia':'SI','bulgária':'BG','bulgaria':'BG','albânia':'AL','albania':'AL'
+  'roménia':'RO','romenia':'RO','hungria':'HU','chéquia':'CZ','chequia':'CZ','república checa':'CZ','eslováquia':'SK','eslovaquia':'SK','eslovénia':'SI','eslovenia':'SI','bulgária':'BG','bulgaria':'BG','albânia':'AL','albania':'AL',
+  // gentílicos (nacionalidade como adjetivo)
+  'português':'PT','portuguesa':'PT','espanhol':'ES','espanhola':'ES','francês':'FR','francesa':'FR','inglês':'GB','inglesa':'GB','britânico':'GB','britânica':'GB','escocês':'GB','escocesa':'GB','galês':'GB','galesa':'GB','irlandês':'IE','irlandesa':'IE',
+  'alemão':'DE','alemã':'DE','italiano':'IT','italiana':'IT','holandês':'NL','holandesa':'NL','neerlandês':'NL','belga':'BE','suíço':'CH','suíça':'CH','austríaco':'AT','austríaca':'AT',
+  'brasileiro':'BR','brasileira':'BR','argentino':'AR','uruguaio':'UY','uruguaia':'UY','colombiano':'CO','colombiana':'CO','chileno':'CL','chilena':'CL','mexicano':'MX','mexicana':'MX','peruano':'PE','peruana':'PE','paraguaio':'PY','equatoriano':'EC','venezuelano':'VE','venezuelana':'VE','boliviano':'BO',
+  'cabo-verdiano':'CV','cabo-verdiana':'CV','caboverdiano':'CV','angolano':'AO','angolana':'AO','moçambicano':'MZ','moçambicana':'MZ','guineense':'GW','são-tomense':'ST','sao-tomense':'ST',
+  'croata':'HR','sérvio':'RS','sérvia':'RS','polaco':'PL','polaca':'PL','polonês':'PL','dinamarquês':'DK','dinamarquesa':'DK','sueco':'SE','sueca':'SE','norueguês':'NO','norueguesa':'NO','finlandês':'FI','grego':'GR','grega':'GR','turco':'TR','turca':'TR','russo':'RU','russa':'RU','ucraniano':'UA','ucraniana':'UA',
+  'americano':'US','americana':'US','norte-americano':'US','canadiano':'CA','canadiana':'CA','canadense':'CA','japonês':'JP','japonesa':'JP','sul-coreano':'KR','coreano':'KR','australiano':'AU','australiana':'AU',
+  'nigeriano':'NG','nigeriana':'NG','ganês':'GH','ganesa':'GH','senegalês':'SN','senegalesa':'SN','camaronês':'CM','marfinense':'CI','marroquino':'MA','marroquina':'MA','argelino':'DZ','argelina':'DZ','tunisino':'TN','egípcio':'EG','egípcia':'EG','sul-africano':'ZA','sul-africana':'ZA',
+  'romeno':'RO','romena':'RO','húngaro':'HU','húngara':'HU','checo':'CZ','checa':'CZ','tcheco':'CZ','eslovaco':'SK','eslovaca':'SK','esloveno':'SI','eslovena':'SI','búlgaro':'BG','búlgara':'BG','albanês':'AL','albanesa':'AL'
 };
+let _isoNorm=null;
+function _stripDia(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 function countryFlag(name){
   if(!name) return '';
-  const iso = COUNTRY_ISO[name.trim().toLowerCase()];
+  const key=name.trim().toLowerCase();
+  let iso=COUNTRY_ISO[key];
+  if(!iso){ if(!_isoNorm){ _isoNorm={}; for(const k in COUNTRY_ISO){ _isoNorm[_stripDia(k)]=COUNTRY_ISO[k]; } } iso=_isoNorm[_stripDia(key)]; }
   if(!iso) return '';
   return iso.toUpperCase().replace(/./g, c=>String.fromCodePoint(127397 + c.charCodeAt(0)));
 }
@@ -2548,7 +2580,8 @@ function renderTeams(){
 
   // STATE C: a club + age group -> players
   if(activeClub && activeLevel!==null){
-    const players = DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel)
+    const isAll = activeLevel===ALL_LVL;
+    const players = DB.players.filter(p=>p.club===activeClub && (isAll || (p.level||'')===activeLevel))
       .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
     const cn = esc(activeClub).replace(/'/g,"\\'"); const lv = esc(activeLevel).replace(/'/g,"\\'");
     let tools;
@@ -2557,14 +2590,14 @@ function renderTeams(){
     } else {
       tools = `<div class="club-tools">
         ${players.length?`<button class="btn" onclick="startSelect()">Select players</button>`:''}
-        ${activeLevel?`<button class="btn" onclick="renameLevel('${cn}','${lv}')">Rename</button><button class="btn" onclick="removeLevel('${cn}','${lv}')">Remove</button>`:''}
+        ${(activeLevel&&!isAll)?`<button class="btn" onclick="renameLevel('${cn}','${lv}')">Rename</button><button class="btn" onclick="removeLevel('${cn}','${lv}')">Remove</button>`:''}
       </div>`;
     }
     top.innerHTML = `<div class="backrow"><button class="backlink" onclick="${selMode?'cancelSelect':'exitLevel'}()"><span class="chev">‹</span> ${selMode?'Done selecting':esc(activeClub)}</button></div>
       <div class="team-head">
         ${clubCrest(activeClub,52)}
         <div style="flex:1;min-width:0">
-          <div class="sec-title" style="font-size:20px">${esc(activeLevel||'No age group')}</div>
+          <div class="sec-title" style="font-size:20px">${isAll?'All players':esc(activeLevel||'No age group')}</div>
           <div class="sec-sub" style="margin:2px 0 0">${esc(activeClub)} · ${players.length} player${players.length!==1?'s':''}${selMode?` · ${selIds.size} selected`:''}</div>
         </div>
       </div>${tools}`;
@@ -2609,9 +2642,12 @@ function renderTeams(){
       </div>
       <div class="club-tools">
         <span class="club-colors">${palette.map(col=>`<span class="cdot ${clubColorOf(activeClub)===col?'on':''}" style="background:${col}" onclick="setClubColor('${cn}','${col}')"></span>`).join('')}</span>
+        <button class="btn" onclick="openTeamDetails('club','${cn}')">Details</button>
         <button class="btn" onclick="renameClub('${cn}')">Rename</button>
         <button class="btn" onclick="deleteClub('${cn}')">Delete</button>
       </div>
+      ${teamDetailsBlock('club',activeClub)}
+      ${total?`<button class="btn" style="width:100%;justify-content:center;margin-top:10px" onclick="openAllPlayers()"><span style="font-size:15px">≡</span> View all players (${total})</button>`:''}
       <div class="section-lbl" style="margin-top:18px">Age groups / teams</div>`;
     let html = levels.map(lvl=>{
       const n = DB.players.filter(p=>p.club===activeClub && (p.level||'')===lvl).length;
@@ -2673,11 +2709,18 @@ function setTeamsTab(t){ teamsTab=t; activeClub=null; activeLevel=null; viewNoCl
 function renderTeamsNT(top,list){
   if(activeNT){
     const players=DB.players.filter(p=>p.nt===activeNT).sort((a,b)=>(a.ntLevel||'~').localeCompare(b.ntLevel||'~')||(a.name||'~').localeCompare(b.name||'~','pt'));
+    const nn=esc(activeNT).replace(/'/g,"\\'");
+    const ntpal = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
     top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNT=null;renderTeams()"><span class="chev">‹</span> National teams</button></div>
-      <div class="team-head"><span class="nt-badge" style="width:52px;height:52px;border-radius:13px;font-size:15px">${esc(ntAbbr(activeNT))}</span>
+      <div class="team-head"><span class="team-crest" onclick="ntLogoChoose('${nn}')">${ntCrest(activeNT,64)}<span class="crest-edit">✎</span></span>
         <div style="flex:1;min-width:0"><div class="sec-title" style="font-size:21px">${esc(activeNT)}</div>
         <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''}</div></div></div>
-      <div class="club-tools"><button class="btn primary" onclick="openBulk('nt','${esc(activeNT).replace(/'/g,"\\'")}')"><span style="font-size:16px">+</span> Add players</button></div>`;
+      <div class="club-tools">
+        <span class="club-colors">${ntpal.map(col=>`<span class="cdot ${ntColorOf(activeNT)===col?'on':''}" style="background:${col}" onclick="setNTColor('${nn}','${col}')"></span>`).join('')}</span>
+        <button class="btn" onclick="openTeamDetails('nt','${nn}')">Details</button>
+      </div>
+      ${teamDetailsBlock('nt',activeNT)}
+      <div class="club-tools" style="margin-top:10px"><button class="btn primary" onclick="openBulk('nt','${nn}')"><span style="font-size:16px">+</span> Add players</button>${ntLogoOf(activeNT)?`<button class="btn" onclick="ntLogoReset('${nn}')">Remove image</button>`:''}</div>`;
     list.innerHTML = players.length? players.map(p=>playerCard(p)).join('') : `<div class="empty"><div class="et">No players yet</div><div>Use “Add players” to paste a squad.</div></div>`;
     return;
   }
@@ -2686,7 +2729,7 @@ function renderTeamsNT(top,list){
   const nts=distinct('nt');
   list.innerHTML = nts.length? nts.map(n=>{
     const cnt=ntPlayerCount(n); const lvls=ntLevels(n);
-    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\\'")}';renderTeams()"><span class="nt-badge">${esc(ntAbbr(n))}</span><div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
+    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\\'")}';renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
   }).join('') : `<div class="empty"><div class="et">No national teams yet</div><div>Tap the button above to create one and paste its players.</div></div>`;
 }
 
@@ -3566,6 +3609,8 @@ function normalizeDB(d){
   d.players = Array.isArray(d.players)? d.players : [];
   d.shadows = Array.isArray(d.shadows)? d.shadows : [];
   d.clubLogos = (d.clubLogos && typeof d.clubLogos==='object')? d.clubLogos : {};
+  d.ntLogos = (d.ntLogos && typeof d.ntLogos==='object')? d.ntLogos : {};
+  d.ntInfo = (d.ntInfo && typeof d.ntInfo==='object')? d.ntInfo : {};
   d.clubs = Array.isArray(d.clubs)? d.clubs : [];
   if(!Array.isArray(d.notDup)) d.notDup = [];
   if(!Array.isArray(d.events)) d.events = [];
@@ -4327,6 +4372,71 @@ function closeLoadSquad(){ document.getElementById('loadsquad-bg').classList.rem
 function ntPlayerCount(nt){ return DB.players.filter(p=>p.nt===nt).length; }
 function ntLevels(nt){ return [...new Set(DB.players.filter(p=>p.nt===nt).map(p=>p.ntLevel||'').filter(Boolean))].sort(); }
 function ntAbbr(n){ return (n||'').replace(/[^A-Za-zÀ-ÿ]/g,'').slice(0,3).toUpperCase(); }
+function ntLogoOf(name){ return (DB.ntLogos&&DB.ntLogos[name])||''; }
+function ntCrest(name,size){
+  const logo=ntLogoOf(name); const s=`width:${size}px;height:${size}px`;
+  if(logo) return `<span class="nt-badge" style="${s};background:#fff;padding:2px;overflow:hidden"><img src="${logo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
+  const col=ntColorOf(name);
+  return `<span class="nt-badge" style="${s}${col?`;background:${col};color:#fff`:''}">${esc(ntAbbr(name))}</span>`;
+}
+let pendingNTLogo=null;
+function ntLogoChoose(name){ pendingNTLogo=name; document.getElementById('ntlogo-input').click(); }
+function ntLogoUpload(ev){
+  const file=ev.target.files && ev.target.files[0]; ev.target.value='';
+  if(!file || !pendingNTLogo) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const tmp=new Image();
+    tmp.onload=()=>{
+      const max=140; let w=tmp.width,h=tmp.height; const sc=Math.min(max/w,max/h,1); w=Math.round(w*sc); h=Math.round(h*sc);
+      const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(tmp,0,0,w,h);
+      let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Invalid image'); return; }
+      if(!DB.ntLogos) DB.ntLogos={}; DB.ntLogos[pendingNTLogo]=out; save(); renderTeams(); toast('National team image updated');
+    };
+    tmp.onerror=()=>toast('Could not read the image');
+    tmp.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function ntLogoReset(name){ if(DB.ntLogos) delete DB.ntLogos[name]; save(); renderTeams(); toast('Image removed'); }
+function ntInfoOf(name){ return (DB.ntInfo&&DB.ntInfo[name])||{}; }
+function ntColorOf(name){ return ntInfoOf(name).color||''; }
+function setNTColor(name,col){ if(!DB.ntInfo) DB.ntInfo={}; if(!DB.ntInfo[name]) DB.ntInfo[name]={}; DB.ntInfo[name].color = (DB.ntInfo[name].color===col?'':col); save(); renderTeams(); }
+function setClubColor2(name,col){ const c=ensureClub(name); c.color=(c.color===col?'':col); save(); renderTeams(); }
+
+const ALL_LVL='\u0000ALL';
+function openAllPlayers(){ activeLevel=ALL_LVL; selMode=false; selIds=new Set(); renderTeams(); }
+
+/* ---- shared club / national-team details ---- */
+let detailsKind=null, detailsName=null;
+function openTeamDetails(kind,name){
+  detailsKind=kind; detailsName=name;
+  const info = kind==='club'? (clubObj(name)||{}) : ntInfoOf(name);
+  document.getElementById('td-title').textContent = name;
+  document.getElementById('td-location').value = info.location||'';
+  document.getElementById('td-contacts').value = info.contacts||'';
+  document.getElementById('td-notes').value = info.notes||'';
+  document.getElementById('details-bg').classList.add('show');
+  document.getElementById('details-sheet').classList.add('show');
+}
+function saveTeamDetails(){
+  const loc=document.getElementById('td-location').value.trim();
+  const con=document.getElementById('td-contacts').value.trim();
+  const not=document.getElementById('td-notes').value.trim();
+  if(detailsKind==='club'){ const c=ensureClub(detailsName); c.location=loc; c.contacts=con; c.notes=not; }
+  else { if(!DB.ntInfo) DB.ntInfo={}; if(!DB.ntInfo[detailsName]) DB.ntInfo[detailsName]={}; Object.assign(DB.ntInfo[detailsName],{location:loc,contacts:con,notes:not}); }
+  save(); closeTeamDetails(); renderTeams(); toast('Details saved');
+}
+function closeTeamDetails(){ document.getElementById('details-bg').classList.remove('show'); document.getElementById('details-sheet').classList.remove('show'); }
+function teamDetailsBlock(kind,name){
+  const info = kind==='club'? (clubObj(name)||{}) : ntInfoOf(name);
+  const rows=[];
+  if(info.location) rows.push(`<div class="td-row"><span class="td-ic">📍</span><span>${esc(info.location)}</span></div>`);
+  if(info.contacts) rows.push(`<div class="td-row"><span class="td-ic">✉️</span><span style="white-space:pre-wrap">${esc(info.contacts)}</span></div>`);
+  if(info.notes) rows.push(`<div class="td-row"><span class="td-ic">📝</span><span style="white-space:pre-wrap">${esc(info.notes)}</span></div>`);
+  if(!rows.length) return '';
+  return `<div class="td-block">${rows.join('')}</div>`;
+}
 function renderLoadSquad(){
   const body=document.getElementById('loadsquad-body');
   if(loadSquadClub){
@@ -4350,7 +4460,7 @@ function renderLoadSquad(){
       : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs with players yet.</div>`;
     if(nts.length){
       html += `<div class="section-lbl" style="margin-top:18px">National teams</div>`+
-        nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')"><span class="nt-badge">${esc(ntAbbr(n))}</span><div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('');
+        nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')">${ntCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('');
     }
     const comps=DB.competitions||[];
     if(comps.length){
@@ -4552,6 +4662,8 @@ const ABOUT_GUIDE = [
 ];
 const ABOUT_NEWS = [
   ['1.1', 'June 2026', [
+    'Club & national-team profiles: give each a colour, a crest or flag image, a location, contacts and notes — and view every player in the team in one tap.',
+    'Nationality flags now recognise Portuguese country names and nationalities (e.g. Espanhol, Inglês, Brasileiro), with or without accents.',
     'National teams: a player can belong to a club and a national team (e.g. Spain U19) in one record — no duplicates. Manage them in Teams → National teams: add a whole squad in bulk with the country, level and nationality applied to everyone. Filter the database by national team and load one onto a match report.',
     'Competitions: create a competition with a fixed called-up squad, then load the same players into every match report for it. Manage them from the trophy button in Calendar.',
     'New Calendar tab: plan the games you intend to scout across Year, Month and Week views. Mark events as live, video scouting or travel days, each colour-coded.',
@@ -4644,7 +4756,7 @@ function storageBreakdown(){
   const playersText=Math.max(0, sz(JSON.stringify(players))-photos);
   const matches=sz(JSON.stringify(DB.matches||[]));
   const shadows=sz(JSON.stringify(DB.shadows||[]));
-  let crests=0; if(DB.clubLogos) Object.values(DB.clubLogos).forEach(v=>crests+=sz(v)); (DB.clubs||[]).forEach(c=>{ if(c&&c.logo) crests+=sz(c.logo); });
+  let crests=0; if(DB.clubLogos) Object.values(DB.clubLogos).forEach(v=>crests+=sz(v)); if(DB.ntLogos) Object.values(DB.ntLogos).forEach(v=>crests+=sz(v)); (DB.clubs||[]).forEach(c=>{ if(c&&c.logo) crests+=sz(c.logo); });
   let header=0,logo=0;
   try{ header=sz(localStorage.getItem(HERO_KEY)); }catch(e){}
   try{ logo=sz(localStorage.getItem(LOGO_KEY)); }catch(e){}
