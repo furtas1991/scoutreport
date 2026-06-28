@@ -1596,14 +1596,22 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="bulk-bg" onclick="closeBulk()"></div>
 <div class="sheet" id="bulk-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Add players in bulk</div>
+  <div id="bulk-title" style="font-weight:800;font-size:16px;margin-bottom:4px">Add players in bulk</div>
   <div style="color:var(--mut);font-size:13px;margin-bottom:12px">Paste a squad list (one player per line) — e.g. copied from zerozero or Transfermarkt. The preview shows exactly what will be created.</div>
   <textarea id="bulk-text" placeholder="João Silva 18&#10;Pedro Costa 2007&#10;Miguel Santos 15/03/2008&#10;…" style="width:100%;min-height:120px;resize:vertical;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:14px;background:var(--surf);color:var(--txt);font-family:inherit" oninput="bulkPreview()"></textarea>
-  <div style="display:flex;gap:8px;margin-top:10px">
+  <div id="bulk-clubrow" style="display:flex;gap:8px;margin-top:10px">
     <input class="pf-in" id="bulk-club" list="dl-bulkclubs" placeholder="Club for all (optional)" style="flex:1">
     <input class="pf-in" id="bulk-level" list="dl-bulklevels" placeholder="Age group (optional)" style="flex:1">
   </div>
+  <div id="bulk-ntrow" style="display:none;margin-top:10px">
+    <div style="display:flex;gap:8px">
+      <input class="pf-in" id="bulk-nt" list="dl-bulknts" placeholder="National team (e.g. Spain)" style="flex:1">
+      <input class="pf-in" id="bulk-ntlevel" list="dl-bulkntlevels" placeholder="Level (e.g. U19)" style="flex:1">
+    </div>
+    <button class="ev-donebtn on" id="bulk-natchk" onclick="bulkToggleNat()" style="margin-top:9px;padding:10px">✓ Also set nationality to this country</button>
+  </div>
   <datalist id="dl-bulkclubs"></datalist><datalist id="dl-bulklevels"></datalist>
+  <datalist id="dl-bulknts"></datalist><datalist id="dl-bulkntlevels"></datalist>
   <div class="dash-lbl" style="margin:14px 0 4px">Preview</div>
   <div id="bulk-preview" style="max-height:34dvh;overflow-y:auto"></div>
   <div class="sheet-actions">
@@ -1906,6 +1914,8 @@ let profileMode = 'view';
 let activeClub = null;
 let activeLevel = null;
 let viewNoClub = false;
+let teamsTab = 'clubs';
+let activeNT = null;
 let selMode = false;
 let selIds = new Set();
 let editingProfile = null;
@@ -2534,6 +2544,8 @@ function renderTeams(){
   const list = document.getElementById('teams-list');
   const _sb=document.getElementById('selbar'); if(_sb) _sb.style.display='none';
 
+  if(teamsTab==='nt'){ renderTeamsNT(top,list); return; }
+
   // STATE C: a club + age group -> players
   if(activeClub && activeLevel!==null){
     const players = DB.players.filter(p=>p.club===activeClub && (p.level||'')===activeLevel)
@@ -2622,7 +2634,7 @@ function renderTeams(){
   }
 
   // STATE A: clubs list
-  top.innerHTML = `<div class="sec-title">Clubs</div><div class="sec-sub">Create clubs and age groups, then assign players and reports to them.</div>
+  top.innerHTML = teamsToggle('clubs')+`<div class="sec-title">Clubs</div><div class="sec-sub">Create clubs and age groups, then assign players and reports to them.</div>
     <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="newClub()"><span style="font-size:17px">+</span> New club</button>`;
   const names = allClubNames();
   const noClub = DB.players.filter(p=>!(p.club||'').trim()).length;
@@ -2649,6 +2661,33 @@ function renderTeams(){
       </div>`;
   }
   list.innerHTML = aHtml;
+}
+
+function teamsToggle(active){
+  return `<div class="cal-seg" style="margin-bottom:14px;max-width:300px">
+    <button class="${active==='clubs'?'on':''}" onclick="setTeamsTab('clubs')">Clubs</button>
+    <button class="${active==='nt'?'on':''}" onclick="setTeamsTab('nt')">National teams</button>
+  </div>`;
+}
+function setTeamsTab(t){ teamsTab=t; activeClub=null; activeLevel=null; viewNoClub=false; activeNT=null; selMode=false; renderTeams(); }
+function renderTeamsNT(top,list){
+  if(activeNT){
+    const players=DB.players.filter(p=>p.nt===activeNT).sort((a,b)=>(a.ntLevel||'~').localeCompare(b.ntLevel||'~')||(a.name||'~').localeCompare(b.name||'~','pt'));
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNT=null;renderTeams()"><span class="chev">‹</span> National teams</button></div>
+      <div class="team-head"><span class="nt-badge" style="width:52px;height:52px;border-radius:13px;font-size:15px">${esc(ntAbbr(activeNT))}</span>
+        <div style="flex:1;min-width:0"><div class="sec-title" style="font-size:21px">${esc(activeNT)}</div>
+        <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''}</div></div></div>
+      <div class="club-tools"><button class="btn primary" onclick="openBulk('nt','${esc(activeNT).replace(/'/g,"\\'")}')"><span style="font-size:16px">+</span> Add players</button></div>`;
+    list.innerHTML = players.length? players.map(p=>playerCard(p)).join('') : `<div class="empty"><div class="et">No players yet</div><div>Use “Add players” to paste a squad.</div></div>`;
+    return;
+  }
+  top.innerHTML = teamsToggle('nt')+`<div class="sec-sub" style="margin:0 0 12px">Add a whole national team at once — the country and level apply to everyone, and you can set their nationality too.</div>
+    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="openBulk('nt')"><span style="font-size:17px">+</span> Add players to a national team</button>`;
+  const nts=distinct('nt');
+  list.innerHTML = nts.length? nts.map(n=>{
+    const cnt=ntPlayerCount(n); const lvls=ntLevels(n);
+    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\\'")}';renderTeams()"><span class="nt-badge">${esc(ntAbbr(n))}</span><div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
+  }).join('') : `<div class="empty"><div class="et">No national teams yet</div><div>Tap the button above to create one and paste its players.</div></div>`;
 }
 
 /* ---------- Bulk add players (paste) ---------- */
@@ -2694,16 +2733,28 @@ function bulkParse(text){
   return out;
 }
 let bulkList=[];
-function openBulk(){
+let bulkMode='club', bulkNat=true;
+function openBulk(mode, presetNT, presetLevel){
+  bulkMode = mode==='nt'?'nt':'club';
   document.getElementById('bulk-text').value='';
   document.getElementById('bulk-club').value='';
   document.getElementById('bulk-level').value='';
+  document.getElementById('bulk-nt').value=presetNT||'';
+  document.getElementById('bulk-ntlevel').value=presetLevel||'';
   document.getElementById('dl-bulkclubs').innerHTML = allClubNames().map(c=>`<option value="${esc(c)}">`).join('');
   document.getElementById('dl-bulklevels').innerHTML = LEVELS.map(l=>`<option value="${l}">`).join('');
+  document.getElementById('dl-bulknts').innerHTML = ntCountries().map(c=>`<option value="${esc(c)}">`).join('');
+  document.getElementById('dl-bulkntlevels').innerHTML = ['U15','U16','U17','U18','U19','U20','U21','U23','A'].map(l=>`<option value="${l}">`).join('');
+  document.getElementById('bulk-clubrow').style.display = bulkMode==='nt'?'none':'flex';
+  document.getElementById('bulk-ntrow').style.display = bulkMode==='nt'?'block':'none';
+  document.getElementById('bulk-title').textContent = bulkMode==='nt'?'Add players to a national team':'Add players in bulk';
+  bulkNat=true; updateBulkNatChk();
   bulkList=[]; renderBulkList();
   document.getElementById('bulk-bg').classList.add('show');
   document.getElementById('bulk-sheet').classList.add('show');
 }
+function bulkToggleNat(){ bulkNat=!bulkNat; updateBulkNatChk(); }
+function updateBulkNatChk(){ const b=document.getElementById('bulk-natchk'); if(b){ b.classList.toggle('on',bulkNat); b.textContent=bulkNat?'✓ Also set nationality to this country':'Also set nationality to this country'; } }
 function closeBulk(){ document.getElementById('bulk-bg').classList.remove('show'); document.getElementById('bulk-sheet').classList.remove('show'); }
 function bulkPreview(){ bulkList = bulkParse(document.getElementById('bulk-text').value); renderBulkList(); }
 function updateBulkBtn(){
@@ -2736,10 +2787,23 @@ function bulkRemove(i){ bulkList.splice(i,1); renderBulkList(); }
 function bulkCreate(){
   const items = bulkList.filter(p=>(p.name||'').trim());
   if(!items.length){ toast('No names to add'); return; }
+  const n=items.length;
+  if(bulkMode==='nt'){
+    const nt=(document.getElementById('bulk-nt').value||'').trim();
+    const ntLevel=(document.getElementById('bulk-ntlevel').value||'').trim();
+    if(!nt){ toast('Enter the national team'); return; }
+    items.forEach(p=>{
+      const o={ id:uid(), createdAt:new Date().toISOString(), name:p.name.trim(), birth:p.birth||'', nt, ntLevel };
+      if(bulkNat) o.nationality=nt;
+      DB.players.unshift(normalizeProfile(o));
+    });
+    save(); closeBulk(); if(currentSection==='teams') renderTeams(); else renderDatabase();
+    toast(`${n} player${n!==1?'s':''} added to ${nt}${ntLevel?' '+ntLevel:''}`);
+    return;
+  }
   const club=(document.getElementById('bulk-club').value||'').trim();
   const level=(document.getElementById('bulk-level').value||'').trim();
   if(club){ const c=ensureClub(club); if(level && !c.levels.includes(level)) c.levels.push(level); }
-  const n=items.length;
   items.forEach(p=>{
     DB.players.unshift(normalizeProfile({ id:uid(), createdAt:new Date().toISOString(), name:p.name.trim(), birth:p.birth||'', club, level }));
   });
@@ -4488,7 +4552,7 @@ const ABOUT_GUIDE = [
 ];
 const ABOUT_NEWS = [
   ['1.1', 'June 2026', [
-    'National teams: a player can belong to a club and a national team (e.g. Spain U19) in one record — no duplicates. Filter the database by national team, and load a national-team squad straight onto a match report.',
+    'National teams: a player can belong to a club and a national team (e.g. Spain U19) in one record — no duplicates. Manage them in Teams → National teams: add a whole squad in bulk with the country, level and nationality applied to everyone. Filter the database by national team and load one onto a match report.',
     'Competitions: create a competition with a fixed called-up squad, then load the same players into every match report for it. Manage them from the trophy button in Calendar.',
     'New Calendar tab: plan the games you intend to scout across Year, Month and Week views. Mark events as live, video scouting or travel days, each colour-coded.',
     'Much larger storage: data now lives in the browser\u2019s large-capacity store (hundreds of MB to several GB) — the old ~5 MB limit is gone. Your existing data migrates automatically.',
