@@ -530,6 +530,12 @@ body.noTabs .tabbar{display:none}
 .pf-hero-row{display:flex;align-items:center;gap:14px}
 .pf-avatar{width:64px;height:64px;font-size:22px;position:relative;cursor:pointer}
 .pf-avatar .edit{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#1a1405;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid var(--surf)}
+/* Photo lightbox */
+#photo-lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}
+#photo-lb.open{opacity:1;pointer-events:all}
+#photo-lb img{max-width:88vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 24px 64px rgba(0,0,0,.5);transform:scale(.93);transition:transform .22s ease}
+#photo-lb.open img{transform:scale(1)}
+#photo-lb-close{position:absolute;top:max(18px,env(safe-area-inset-top));right:18px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .pf-hero-main{flex:1;min-width:0}
 .pf-watch-toggle{display:flex;align-items:center;gap:8px;margin-top:12px;background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600}
 .pf-watch-toggle .star{font-size:18px;color:var(--mut2)}
@@ -577,8 +583,8 @@ body.noTabs .tabbar{display:none}
 .cdot.on{box-shadow:0 0 0 2px var(--surf),0 0 0 4px currentColor}
 .cdot-clear{background:var(--surf2);color:var(--mut2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
 .club-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
-.club-colors{display:flex;gap:7px;margin-right:auto}
-.club-colors .cdot{width:22px;height:22px}
+.club-colors{display:flex;flex-wrap:wrap;gap:6px;margin-right:auto;max-width:216px}
+.club-colors .cdot{width:20px;height:20px}
 .lvl-badge{width:44px;height:44px;border-radius:11px;background:var(--accent-d);color:var(--accent-ink);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
 .sh-bklist{margin-top:20px}
 .sh-bk{margin-bottom:14px}
@@ -1104,6 +1110,7 @@ body.noTabs .tabbar{display:none}
 <input type="file" id="hero-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="heroUpload(event)">
 <input type="file" id="clublogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="clubLogoUpload(event)">
 <input type="file" id="ntlogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="ntLogoUpload(event)">
+<input type="file" id="ntlvllogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="ntLevelLogoUpload(event)">
 
 <!-- ====== SETTINGS SHEET ====== -->
 <div class="sheet-bg" id="settings-bg" onclick="closeSettings()"></div>
@@ -1948,6 +1955,7 @@ let activeLevel = null;
 let viewNoClub = false;
 let teamsTab = 'clubs';
 let activeNT = null;
+let activeNTLevel = null;
 let selMode = false;
 let selIds = new Set();
 let editingProfile = null;
@@ -2630,7 +2638,7 @@ function renderTeams(){
     const levels = clubLevels(activeClub);
     const noLevel = DB.players.filter(p=>p.club===activeClub && !(p.level||'').trim()).length;
     const total = clubPlayerCount(activeClub);
-    const palette = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
+    const palette = ['#1d6fe0','#1a8fe0','#0ea5e9','#2ba96b','#16a34a','#15803d','#e5484d','#dc2626','#f97316','#f5a623','#eab308','#7c3aed','#9333ea','#c026d3','#db2777','#e11d48','#64748b','#475569','#374151','#15181c','#78350f','#065f46','#1e3a5f','#1a1a2e'];
     const cn = esc(activeClub).replace(/'/g,"\\'");
     top.innerHTML = `<div class="backrow"><button class="backlink" onclick="exitClub()"><span class="chev">‹</span> Clubs</button></div>
       <div class="team-head">
@@ -2705,33 +2713,85 @@ function teamsToggle(active){
     <button class="${active==='nt'?'on':''}" onclick="setTeamsTab('nt')">National teams</button>
   </div>`;
 }
-function setTeamsTab(t){ teamsTab=t; activeClub=null; activeLevel=null; viewNoClub=false; activeNT=null; selMode=false; renderTeams(); }
+function setTeamsTab(t){ teamsTab=t; activeClub=null; activeLevel=null; viewNoClub=false; activeNT=null; activeNTLevel=null; selMode=false; renderTeams(); }
 function renderTeamsNT(top,list){
+  const ntpal = ['#1d6fe0','#1a8fe0','#0ea5e9','#2ba96b','#16a34a','#15803d','#e5484d','#dc2626','#f97316','#f5a623','#eab308','#7c3aed','#9333ea','#c026d3','#db2777','#e11d48','#64748b','#475569','#374151','#15181c','#78350f','#065f46','#1e3a5f','#1a1a2e'];
+
+  // STATE C: NT + level -> players
+  if(activeNT && activeNTLevel!==null){
+    const isAll = activeNTLevel===ALL_LVL;
+    const players = DB.players.filter(p=>p.nt===activeNT && (isAll||(p.ntLevel||'')===activeNTLevel))
+      .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
+    const nn=esc(activeNT).replace(/'/g,"\'"); const nl=esc(activeNTLevel).replace(/'/g,"\'");
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNTLevel=null;renderTeams()"><span class="chev">‹</span> ${esc(activeNT)}</button></div>
+      <div class="team-head">
+        <span class="team-crest" onclick="ntLevelLogoChoose('${nn}','${nl}')">${ntLevelCrest(activeNT,activeNTLevel,52)}<span class="crest-edit">✎</span></span>
+        <div style="flex:1;min-width:0">
+          <div class="sec-title" style="font-size:20px">${isAll?'All players':esc(activeNTLevel||'No level')}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${esc(activeNT)} · ${players.length} player${players.length!==1?'s':''}</div>
+        </div>
+      </div>`;
+    list.innerHTML = players.map(p=>playerCard(p)).join('')
+      || `<div class="empty"><div class="et">No players in this level</div><div>Add players via "Add players" in the national team page.</div></div>`;
+    return;
+  }
+
+  // STATE B: NT -> levels
   if(activeNT){
-    const players=DB.players.filter(p=>p.nt===activeNT).sort((a,b)=>(a.ntLevel||'~').localeCompare(b.ntLevel||'~')||(a.name||'~').localeCompare(b.name||'~','pt'));
-    const nn=esc(activeNT).replace(/'/g,"\\'");
-    const ntpal = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
-    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNT=null;renderTeams()"><span class="chev">‹</span> National teams</button></div>
-      <div class="team-head"><span class="team-crest" onclick="ntLogoChoose('${nn}')">${ntCrest(activeNT,64)}<span class="crest-edit">✎</span></span>
-        <div style="flex:1;min-width:0"><div class="sec-title" style="font-size:21px">${esc(activeNT)}</div>
-        <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''}</div></div></div>
+    const players=DB.players.filter(p=>p.nt===activeNT);
+    const total=players.length;
+    const nn=esc(activeNT).replace(/'/g,"\'");
+    const lvls=ntLevels(activeNT);
+    const noLevel=DB.players.filter(p=>p.nt===activeNT && !(p.ntLevel||'').trim()).length;
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNT=null;activeNTLevel=null;renderTeams()"><span class="chev">‹</span> National teams</button></div>
+      <div class="team-head">
+        <span class="team-crest" onclick="ntLogoChoose('${nn}')">${ntCrest(activeNT,64)}<span class="crest-edit">✎</span></span>
+        <div style="flex:1;min-width:0">
+          <div class="sec-title" style="font-size:21px">${esc(activeNT)}</div>
+          <div class="sec-sub" style="margin:2px 0 0">${total} player${total!==1?'s':''} · ${lvls.length} level${lvls.length!==1?'s':''}</div>
+        </div>
+      </div>
       <div class="club-tools">
         <span class="club-colors">${ntpal.map(col=>`<span class="cdot ${ntColorOf(activeNT)===col?'on':''}" style="background:${col}" onclick="setNTColor('${nn}','${col}')"></span>`).join('')}</span>
         <button class="btn" onclick="openTeamDetails('nt','${nn}')">Details</button>
       </div>
       ${teamDetailsBlock('nt',activeNT)}
-      <div class="club-tools" style="margin-top:10px"><button class="btn primary" onclick="openBulk('nt','${nn}')"><span style="font-size:16px">+</span> Add players</button>${ntLogoOf(activeNT)?`<button class="btn" onclick="ntLogoReset('${nn}')">Remove image</button>`:''}</div>`;
-    list.innerHTML = players.length? players.map(p=>playerCard(p)).join('') : `<div class="empty"><div class="et">No players yet</div><div>Use “Add players” to paste a squad.</div></div>`;
+      ${total?`<button class="btn" style="width:100%;justify-content:center;margin-top:10px" onclick="activeNTLevel=ALL_LVL;renderTeams()"><span style="font-size:15px">≡</span> View all players (${total})</button>`:''}
+      <div style="display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn primary" onclick="openBulk('nt','${nn}')"><span style="font-size:16px">+</span> Add players</button>
+        ${ntLogoOf(activeNT)?`<button class="btn" onclick="ntLogoReset('${nn}')">Remove image</button>`:''}
+      </div>
+      <div class="section-lbl" style="margin-top:18px">Levels</div>`;
+    let html = lvls.map(lvl=>{
+      const n=DB.players.filter(p=>p.nt===activeNT&&(p.ntLevel||'')===lvl).length;
+      const nl=esc(lvl).replace(/'/g,"\'");
+      return `<div class="tcard" onclick="activeNTLevel='${nl}';renderTeams()">
+        <span class="team-crest" style="position:relative" onclick="event.stopPropagation();ntLevelLogoChoose('${nn}','${nl}')">${ntLevelCrest(activeNT,lvl,44)}<span class="crest-edit" style="width:16px;height:16px;font-size:9px">✎</span></span>
+        <div class="pc-main"><div class="pc-name">${esc(lvl)}</div><div class="pc-meta">${n} player${n!==1?'s':''}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }).join('');
+    if(noLevel){
+      html += `<div class="tcard" onclick="activeNTLevel='';renderTeams()">
+        <span class="lvl-badge" style="background:var(--surf2);color:var(--mut)">—</span>
+        <div class="pc-main"><div class="pc-name">No level</div><div class="pc-meta">${noLevel} player${noLevel!==1?'s':''}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }
+    list.innerHTML = html || `<div class="empty"><div class="et">No players yet</div><div>Tap "Add players" to add a squad.</div></div>`;
     return;
   }
+
+  // STATE A: NT list
   top.innerHTML = teamsToggle('nt')+`<div class="sec-sub" style="margin:0 0 12px">Add a whole national team at once — the country and level apply to everyone, and you can set their nationality too.</div>
     <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="openBulk('nt')"><span style="font-size:17px">+</span> Add players to a national team</button>`;
   const nts=distinct('nt');
   list.innerHTML = nts.length? nts.map(n=>{
     const cnt=ntPlayerCount(n); const lvls=ntLevels(n);
-    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\\'")}';renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
+    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\'")}';activeNTLevel=null;renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
   }).join('') : `<div class="empty"><div class="et">No national teams yet</div><div>Tap the button above to create one and paste its players.</div></div>`;
 }
+
 
 /* ---------- Bulk add players (paste) ---------- */
 const BULK_SKIP = /^(plantel|guarda[- ]?redes?|defesas?|m[ée]dios?|avan[çc]ados?|treinador(es)?|jogador(es)?|idade|n[ºo.]|nome|posi[çc][ãa]o|nacionalidade|valor|valor de mercado|equipa|squad|goalkeepers?|defenders?|midfielders?|forwards?|coach|players?|age|pos|nat|market value|total|#|--+)$/i;
@@ -3236,11 +3296,22 @@ function delObs(id){
 
 /* ---------- Profile photo ---------- */
 function photoClick(){
+  const p = editingProfile || STATE.profile;
+  if(!editingProfile && p && p.photo){
+    document.getElementById('photo-lb-img').src = p.photo;
+    document.getElementById('photo-lb').classList.add('open');
+    return;
+  }
   if(editingProfile && editingProfile.photo){
     if(confirm('Remove this player photo?')){ editingProfile.photo=''; save(); renderProfile(); return; }
-    // if they cancel removal, still allow choosing a new one
   }
   document.getElementById('photo-input').click();
+}
+function closePhotoLb(ev){
+  if(ev && ev.target===document.getElementById('photo-lb-img')) return;
+  const lb = document.getElementById('photo-lb');
+  lb.classList.remove('open');
+  setTimeout(()=>{ document.getElementById('photo-lb-img').src=''; },220);
 }
 function photoUpload(ev){
   const file = ev.target.files && ev.target.files[0]; ev.target.value='';
@@ -4402,6 +4473,38 @@ function ntLogoReset(name){ if(DB.ntLogos) delete DB.ntLogos[name]; save(); rend
 function ntInfoOf(name){ return (DB.ntInfo&&DB.ntInfo[name])||{}; }
 function ntColorOf(name){ return ntInfoOf(name).color||''; }
 function setNTColor(name,col){ if(!DB.ntInfo) DB.ntInfo={}; if(!DB.ntInfo[name]) DB.ntInfo[name]={}; DB.ntInfo[name].color = (DB.ntInfo[name].color===col?'':col); save(); renderTeams(); }
+
+/* ---- NT level logos (image per country+level) ---- */
+function ntLevelKey(country,level){ return country+'__lvl__'+(level||''); }
+function ntLevelLogoOf(country,level){ return (DB.ntLogos&&DB.ntLogos[ntLevelKey(country,level)])||''; }
+function ntLevelCrest(country,level,size){
+  const logo=ntLevelLogoOf(country,level); const s=`width:${size}px;height:${size}px`;
+  if(logo) return `<span class="nt-badge" style="${s};background:#fff;padding:2px;overflow:hidden"><img src="${logo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
+  // fallback: country logo then colour/abbr
+  const clogo=ntLogoOf(country);
+  if(clogo) return `<span class="nt-badge" style="${s};background:#fff;padding:2px;overflow:hidden"><img src="${clogo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
+  const col=ntColorOf(country);
+  return `<span class="nt-badge" style="${s}${col?`;background:${col};color:#fff`:''}">${esc(level?ntAbbr(country)+' '+level:ntAbbr(country))}</span>`;
+}
+let pendingNTLevelLogoCountry=null, pendingNTLevelLogoLevel=null;
+function ntLevelLogoChoose(country,level){ pendingNTLevelLogoCountry=country; pendingNTLevelLogoLevel=level; document.getElementById('ntlvllogo-input').click(); }
+function ntLevelLogoUpload(ev){
+  const file=ev.target.files && ev.target.files[0]; ev.target.value='';
+  if(!file || !pendingNTLevelLogoCountry) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const tmp=new Image();
+    tmp.onload=()=>{
+      const max=140; let w=tmp.width,h=tmp.height; const sc=Math.min(max/w,max/h,1); w=Math.round(w*sc); h=Math.round(h*sc);
+      const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(tmp,0,0,w,h);
+      let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Invalid image'); return; }
+      if(!DB.ntLogos) DB.ntLogos={}; DB.ntLogos[ntLevelKey(pendingNTLevelLogoCountry,pendingNTLevelLogoLevel)]=out; save(); renderTeams(); toast('Level image updated');
+    };
+    tmp.onerror=()=>toast('Could not read the image');
+    tmp.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 function setClubColor2(name,col){ const c=ensureClub(name); c.color=(c.color===col?'':col); save(); renderTeams(); }
 
 const ALL_LVL='\u0000ALL';
@@ -4952,5 +5055,9 @@ async function bootData(){
   showSection('dashboard');
 }
 </script>
+<div id="photo-lb" onclick="closePhotoLb(event)">
+  <button id="photo-lb-close" onclick="closePhotoLb(null)">✕</button>
+  <img id="photo-lb-img" src="" alt="">
+</div>
 </body>
 </html>
