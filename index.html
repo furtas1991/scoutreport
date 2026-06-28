@@ -371,10 +371,67 @@ body.noTabs .tabbar{display:none}
 .tabbar button svg{width:22px;height:22px}
 
 /* ============ TEAMS / DATABASE SECTIONS ============ */
-#teams,#database,#shadow{flex:1;overflow-y:auto;padding:18px 14px 30px;display:none;flex-direction:column}
-#teams.show,#database.show,#shadow.show{display:flex}
+#teams,#database,#shadow,#calendar{flex:1;overflow-y:auto;padding:18px 14px 30px;display:none;flex-direction:column}
+#teams.show,#database.show,#shadow.show,#calendar.show{display:flex}
 #profile,#shadowview{flex:1;display:none;flex-direction:column;overflow-y:auto;padding:0 0 30px}
 #profile.show,#shadowview.show{display:flex}
+
+/* ============ CALENDAR ============ */
+.cal-toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:12px}
+.cal-seg{display:flex;background:var(--surf2);border-radius:10px;padding:3px}
+.cal-seg button{border:none;background:transparent;color:var(--mut);font-weight:700;font-size:13px;padding:7px 13px;border-radius:8px;cursor:pointer}
+.cal-seg button.on{background:var(--surf);color:var(--txt);box-shadow:var(--sh-1)}
+.cal-add{display:inline-flex;align-items:center;gap:4px;background:var(--accent);color:var(--accent-ink);border:none;border-radius:10px;padding:8px 13px;font-weight:700;font-size:13px;cursor:pointer}
+.cal-add span{font-size:16px;line-height:1}
+.cal-navbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.cal-nav{width:38px;height:38px;border-radius:10px;border:1px solid var(--line2);background:var(--surf);color:var(--txt);font-size:20px;cursor:pointer}
+.cal-period{flex:1;text-align:center;font-weight:800;font-size:16px;background:transparent;border:none;color:var(--txt);cursor:pointer;padding:8px;border-radius:9px}
+.cal-period:active{background:var(--surf2)}
+.cal-dot{display:inline-block;width:6px;height:6px;border-radius:50%}
+.cal-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.cal-lg{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);font-weight:600}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.cal-dow div{text-align:center;font-size:11px;font-weight:700;color:var(--mut2);text-transform:uppercase}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-cell{aspect-ratio:1/1;border:1px solid var(--line);background:var(--surf);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 2px 3px;cursor:pointer;gap:3px;min-height:0}
+.cal-cell.out{opacity:.38}
+.cal-cell.today{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.cal-cell-d{font-size:13px;font-weight:600;color:var(--txt)}
+.cal-cell-dots{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;align-items:center}
+.cal-more{font-size:9px;color:var(--mut2);font-weight:700}
+.cal-week{display:flex;flex-direction:column;gap:10px}
+.cal-wday{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+.cal-wday.today{border-color:var(--accent)}
+.cal-wday-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cal-wd-dow{font-weight:800;font-size:13px;color:var(--txt)}
+.cal-wd-num{font-size:12.5px;color:var(--mut)}
+.cal-wadd{margin-left:auto;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:var(--surf);color:var(--mut);font-size:17px;cursor:pointer;line-height:1}
+.cal-wempty{color:var(--mut2);font-size:13px;padding:2px 0}
+.cal-erow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--surf2);border:1px solid var(--line);border-radius:11px;padding:9px 11px;cursor:pointer;margin-bottom:7px}
+.cal-erow:last-child{margin-bottom:0}
+.cal-erow.done{opacity:.6}
+.cal-ebar{width:4px;align-self:stretch;border-radius:3px;flex-shrink:0}
+.cal-emain{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cal-etitle{font-weight:700;font-size:14px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-emeta{font-size:12px;color:var(--mut)}
+.cal-etargets{font-size:11.5px;color:var(--mut2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-edone{color:#2ba96b;font-weight:800;flex-shrink:0}
+.cal-season{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.mm{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:10px 9px;cursor:pointer;text-align:left}
+.mm-h{font-weight:800;font-size:13px;color:var(--txt);margin-bottom:6px}
+.mm-h span{color:var(--mut2);font-weight:600;font-size:11px}
+.mm-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:3px}
+.mm-dow span{text-align:center;font-size:8px;color:var(--mut2);font-weight:700}
+.mm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.mm-d{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--mut);border-radius:50%}
+.mm-d.out{visibility:hidden}
+.mm-d.has{color:#fff;font-weight:800;background:var(--mmc,var(--accent))}
+.ev-type{display:inline-flex;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--line2);color:var(--txt);border-radius:10px;padding:9px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.ev-type.on{border-color:var(--accent);background:var(--accent-d);font-weight:700}
+.ev-donebtn{width:100%;border:1px dashed var(--line2);background:var(--surf);color:var(--mut);border-radius:11px;padding:12px;font-weight:700;font-size:13.5px;cursor:pointer}
+.ev-donebtn.on{border-style:solid;border-color:#2ba96b;background:rgba(43,169,107,.1);color:#1d8a4e}
+@media(min-width:560px){ .cal-season{grid-template-columns:repeat(3,1fr)} }
+@media(min-width:820px){ .cal-season{grid-template-columns:repeat(4,1fr)} }
 
 .sec-title{font-size:23px;font-weight:800;letter-spacing:-.7px}
 .sec-sub{color:var(--mut);font-size:13px;margin:3px 0 14px}
@@ -1019,6 +1076,11 @@ body.noTabs .tabbar{display:none}
 <div id="profile"></div>
 
 <!-- ====== SHADOW (lista) ====== -->
+<div id="calendar">
+  <div id="cal-head"></div>
+  <div id="cal-body"></div>
+</div>
+
 <div id="shadow">
   <div class="sec-title">Shadow teams</div>
   <div class="sec-sub">Your target line-ups. Assign database players to each position.</div>
@@ -1088,6 +1150,48 @@ body.noTabs .tabbar{display:none}
 
   <div class="sheet-actions">
     <button class="btn primary" onclick="closeSettings()">Done</button>
+  </div>
+</div>
+
+<!-- ====== CALENDAR: DAY SHEET ====== -->
+<div class="sheet-bg" id="day-bg" onclick="closeDay()"></div>
+<div class="sheet" id="day-sheet">
+  <div class="grip"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+    <div id="day-title" style="font-weight:800;font-size:16px"></div>
+    <button class="btn primary" id="day-add" style="padding:8px 13px"><span style="font-size:17px">+</span> Add</button>
+  </div>
+  <div id="day-list" style="max-height:56dvh;overflow-y:auto"></div>
+  <div class="sheet-actions"><button class="btn primary" onclick="closeDay()">Done</button></div>
+</div>
+
+<!-- ====== CALENDAR: EVENT SHEET ====== -->
+<div class="sheet-bg" id="event-bg" onclick="closeEvent()"></div>
+<div class="sheet" id="event-sheet">
+  <div class="grip"></div>
+  <div id="ev-title-h" style="font-weight:800;font-size:17px;margin-bottom:13px">New event</div>
+  <div style="max-height:64dvh;overflow-y:auto;padding-right:2px">
+    <div class="pf-glbl">Type</div>
+    <div class="pf-chips" id="ev-types" style="margin-bottom:14px">
+      <button class="ev-type on" data-t="live" onclick="evSetType('live')"><span class="cal-dot" style="background:#2ba96b"></span>Live match</button>
+      <button class="ev-type" data-t="video" onclick="evSetType('video')"><span class="cal-dot" style="background:#7c3aed"></span>Video scouting</button>
+      <button class="ev-type" data-t="travel" onclick="evSetType('travel')"><span class="cal-dot" style="background:#f5a623"></span>Travel day</button>
+      <button class="ev-type" data-t="other" onclick="evSetType('other')"><span class="cal-dot" style="background:#5b6470"></span>Other</button>
+    </div>
+    <div class="sheet-row" style="gap:10px">
+      <div class="field" style="flex:1"><label class="flbl">Date</label><input class="inp" type="date" id="ev-date"></div>
+      <div class="field" style="flex:0 0 110px"><label class="flbl">Time</label><input class="inp" type="time" id="ev-time"></div>
+    </div>
+    <div class="field" style="margin-top:11px"><label class="flbl">Match / title</label><input class="inp" id="ev-title" placeholder="e.g. Benfica vs Porto, or a label" autocomplete="off"></div>
+    <div class="field" style="margin-top:11px"><label class="flbl">Competition</label><input class="inp" id="ev-comp" placeholder="e.g. Liga Revelação U17" autocomplete="off"></div>
+    <div class="field" style="margin-top:11px"><label class="flbl">Venue / destination</label><input class="inp" id="ev-venue" placeholder="Stadium or city" autocomplete="off"></div>
+    <div class="field" style="margin-top:11px"><label class="flbl">Players to watch</label><input class="inp" id="ev-targets" placeholder="Names of target players" autocomplete="off"></div>
+    <div class="field" style="margin-top:11px"><label class="flbl">Notes</label><textarea class="inp" id="ev-notes" style="min-height:64px" placeholder="Anything to remember…"></textarea></div>
+    <button class="ev-donebtn" id="ev-done" onclick="evToggleDone()" style="margin-top:13px">Mark as watched / done</button>
+  </div>
+  <div class="sheet-actions" style="gap:8px">
+    <button class="btn" id="ev-del" style="color:var(--danger);display:none" onclick="deleteEvent()">Delete</button>
+    <button class="btn primary" style="flex:1;justify-content:center" onclick="saveEvent()">Save</button>
   </div>
 </div>
 
@@ -1185,6 +1289,10 @@ body.noTabs .tabbar{display:none}
   <button id="nav-home" class="on" onclick="showSection('dashboard')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/><path d="M9 20v-6h6v6"/></svg>
     Home
+  </button>
+  <button id="nav-calendar" onclick="showSection('calendar')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg>
+    Calendar
   </button>
   <button id="nav-reports" onclick="showSection('reports')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
@@ -1642,7 +1750,7 @@ function idbOpen(){
 function idbGet(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const rq=tx.objectStore(IDB_STORE).get(key); rq.onsuccess=()=>res(rq.result==null?null:rq.result); rq.onerror=()=>rej(rq.error); })); }
 function idbSet(key,val){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(val,key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error); })); }
 function idbDel(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).delete(key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); })); }
-function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, clubs:[], notDup:[] }; }
+function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, clubs:[], notDup:[], events:[] }; }
 
 let DB = emptyDB();
 let activeMatch = null;   // match object
@@ -1783,11 +1891,12 @@ function showSection(name){
   currentSection = name;
   activeMatch = null; editingProfile = null; activeShadow = null;
   document.body.classList.remove('noTabs');
-  ['dashboard','home','match','teams','database','profile','shadow','shadowview'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  ['dashboard','home','match','teams','database','profile','shadow','shadowview','calendar'].forEach(id=>document.getElementById(id).classList.remove('show'));
   setHeader('root');
   document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('on'));
   if(name==='dashboard'){ document.getElementById('dashboard').classList.add('show'); document.getElementById('nav-home').classList.add('on'); renderDashboard(); }
   else if(name==='reports'){ document.getElementById('home').classList.add('show'); document.getElementById('nav-reports').classList.add('on'); renderHome(); }
+  else if(name==='calendar'){ document.getElementById('calendar').classList.add('show'); document.getElementById('nav-calendar').classList.add('on'); renderCalendar(); }
   else if(name==='teams'){ document.getElementById('teams').classList.add('show'); document.getElementById('nav-teams').classList.add('on'); renderTeams(); }
   else if(name==='database'){ document.getElementById('database').classList.add('show'); document.getElementById('nav-database').classList.add('on'); renderDatabase(); }
   else if(name==='shadow'){ document.getElementById('shadow').classList.add('show'); document.getElementById('nav-shadow').classList.add('on'); renderShadow(); }
@@ -1817,6 +1926,161 @@ function renderDashboard(){
 }
 function dashNewMatch(){ currentFolder=null; newMatch(); }
 function goWatchlist(){ showSection('database'); setDbView('watch'); }
+
+/* ===================== CALENDAR / FIXTURES ===================== */
+const EVENT_TYPES = {
+  live:   {label:'Live match',     short:'Live',   color:'#2ba96b'},
+  video:  {label:'Video scouting', short:'Video',  color:'#7c3aed'},
+  travel: {label:'Travel day',     short:'Travel', color:'#f5a623'},
+  other:  {label:'Other',          short:'Other',  color:'#5b6470'}
+};
+const CAL_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const CAL_MON_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const CAL_DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let calView='month', calCursor=new Date(), editingEvent=null, evType='live', evDone=false;
+
+function pad2(n){ return (n<10?'0':'')+n; }
+function ymd(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+function parseYMD(s){ const a=(s||'').split('-').map(Number); return new Date(a[0],(a[1]||1)-1,a[2]||1); }
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function startOfWeekMon(d){ const x=new Date(d); const dow=(x.getDay()+6)%7; x.setDate(x.getDate()-dow); x.setHours(0,0,0,0); return x; }
+function calSameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+function eventsOn(ds){ return (DB.events||[]).filter(e=>e.date===ds).sort((a,b)=>(a.time||'').localeCompare(b.time||'')); }
+function seasonStart(d){ const y=d.getFullYear(),m=d.getMonth(); return m>=5? new Date(y,5,1) : new Date(y-1,5,1); }
+function seasonLabel(d){ const y=seasonStart(d).getFullYear(); return `Season ${String(y).slice(2)}/${String(y+1).slice(2)}`; }
+function eventTitle(e){ if(e.title) return e.title; return EVENT_TYPES[e.type].label; }
+
+function renderCalendar(){
+  renderCalHead();
+  if(calView==='season') renderCalSeason();
+  else if(calView==='week') renderCalWeek();
+  else renderCalMonth();
+}
+function renderCalHead(){
+  let label='';
+  if(calView==='season') label=seasonLabel(calCursor);
+  else if(calView==='week'){ const s=startOfWeekMon(calCursor),e=addDays(s,6); label=`${s.getDate()} ${CAL_MON_SHORT[s.getMonth()]} – ${e.getDate()} ${CAL_MON_SHORT[e.getMonth()]}`; }
+  else label=`${CAL_MONTHS[calCursor.getMonth()]} ${calCursor.getFullYear()}`;
+  document.getElementById('cal-head').innerHTML=`
+    <div class="cal-toolbar">
+      <div class="cal-seg">
+        <button class="${calView==='season'?'on':''}" onclick="setCalView('season')">Year</button>
+        <button class="${calView==='month'?'on':''}" onclick="setCalView('month')">Month</button>
+        <button class="${calView==='week'?'on':''}" onclick="setCalView('week')">Week</button>
+      </div>
+      <button class="cal-add" onclick="openEvent()"><span>+</span> Event</button>
+    </div>
+    <div class="cal-navbar">
+      <button class="cal-nav" onclick="calShift(-1)">‹</button>
+      <button class="cal-period" onclick="calToday()">${label}</button>
+      <button class="cal-nav" onclick="calShift(1)">›</button>
+    </div>`;
+}
+function setCalView(v){ calView=v; renderCalendar(); }
+function calToday(){ calCursor=new Date(); renderCalendar(); }
+function calShift(dir){ const d=new Date(calCursor); if(calView==='season') d.setFullYear(d.getFullYear()+dir); else if(calView==='week') d.setDate(d.getDate()+7*dir); else d.setMonth(d.getMonth()+dir); calCursor=d; renderCalendar(); }
+function calLegend(){ return `<div class="cal-legend">${Object.keys(EVENT_TYPES).map(k=>`<span class="cal-lg"><span class="cal-dot" style="background:${EVENT_TYPES[k].color}"></span>${EVENT_TYPES[k].short}</span>`).join('')}</div>`; }
+
+function renderCalMonth(){
+  const y=calCursor.getFullYear(),m=calCursor.getMonth();
+  const first=new Date(y,m,1); const startDow=(first.getDay()+6)%7; const gridStart=addDays(first,-startDow);
+  const today=new Date(); let cells='';
+  for(let i=0;i<42;i++){
+    const d=addDays(gridStart,i); const inM=d.getMonth()===m; const ds=ymd(d); const evs=eventsOn(ds);
+    const dots=evs.slice(0,4).map(e=>`<span class="cal-dot" style="background:${EVENT_TYPES[e.type].color}"></span>`).join('');
+    cells+=`<button class="cal-cell ${inM?'':'out'} ${calSameDay(d,today)?'today':''}" onclick="openDay('${ds}')">
+      <span class="cal-cell-d">${d.getDate()}</span>
+      <span class="cal-cell-dots">${dots}${evs.length>4?`<span class="cal-more">+${evs.length-4}</span>`:''}</span>
+    </button>`;
+  }
+  document.getElementById('cal-body').innerHTML=`<div class="cal-dow">${CAL_DOW.map(d=>`<div>${d}</div>`).join('')}</div><div class="cal-grid">${cells}</div>${calLegend()}`;
+}
+function renderCalWeek(){
+  const s=startOfWeekMon(calCursor); const today=new Date(); let html='';
+  for(let i=0;i<7;i++){
+    const d=addDays(s,i); const ds=ymd(d); const evs=eventsOn(ds);
+    html+=`<div class="cal-wday ${calSameDay(d,today)?'today':''}">
+      <div class="cal-wday-h"><span class="cal-wd-dow">${CAL_DOW[i]}</span><span class="cal-wd-num">${d.getDate()} ${CAL_MON_SHORT[d.getMonth()]}</span><button class="cal-wadd" onclick="openEvent(null,'${ds}')">+</button></div>
+      ${evs.length? evs.map(e=>eventRow(e)).join('') : '<div class="cal-wempty">—</div>'}
+    </div>`;
+  }
+  document.getElementById('cal-body').innerHTML=`<div class="cal-week">${html}</div>${calLegend()}`;
+}
+function renderCalSeason(){
+  const s=seasonStart(calCursor); let cards='';
+  for(let i=0;i<12;i++){ cards+=miniMonth(new Date(s.getFullYear(),s.getMonth()+i,1)); }
+  document.getElementById('cal-body').innerHTML=`<div class="cal-season">${cards}</div>${calLegend()}`;
+}
+function miniMonth(mDate){
+  const y=mDate.getFullYear(),m=mDate.getMonth();
+  const first=new Date(y,m,1); const startDow=(first.getDay()+6)%7; const gridStart=addDays(first,-startDow);
+  let cells='';
+  for(let i=0;i<42;i++){
+    const d=addDays(gridStart,i); const inM=d.getMonth()===m; const ds=ymd(d); const evs=inM?eventsOn(ds):[];
+    const col=evs.length?EVENT_TYPES[evs[0].type].color:'';
+    cells+=`<span class="mm-d ${inM?'':'out'} ${evs.length?'has':''}" ${evs.length?`style="--mmc:${col}"`:''}>${inM?d.getDate():''}</span>`;
+  }
+  return `<button class="mm" onclick="calOpenMonth(${y},${m})"><div class="mm-h">${CAL_MON_SHORT[m]} <span>${y}</span></div><div class="mm-dow">${['M','T','W','T','F','S','S'].map(x=>`<span>${x}</span>`).join('')}</div><div class="mm-grid">${cells}</div></button>`;
+}
+function calOpenMonth(y,m){ calCursor=new Date(y,m,1); calView='month'; renderCalendar(); }
+function eventRow(e){
+  const t=EVENT_TYPES[e.type];
+  return `<button class="cal-erow ${e.done?'done':''}" onclick="openEvent('${e.id}')">
+    <span class="cal-ebar" style="background:${t.color}"></span>
+    <span class="cal-emain"><span class="cal-etitle">${esc(eventTitle(e))}</span><span class="cal-emeta">${[e.time,t.short,e.competition,e.venue].filter(Boolean).map(esc).join(' · ')||'—'}</span>${e.targets?`<span class="cal-etargets">🎯 ${esc(e.targets)}</span>`:''}</span>
+    ${e.done?'<span class="cal-edone">✓</span>':''}
+  </button>`;
+}
+function openDay(ds){
+  const evs=eventsOn(ds); const d=parseYMD(ds);
+  document.getElementById('day-title').textContent=`${CAL_DOW[(d.getDay()+6)%7]}, ${d.getDate()} ${CAL_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  document.getElementById('day-list').innerHTML= evs.length? evs.map(e=>eventRow(e)).join('') : '<div class="empty" style="padding:18px 0"><div class="et">Nothing planned</div><div>No events for this day yet.</div></div>';
+  document.getElementById('day-add').onclick=()=>{ closeDay(); openEvent(null,ds); };
+  document.getElementById('day-bg').classList.add('show'); document.getElementById('day-sheet').classList.add('show');
+}
+function closeDay(){ document.getElementById('day-bg').classList.remove('show'); document.getElementById('day-sheet').classList.remove('show'); }
+function openEvent(id, presetDate){
+  editingEvent = id? (DB.events.find(e=>e.id===id)||null) : null;
+  const def={type:'live',date:presetDate||ymd(calCursor),time:'',title:'',competition:'',venue:'',targets:'',notes:'',done:false};
+  const e=editingEvent||def;
+  evSetType(e.type||'live');
+  document.getElementById('ev-date').value=e.date||'';
+  document.getElementById('ev-time').value=e.time||'';
+  document.getElementById('ev-title').value=e.title||'';
+  document.getElementById('ev-comp').value=e.competition||'';
+  document.getElementById('ev-venue').value=e.venue||'';
+  document.getElementById('ev-targets').value=e.targets||'';
+  document.getElementById('ev-notes').value=e.notes||'';
+  evDone=!!e.done; evUpdateDone();
+  document.getElementById('ev-del').style.display= editingEvent?'flex':'none';
+  document.getElementById('ev-title-h').textContent= editingEvent?'Edit event':'New event';
+  document.getElementById('event-bg').classList.add('show'); document.getElementById('event-sheet').classList.add('show');
+}
+function evSetType(t){ evType=t; document.querySelectorAll('#ev-types .ev-type').forEach(b=>b.classList.toggle('on', b.dataset.t===t)); }
+function evToggleDone(){ evDone=!evDone; evUpdateDone(); }
+function evUpdateDone(){ const b=document.getElementById('ev-done'); if(b){ b.classList.toggle('on',evDone); b.innerHTML=evDone?'✓ Watched / done':'Mark as watched / done'; } }
+function closeEvent(){ document.getElementById('event-bg').classList.remove('show'); document.getElementById('event-sheet').classList.remove('show'); }
+function saveEvent(){
+  const date=document.getElementById('ev-date').value;
+  if(!date){ toast('Pick a date'); return; }
+  const data={ type:evType, date,
+    time:document.getElementById('ev-time').value.trim(),
+    title:document.getElementById('ev-title').value.trim(),
+    competition:document.getElementById('ev-comp').value.trim(),
+    venue:document.getElementById('ev-venue').value.trim(),
+    targets:document.getElementById('ev-targets').value.trim(),
+    notes:document.getElementById('ev-notes').value.trim(),
+    done:evDone };
+  if(editingEvent){ Object.assign(editingEvent,data); }
+  else { data.id=uid(); data.createdAt=new Date().toISOString(); DB.events.push(data); }
+  save(); closeEvent(); renderCalendar(); toast(editingEvent?'Event updated':'Event added');
+}
+function deleteEvent(){
+  if(!editingEvent) return;
+  if(!confirm('Delete this event?')) return;
+  DB.events=DB.events.filter(e=>e!==editingEvent);
+  save(); closeEvent(); renderCalendar(); toast('Event deleted');
+}
 
 /* ---------- Database ---------- */
 function matchesFilters(p, q){
@@ -3098,6 +3362,7 @@ function normalizeDB(d){
   d.clubLogos = (d.clubLogos && typeof d.clubLogos==='object')? d.clubLogos : {};
   d.clubs = Array.isArray(d.clubs)? d.clubs : [];
   if(!Array.isArray(d.notDup)) d.notDup = [];
+  if(!Array.isArray(d.events)) d.events = [];
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
   migrateMatches(d.matches);
   d.players.forEach(normalizeProfile);
@@ -4041,6 +4306,7 @@ function closeSettings(){
 const APP_VERSION = '1.1';
 const ABOUT_GUIDE = [
   ['Home', 'Quick actions, your watchlist and section shortcuts on one screen. Tap the gear for settings.'],
+  ['Calendar', 'Plan the games you intend to scout. Switch between Year, Month and Week. Add events as live matches, video scouting or travel days, with competition, venue and the players to watch — then mark them as watched.'],
   ['Match reports', 'Build a game report on a pitch with formations. Drag players, rate them (A–D), add notes, and export a clean PDF. Name a team after one of your clubs to load its squad or pick players position by position.'],
   ['Player database', 'A profile for each player: photo, positions, foot, ratings, links and observations. Search and filter by club, age group, position, birth-year range and rating. Paste a whole squad to add players in bulk.'],
   ['Clubs & age groups', 'Organise players by club, then by age group. Use “Select players” to move many players to an age group at once.'],
@@ -4051,6 +4317,7 @@ const ABOUT_GUIDE = [
 ];
 const ABOUT_NEWS = [
   ['1.1', 'June 2026', [
+    'New Calendar tab: plan the games you intend to scout across Year, Month and Week views. Mark events as live, video scouting or travel days, each colour-coded.',
     'Much larger storage: data now lives in the browser\u2019s large-capacity store (hundreds of MB to several GB) — the old ~5 MB limit is gone. Your existing data migrates automatically.',
     'Storage screen now shows real usage vs available space, with a breakdown by type.',
     'Player profile: Club & age group and Links moved into the header to save space; new "Watch urgently" status.',
