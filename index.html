@@ -276,6 +276,17 @@ header{
 /* bench */
 .bench{flex-shrink:0;padding:9px 10px;border-top:1px solid var(--line);background:var(--surf)}
 .bench-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+/* lineup player list */
+.lu-row{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.lu-row:last-child{border-bottom:none}
+.lu-num{width:28px;font-size:12px;font-weight:800;color:var(--mut2);text-align:center;flex-shrink:0}
+.lu-name{flex:1;min-width:0;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lu-pos{font-size:11px;color:var(--mut2);flex-shrink:0}
+.lu-seg{display:flex;border:1.5px solid var(--line2);border-radius:8px;overflow:hidden;flex-shrink:0}
+.lu-seg button{font-size:11px;font-weight:700;padding:4px 9px;border:none;background:transparent;color:var(--mut);cursor:pointer;transition:all .12s}
+.lu-seg button.on{background:var(--accent);color:#1a1405}
+.lu-seg button.on.bench{background:var(--surf2);color:var(--txt)}
+.lu-empty{color:var(--mut2);font-size:13px;padding:12px 2px;text-align:center}
 .bench-title{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
 .bench-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px;min-height:46px;align-items:center}
 .bench-strip::-webkit-scrollbar{height:0}
@@ -1521,22 +1532,22 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="form-bg" onclick="closeFormation()"></div>
 <div class="sheet" id="form-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Starting eleven</div>
-  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Pick a system. Players reposition; number, name and notes are kept where possible.</div>
-  <div class="poschips" id="form-chips" style="margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-    <div class="pchip" data-f="4-3-3" onclick="applyFormation('4-3-3')">4-3-3</div>
-    <div class="pchip" data-f="4-4-2" onclick="applyFormation('4-4-2')">4-4-2</div>
-    <div class="pchip" data-f="4-2-3-1" onclick="applyFormation('4-2-3-1')">4-2-3-1</div>
-    <div class="pchip" data-f="3-4-3" onclick="applyFormation('3-4-3')">3-4-3</div>
-    <div class="pchip" data-f="3-5-2" onclick="applyFormation('3-5-2')">3-5-2</div>
-    <div class="pchip" data-f="4-1-2-1-2" onclick="applyFormation('4-1-2-1-2')">4-1-2-1-2</div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Lineup</div>
+  <div style="max-height:72dvh;overflow-y:auto;padding-right:2px">
+    <div id="form-player-list" style="margin-bottom:14px"></div>
+    <div style="color:var(--mut);font-size:12.5px;margin-bottom:10px">Formation — reposition players by dragging on the pitch.</div>
+    <div class="poschips" id="form-chips" style="margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div class="pchip" data-f="4-3-3" onclick="applyFormation('4-3-3')">4-3-3</div>
+      <div class="pchip" data-f="4-4-2" onclick="applyFormation('4-4-2')">4-4-2</div>
+      <div class="pchip" data-f="4-2-3-1" onclick="applyFormation('4-2-3-1')">4-2-3-1</div>
+      <div class="pchip" data-f="3-4-3" onclick="applyFormation('3-4-3')">3-4-3</div>
+      <div class="pchip" data-f="3-5-2" onclick="applyFormation('3-5-2')">3-5-2</div>
+      <div class="pchip" data-f="4-1-2-1-2" onclick="applyFormation('4-1-2-1-2')">4-1-2-1-2</div>
+    </div>
+    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:8px" onclick="closeFormation();openLoadSquad()">Load players from database</button>
+    <button class="btn" style="width:100%;justify-content:center" onclick="closeFormation();openImportList()">Import player list (paste)</button>
   </div>
-  <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin-bottom:14px">
-    You have <b id="form-current-count" style="color:var(--txt)">0</b> players on the pitch for this team.
-  </div>
-  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openLoadSquad()">Load players from my clubs</button>
-  <button class="btn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Import player list (paste)</button>
-  <div class="sheet-actions">
+  <div class="sheet-actions" style="margin-top:10px">
     <button class="btn" onclick="closeFormation()">Close</button>
   </div>
 </div>
@@ -4815,14 +4826,55 @@ function openFormation(){
   const t = team();
   const tname = (activeTeam==='home'? (activeMatch.home.name||'Home') : (activeMatch.away.name||'Away'));
   document.getElementById('form-team-lbl').textContent = 'Lineup — ' + tname;
-  document.getElementById('form-current-count').textContent = t.players.filter(p=>!p.sub).length;
   document.querySelectorAll('#form-chips .pchip').forEach(c=>c.classList.remove('on'));
+  renderLineupList();
   document.getElementById('form-bg').classList.add('show');
   document.getElementById('form-sheet').classList.add('show');
+}
+function renderLineupList(){
+  const el=document.getElementById('form-player-list'); if(!el) return;
+  const t=team(); const players=t.players;
+  if(!players.length){
+    el.innerHTML=`<div class="lu-empty">No players loaded yet.<br>Use "Load players" below or paste a list.</div>`;
+    return;
+  }
+  const starters=players.filter(p=>!p.sub);
+  const bench=players.filter(p=>p.sub);
+  let html=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px">Players · ${starters.length} starting · ${bench.length} bench</div>
+  </div>`;
+  // starters first, then bench
+  const sorted=[...starters,...bench];
+  html+=sorted.map(p=>{
+    const isSub=!!p.sub;
+    const num=p.num||'—';
+    return `<div class="lu-row">
+      <span class="lu-num">${esc(num)}</span>
+      <span class="lu-name">${esc(p.name||'No name')}</span>
+      <span class="lu-pos">${esc(p.pos||'')}</span>
+      <div class="lu-seg">
+        <button class="${!isSub?'on':''}" onclick="toggleLineupSub('${p.id}',false)">▶ Start</button>
+        <button class="${isSub?'on bench':''}" onclick="toggleLineupSub('${p.id}',true)">⬜ Bench</button>
+      </div>
+    </div>`;
+  }).join('');
+  el.innerHTML=html;
 }
 function closeFormation(){
   document.getElementById('form-bg').classList.remove('show');
   document.getElementById('form-sheet').classList.remove('show');
+}
+function toggleLineupSub(pid, toSub){
+  const t=team(); const p=t.players.find(x=>x.id===pid); if(!p) return;
+  p.sub=toSub;
+  if(!toSub){
+    // moving to field — place in a reasonable position if still at default
+    if(p.x===50 && p.y===50){
+      const slots=FORMATIONS[DEFAULT_FORMATION]; const used=t.players.filter(x=>!x.sub&&x.id!==pid).length;
+      if(slots[used]){ const xy=slotToXY(slots[used],activeTeam); p.x=xy.x; p.y=xy.y; if(!p.pos) p.pos=slots[used].pos; }
+    }
+  }
+  save(); renderLineupList(); renderPitch(); renderBench(); renderTabs();
 }
 function applyFormation(formation){
   const t = team();
