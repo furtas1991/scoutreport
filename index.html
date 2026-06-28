@@ -2754,6 +2754,8 @@ function renderTeamsNT(top,list){
       <div class="club-tools">
         <span class="club-colors">${ntpal.map(col=>`<span class="cdot ${ntColorOf(activeNT)===col?'on':''}" style="background:${col}" onclick="setNTColor('${nn}','${col}')"></span>`).join('')}</span>
         <button class="btn" onclick="openTeamDetails('nt','${nn}')">Details</button>
+        <button class="btn" onclick="renameNT('${nn}')">Rename</button>
+        <button class="btn" onclick="deleteNT('${nn}')">Delete</button>
       </div>
       ${teamDetailsBlock('nt',activeNT)}
       ${total?`<button class="btn" style="width:100%;justify-content:center;margin-top:10px" onclick="activeNTLevel=ALL_LVL;renderTeams()"><span style="font-size:15px">≡</span> View all players (${total})</button>`:''}
@@ -2783,13 +2785,16 @@ function renderTeamsNT(top,list){
   }
 
   // STATE A: NT list
-  top.innerHTML = teamsToggle('nt')+`<div class="sec-sub" style="margin:0 0 12px">Add a whole national team at once — the country and level apply to everyone, and you can set their nationality too.</div>
-    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="openBulk('nt')"><span style="font-size:17px">+</span> Add players to a national team</button>`;
-  const nts=distinct('nt');
+  top.innerHTML = teamsToggle('nt')+`<div class="sec-sub" style="margin:0 0 12px">Create national teams and manage players by level.</div>
+    <div style="display:flex;gap:8px;margin-bottom:6px">
+      <button class="btn primary" style="flex:1;justify-content:center" onclick="newNT()"><span style="font-size:17px">+</span> New national team</button>
+      <button class="btn" onclick="openBulk('nt')" title="Paste a squad"><span style="font-size:16px">+</span> Add players</button>
+    </div>`;
+  const nts=allNTNames();
   list.innerHTML = nts.length? nts.map(n=>{
     const cnt=ntPlayerCount(n); const lvls=ntLevels(n);
-    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\'")}';activeNTLevel=null;renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
-  }).join('') : `<div class="empty"><div class="et">No national teams yet</div><div>Tap the button above to create one and paste its players.</div></div>`;
+    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\\'")}';activeNTLevel=null;renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
+  }).join('') : `<div class="empty"><div class="et">No national teams yet</div><div>Tap "New national team" to create one.</div></div>`;
 }
 
 
@@ -4441,6 +4446,38 @@ let loadSquadClub = null, loadSquadNT = null;
 function openLoadSquad(){ closeFormation(); loadSquadClub=null; loadSquadNT=null; renderLoadSquad(); document.getElementById('loadsquad-bg').classList.add('show'); document.getElementById('loadsquad-sheet').classList.add('show'); }
 function closeLoadSquad(){ document.getElementById('loadsquad-bg').classList.remove('show'); document.getElementById('loadsquad-sheet').classList.remove('show'); }
 function ntPlayerCount(nt){ return DB.players.filter(p=>p.nt===nt).length; }
+function allNTNames(){
+  const set=new Set();
+  DB.players.forEach(p=>{ if(p.nt&&p.nt.trim()) set.add(p.nt.trim()); });
+  if(DB.ntInfo) Object.keys(DB.ntInfo).forEach(k=>{ if(k&&k.trim()) set.add(k.trim()); });
+  return [...set].sort((a,b)=>a.localeCompare(b,'pt'));
+}
+function newNT(){
+  const name=(prompt('National team name (e.g. Portugal, Spain):')||'').trim();
+  if(!name) return;
+  if(!DB.ntInfo) DB.ntInfo={};
+  if(!DB.ntInfo[name]) DB.ntInfo[name]={};
+  save(); activeNT=name; activeNTLevel=null; renderTeams();
+}
+function deleteNT(name){
+  if(!confirm(`Remove "${name}" national team entry? Players keep their data; only the team entry and images are removed.`)) return;
+  if(DB.ntInfo) delete DB.ntInfo[name];
+  if(DB.ntLogos){
+    delete DB.ntLogos[name];
+    // remove level logos too
+    Object.keys(DB.ntLogos).forEach(k=>{ if(k.startsWith(name+'__lvl__')) delete DB.ntLogos[k]; });
+  }
+  activeNT=null; activeNTLevel=null; save(); renderTeams();
+}
+function renameNT(name){
+  const nn=(prompt('Rename national team:',name)||'').trim();
+  if(!nn||nn===name) return;
+  if(!DB.ntInfo) DB.ntInfo={};
+  DB.ntInfo[nn]=DB.ntInfo[name]||{}; delete DB.ntInfo[name];
+  if(DB.ntLogos&&DB.ntLogos[name]){ DB.ntLogos[nn]=DB.ntLogos[name]; delete DB.ntLogos[name]; }
+  DB.players.forEach(p=>{ if(p.nt===name) p.nt=nn; });
+  activeNT=nn; save(); renderTeams();
+}
 function ntLevels(nt){ return [...new Set(DB.players.filter(p=>p.nt===nt).map(p=>p.ntLevel||'').filter(Boolean))].sort(); }
 function ntAbbr(n){ return (n||'').replace(/[^A-Za-zÀ-ÿ]/g,'').slice(0,3).toUpperCase(); }
 function ntLogoOf(name){ return (DB.ntLogos&&DB.ntLogos[name])||''; }
@@ -4557,7 +4594,7 @@ function renderLoadSquad(){
       `<button class="pf-chip" onclick="doLoadSquadNT(null)">All (${ntPlayerCount(loadSquadNT)})</button></div>`+
       `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="loadSquadNT=null;renderLoadSquad()"><span class="chev" style="font-size:16px">‹</span> Back</button>`;
   } else {
-    const names=allClubNames(); const nts=distinct('nt');
+    const names=allClubNames(); const nts=allNTNames();
     let html=`<div class="section-lbl" style="margin-top:0">Clubs</div>`;
     html += names.length? names.map(n=>`<div class="tcard" onclick="loadSquadPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${clubPlayerCount(n)} player${clubPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
       : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs with players yet.</div>`;
