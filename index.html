@@ -162,6 +162,12 @@ header{
 .tkind-row{display:flex;gap:4px;padding:2px 8px 5px;justify-content:center}
 .tkind-btn{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;border:1.5px solid var(--line2);background:transparent;color:var(--mut);cursor:pointer;transition:all .15s}
 .tkind-btn.on{background:var(--accent-d);border-color:var(--accent);color:var(--accent-ink)}
+.comp-bar{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--line);background:var(--surf3);cursor:pointer;flex-shrink:0}
+.comp-bar:active{background:var(--surf2)}
+.comp-bar-ic{font-size:14px;flex-shrink:0}
+.comp-bar-lbl{font-size:12.5px;font-weight:600;color:var(--mut);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comp-bar.linked .comp-bar-lbl{color:var(--txt)}
+.comp-bar-clear{font-size:13px;color:var(--mut2);flex-shrink:0;padding:2px 4px;cursor:pointer}
 .tsugg{display:flex;flex-wrap:wrap;gap:4px;padding:0 8px 6px;min-height:0}
 .tsugg-chip{font-size:11px;padding:2px 7px;border-radius:10px;border:1px solid var(--line2);background:var(--surf2);cursor:pointer;color:var(--txt);white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
 .tsugg-chip:active{background:var(--line)}
@@ -1328,6 +1334,11 @@ body.noTabs .tabbar{display:none}
       <div class="tsugg" id="tsugg-away"></div>
     </div>
   </div>
+  <div class="comp-bar" id="comp-bar" onclick="openCompPicker()">
+    <span class="comp-bar-ic">🏆</span>
+    <span class="comp-bar-lbl" id="comp-bar-lbl">Select competition…</span>
+    <span class="comp-bar-clear" id="comp-bar-clear" onclick="event.stopPropagation();clearMatchComp()" style="display:none">✕</span>
+  </div>
 
   <div class="tabs">
     <button class="tab on" id="tab-home" onclick="switchTeam('home')">
@@ -2090,7 +2101,6 @@ function renderCalHead(){
         <button class="${calView==='week'?'on':''}" onclick="setCalView('week')">Week</button>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="cal-comp" onclick="openCompetitions()" title="Competitions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v3a6 6 0 0 1-12 0z"/><path d="M6 5H4a2 2 0 0 0 0 4h2M18 5h2a2 2 0 0 1 0 4h-2M9 18h6M10 14v4M14 14v4M8 21h8"/></svg></button>
         <button class="cal-add" onclick="openEvent()"><span>+</span> Event</button>
       </div>
     </div>
@@ -2282,6 +2292,55 @@ function doLoadComp(id){
   const c=DB.competitions.find(x=>x.id===id); if(!c) return;
   const players=(c.squad||[]).map(pid=>DB.players.find(p=>p.id===pid)).filter(Boolean);
   loadSquadInto(players, c.team||c.name||'Squad', null);
+}
+
+/* ---- Competition picker inside match report ---- */
+function openCompPicker(){
+  const comps=DB.competitions||[];
+  if(!comps.length){ openCompetitions(); return; } // se não há, abre o gestor
+  // reutilizar o loadsquad sheet mas abrir directo na tab comps
+  closeFormation(); loadSquadClub=null; loadSquadNT=null; loadSquadTab='comps';
+  renderLoadSquad();
+  document.getElementById('loadsquad-bg').classList.add('show');
+  document.getElementById('loadsquad-sheet').classList.add('show');
+}
+function pickMatchComp(id){
+  const c=DB.competitions.find(x=>x.id===id); if(!c||!activeMatch) return;
+  activeMatch.compId=id; save();
+  renderCompBar();
+  closeLoadSquad();
+  // carregar a convocatória para a equipa activa
+  const players=(c.squad||[]).map(pid=>DB.players.find(p=>p.id===pid)).filter(Boolean);
+  if(players.length){
+    const name=c.team||c.name||'Squad';
+    loadSquadInto(players, name, null);
+  } else {
+    // nenhum jogador ainda — só define o nome
+    activeMatch[activeTeam].name = c.team||c.name||'Squad'; save();
+    const inp=document.getElementById(activeTeam+'-name'); if(inp) inp.value=activeMatch[activeTeam].name;
+    renderTabs();
+    toast('Competition linked — add players to the squad first');
+  }
+}
+function clearMatchComp(){
+  if(!activeMatch) return;
+  activeMatch.compId=null; save(); renderCompBar();
+}
+function renderCompBar(){
+  if(!activeMatch) return;
+  const bar=document.getElementById('comp-bar'); if(!bar) return;
+  const lbl=document.getElementById('comp-bar-lbl');
+  const clr=document.getElementById('comp-bar-clear');
+  const c=activeMatch.compId? (DB.competitions||[]).find(x=>x.id===activeMatch.compId) : null;
+  if(c){
+    lbl.textContent='🏆 '+(c.name||'Untitled competition')+((c.squad||[]).length?` · ${(c.squad||[]).length} called up`:'');
+    bar.classList.add('linked');
+    clr.style.display='';
+  } else {
+    lbl.textContent='Select competition…';
+    bar.classList.remove('linked');
+    clr.style.display='none';
+  }
 }
 
 /* ---------- Database ---------- */
@@ -3774,6 +3833,7 @@ function openMatch(id){
   document.getElementById('home-name').value = activeMatch.home.name;
   document.getElementById('away-name').value = activeMatch.away.name;
   initTeamHeader();
+  renderCompBar();
   switchTeam('home');
   renderTabs();
 }
@@ -3805,6 +3865,7 @@ function renderHome(){
       </div>
       <div class="home-sub">Reports in this folder.</div>
       <div class="home-bar">
+        <button class="btn" onclick="openCompetitions()">🏆 Competitions</button>
         <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Edit folder</button>
         <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
       </div>`;
@@ -3819,6 +3880,7 @@ function renderHome(){
     <div class="home-title">My reports</div>
     <div class="home-sub">Organise into folders (e.g. tournaments) or create a loose report.</div>
     <div class="home-bar">
+      <button class="btn" onclick="openCompetitions()">🏆 Competitions</button>
       <button class="btn" onclick="newFolder()"><span style="font-size:17px;line-height:1">＋</span> New folder</button>
       <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
     </div>`;
@@ -4694,8 +4756,8 @@ function renderLoadSquad(){
     html += nts.length? nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')">${ntCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
       : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No national teams yet.</div>`;
   } else {
-    html += comps.length? comps.map(c=>`<div class="tcard" onclick="doLoadComp('${c.id}')"><span class="nt-badge" style="background:rgba(245,166,35,.15);color:#b5790a">🏆</span><div class="pc-main"><div class="pc-name">${esc(c.name||'Untitled')}</div><div class="pc-meta">${(c.squad||[]).length} called up</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
-      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No competitions yet.</div>`;
+    html += comps.length? comps.map(c=>`<div class="tcard" onclick="${activeMatch?'pickMatchComp':'doLoadComp'}('${c.id}')"><span class="nt-badge" style="background:rgba(245,166,35,.15);color:#b5790a">🏆</span><div class="pc-main"><div class="pc-name">${esc(c.name||'Untitled')}</div><div class="pc-meta">${(c.squad||[]).length} called up${c.team?` · ${esc(c.team)}`:''}</div></div>${activeMatch&&activeMatch.compId===c.id?'<span style="color:var(--ok);font-size:16px">✓</span>':'<span style="color:var(--mut2);font-size:20px">›</span>'}</div>`).join('')
+      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No competitions yet. <button class="btn" style="display:inline;padding:3px 8px;font-size:12px" onclick="closeLoadSquad();openCompetitions()">Create one</button></div>`;
   }
   body.innerHTML=html;
 }
