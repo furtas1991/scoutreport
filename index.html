@@ -767,10 +767,9 @@ body.noTabs .tabbar{display:none}
 }
 .pf-name-in:focus{outline:none;box-shadow:none;border-color:transparent}
 
-/* bottom tab bar: frosted glass, crisp icons */
+/* bottom tab bar */
 .tabbar{
-  background:rgba(255,255,255,.82);
-  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  background:var(--surf);
   border-top:1px solid var(--line);
 }
 .tabbar button{padding:9px 4px 8px;font-size:10.5px;letter-spacing:-.01em;transition:color .15s ease}
@@ -2566,6 +2565,11 @@ function clearFilters(){ filters={ club:'', nt:'', level:'', foot:'', status:'',
 /* ---------- Teams ---------- */
 /* ---------- Clubs & teams ---------- */
 function clubObj(name){ return DB.clubs.find(c=>c.name===name); }
+function setClubCountry(name, val){
+  const c=ensureClub(name); c.country=val.trim(); save();
+  // re-render só se mudou (para não perder foco enquanto escreve)
+  if(val.trim()) renderTeams();
+}
 function ensureClub(name){
   let c=clubObj(name);
   if(!c){ c={id:uid(),name,logo:'',color:'',levels:[],createdAt:new Date().toISOString()}; DB.clubs.push(c); }
@@ -2575,14 +2579,19 @@ function clubLogoOf(name){ const c=clubObj(name); if(c&&c.logo) return c.logo; r
 function clubColorOf(name){ const c=clubObj(name); return (c&&c.color)||''; }
 function clubCard(name){
   const total=clubPlayerCount(name); const lv=clubLevels(name).length;
+  const obj=clubObj(name); const country=obj&&obj.country?countryFlag(obj.country)||obj.country:'';
   return `<div class="tcard" onclick="openClub('${esc(name).replace(/'/g,"\\'")}')">
     ${clubCrest(name,44)}
-    <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${total} player${total!==1?'s':''}${lv?` · ${lv} age group${lv!==1?'s':''}`:''}</div></div>
+    <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${[country,`${total} player${total!==1?'s':''}`,lv?`${lv} age group${lv!==1?'s':''}`:null].filter(Boolean).join(' · ')}</div></div>
     <span style="color:var(--mut2);font-size:20px">›</span>
   </div>`;
 }
 function inferClubCountry(name){
-  // guess from majority nationality of players
+  const obj = clubObj(name);
+  if(obj && obj.country) return obj.country;
+  // fallback: last part of location field
+  if(obj && obj.location){ const l=(obj.location||'').split(',').pop().trim(); if(l) return l; }
+  // fallback: majority player nationality
   const players=DB.players.filter(p=>p.club===name&&p.nationality);
   if(!players.length) return '';
   const freq={};
@@ -2845,6 +2854,12 @@ function renderTeams(){
       </div>
       <div class="club-tools">
         <span class="club-colors">${palette.map(col=>`<span class="cdot ${clubColorOf(activeClub)===col?'on':''}" style="background:${col}" onclick="setClubColor('${cn}','${col}')"></span>`).join('')}</span>
+      </div>
+      <div class="club-tools" style="margin-top:6px;gap:6px">
+        <div style="flex:1;min-width:0;position:relative">
+          <input class="inp" id="club-country-inp" list="dl-countries" placeholder="🌍 Country…" value="${esc((c&&c.country)||'')}" oninput="setClubCountry('${cn}',this.value)" autocomplete="off" style="width:100%;font-size:13px;padding:7px 10px">
+          <datalist id="dl-countries">${['Portugal','Spain','England','France','Germany','Italy','Netherlands','Belgium','Brazil','Argentina','Croatia','Denmark','Poland','Scotland','Wales','Ireland','Switzerland','Austria','Sweden','Norway','United States','Mexico','Japan','South Korea','Australia',...new Set((DB.clubs||[]).map(c=>c.country||'').filter(Boolean))].filter((v,i,a)=>a.indexOf(v)===i).sort().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+        </div>
         <button class="btn" onclick="openTeamDetails('club','${cn}')">Details</button>
         <button class="btn" onclick="renameClub('${cn}')">Rename</button>
         <button class="btn" onclick="deleteClub('${cn}')">Delete</button>
