@@ -151,27 +151,13 @@ header{
   display:flex;align-items:stretch;border-bottom:1px solid var(--line);
   background:var(--surf);flex-shrink:0;
 }
-.thalf{display:flex;flex-direction:column;flex:1;min-width:0}
-.trow1{display:flex;align-items:center;padding:6px 8px 2px}
 .tname{
   flex:1;min-width:0;background:transparent;border:none;color:var(--txt);
-  font-size:15px;font-weight:700;padding:5px 6px;text-align:center;outline:none;
+  font-size:15px;font-weight:700;padding:11px 12px;text-align:center;outline:none;
   letter-spacing:-.3px;
 }
 .tname::placeholder{color:var(--mut2);font-weight:600}
-.tkind-row{display:flex;gap:4px;padding:2px 8px 5px;justify-content:center}
-.tkind-btn{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;border:1.5px solid var(--line2);background:transparent;color:var(--mut);cursor:pointer;transition:all .15s}
-.tkind-btn.on{background:var(--accent-d);border-color:var(--accent);color:var(--accent-ink)}
-.comp-bar{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--line);background:var(--surf3);cursor:pointer;flex-shrink:0}
-.comp-bar:active{background:var(--surf2)}
-.comp-bar-ic{font-size:14px;flex-shrink:0}
-.comp-bar-lbl{font-size:12.5px;font-weight:600;color:var(--mut);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.comp-bar.linked .comp-bar-lbl{color:var(--txt)}
-.comp-bar-clear{font-size:13px;color:var(--mut2);flex-shrink:0;padding:2px 4px;cursor:pointer}
-.tsugg{display:flex;flex-wrap:wrap;gap:4px;padding:0 8px 6px;min-height:0}
-.tsugg-chip{font-size:11px;padding:2px 7px;border-radius:10px;border:1px solid var(--line2);background:var(--surf2);cursor:pointer;color:var(--txt);white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
-.tsugg-chip:active{background:var(--line)}
-.vs{display:flex;align-items:center;color:var(--mut2);font-size:11px;font-weight:800;padding:0 4px;letter-spacing:.1em;align-self:flex-start;padding-top:14px}
+.vs{display:flex;align-items:center;color:var(--mut2);font-size:11px;font-weight:800;padding:0 6px;letter-spacing:.1em}
 
 /* tabs */
 .tabs{display:flex;background:var(--surf);border-bottom:1px solid var(--line);flex-shrink:0;position:relative}
@@ -276,17 +262,6 @@ header{
 /* bench */
 .bench{flex-shrink:0;padding:9px 10px;border-top:1px solid var(--line);background:var(--surf)}
 .bench-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-/* lineup player list */
-.lu-row{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line)}
-.lu-row:last-child{border-bottom:none}
-.lu-num{width:28px;font-size:12px;font-weight:800;color:var(--mut2);text-align:center;flex-shrink:0}
-.lu-name{flex:1;min-width:0;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lu-pos{font-size:11px;color:var(--mut2);flex-shrink:0}
-.lu-seg{display:flex;border:1.5px solid var(--line2);border-radius:8px;overflow:hidden;flex-shrink:0}
-.lu-seg button{font-size:11px;font-weight:700;padding:4px 9px;border:none;background:transparent;color:var(--mut);cursor:pointer;transition:all .12s}
-.lu-seg button.on{background:var(--accent);color:#1a1405}
-.lu-seg button.on.bench{background:var(--surf2);color:var(--txt)}
-.lu-empty{color:var(--mut2);font-size:13px;padding:12px 2px;text-align:center}
 .bench-title{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
 .bench-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px;min-height:46px;align-items:center}
 .bench-strip::-webkit-scrollbar{height:0}
@@ -555,12 +530,6 @@ body.noTabs .tabbar{display:none}
 .pf-hero-row{display:flex;align-items:center;gap:14px}
 .pf-avatar{width:64px;height:64px;font-size:22px;position:relative;cursor:pointer}
 .pf-avatar .edit{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#1a1405;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid var(--surf)}
-/* Photo lightbox */
-#photo-lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}
-#photo-lb.open{opacity:1;pointer-events:all}
-#photo-lb img{max-width:88vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 24px 64px rgba(0,0,0,.5);transform:scale(.93);transition:transform .22s ease}
-#photo-lb.open img{transform:scale(1)}
-#photo-lb-close{position:absolute;top:max(18px,env(safe-area-inset-top));right:18px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .pf-hero-main{flex:1;min-width:0}
 .pf-watch-toggle{display:flex;align-items:center;gap:8px;margin-top:12px;background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600}
 .pf-watch-toggle .star{font-size:18px;color:var(--mut2)}
@@ -608,8 +577,8 @@ body.noTabs .tabbar{display:none}
 .cdot.on{box-shadow:0 0 0 2px var(--surf),0 0 0 4px currentColor}
 .cdot-clear{background:var(--surf2);color:var(--mut2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
 .club-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
-.club-colors{display:flex;flex-wrap:wrap;gap:6px;margin-right:auto;max-width:216px}
-.club-colors .cdot{width:20px;height:20px}
+.club-colors{display:flex;gap:7px;margin-right:auto}
+.club-colors .cdot{width:22px;height:22px}
 .lvl-badge{width:44px;height:44px;border-radius:11px;background:var(--accent-d);color:var(--accent-ink);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
 .sh-bklist{margin-top:20px}
 .sh-bk{margin-bottom:14px}
@@ -711,23 +680,6 @@ body.noTabs .tabbar{display:none}
 .rec-ic svg{width:17px;height:17px}
 .dash-recent-card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:11px;margin-bottom:7px;cursor:pointer;box-shadow:var(--sh-1)}
 .dash-recent-card:active{border-color:var(--line2)}
-/* Quick Links */
-.ql-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
-.ql-card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:12px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .12s,box-shadow .12s}
-.ql-card:active{transform:scale(.97);box-shadow:none}
-.ql-img{width:48px;height:48px;border-radius:10px;background:var(--surf2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
-.ql-name{font-size:11.5px;font-weight:700;text-align:center;line-height:1.3;color:var(--txt)}
-.ql-count{font-size:10px;color:var(--mut2);font-weight:600}
-.ql-empty{color:var(--mut2);font-size:13px;padding:8px 2px}
-.ql-add{display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line2);border-radius:14px;cursor:pointer;color:var(--mut2);font-size:22px;min-height:88px}
-.ql-add:active{background:var(--surf2)}
-/* Link folder sheet */
-.lf-row{display:flex;align-items:center;gap:8px;padding:10px 2px;border-bottom:1px solid var(--line)}
-.lf-row:last-child{border-bottom:none}
-.lf-link{flex:1;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lf-link:active{opacity:.7}
-.lf-ext{font-size:11px;opacity:.6;flex-shrink:0}
-.lf-edit-btn{flex-shrink:0;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--surf2);color:var(--mut);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
 
 /* settings */
 .theme-row{display:flex;gap:12px;flex-wrap:wrap}
@@ -767,9 +719,10 @@ body.noTabs .tabbar{display:none}
 }
 .pf-name-in:focus{outline:none;box-shadow:none;border-color:transparent}
 
-/* bottom tab bar */
+/* bottom tab bar: frosted glass, crisp icons */
 .tabbar{
-  background:var(--surf);
+  background:rgba(255,255,255,.82);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-top:1px solid var(--line);
 }
 .tabbar button{padding:9px 4px 8px;font-size:10.5px;letter-spacing:-.01em;transition:color .15s ease}
@@ -827,6 +780,10 @@ body.noTabs .tabbar{display:none}
 .pv-tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:600}
 .nt-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:rgba(124,58,237,.15);color:#7c3aed;font-size:11px;font-weight:800;flex-shrink:0}
 .td-block{background:var(--surf);border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-top:12px;display:flex;flex-direction:column;gap:9px}
+.wy-side{background:var(--surf2);border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:8px}
+.wy-side-h{font-weight:800;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.wy-side-h span{color:var(--accent);font-weight:700;font-size:12.5px}
+.wy-side-m{color:var(--mut);font-size:12.5px;margin-top:2px}
 .td-row{display:flex;gap:9px;font-size:13.5px;color:var(--txt);line-height:1.45}
 .td-ic{flex-shrink:0;font-size:14px;opacity:.85}
 .pv-tag-nt{background:rgba(124,58,237,.32);border-color:rgba(124,58,237,.5)}
@@ -1088,9 +1045,6 @@ body.noTabs .tabbar{display:none}
     </div>
 
     <div id="dash-recent"></div>
-
-    <div class="dash-lbl" style="margin-top:20px">Quick links <button class="btn" style="float:right;padding:3px 9px;font-size:11px;margin-top:-3px" onclick="openLinkFolderEdit(null)">+ Folder</button></div>
-    <div class="ql-grid" id="dash-links"></div>
   </div>
 </div>
 
@@ -1154,7 +1108,6 @@ body.noTabs .tabbar{display:none}
 <input type="file" id="hero-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="heroUpload(event)">
 <input type="file" id="clublogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="clubLogoUpload(event)">
 <input type="file" id="ntlogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="ntLogoUpload(event)">
-<input type="file" id="ntlvllogo-input" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="ntLevelLogoUpload(event)">
 
 <!-- ====== SETTINGS SHEET ====== -->
 <div class="sheet-bg" id="settings-bg" onclick="closeSettings()"></div>
@@ -1187,7 +1140,6 @@ body.noTabs .tabbar{display:none}
   <div class="pf-glbl">Backup — all data</div>
   <div class="set-actions" style="margin-bottom:8px">
     <button class="btn" onclick="exportDB()">Export all</button>
-    <button class="btn" onclick="exportExcel()">📊 Export Excel</button>
     <button class="btn" onclick="importClick()">Import</button>
   </div>
   <div style="color:var(--mut2);font-size:11px;margin-bottom:22px;line-height:1.55">Includes <b>everything</b>: reports, players, shadow teams, folders and club crests. Save the file to iCloud or send it via AirDrop. Make a copy before each app update.</div>
@@ -1213,6 +1165,24 @@ body.noTabs .tabbar{display:none}
   </div>
 </div>
 
+<!-- ====== IMPORT WYSCOUT TEAMSHEET ====== -->
+<div class="sheet-bg" id="wy-bg" onclick="closeWyscout()"></div>
+<div class="sheet" id="wy-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Import Wyscout teamsheet</div>
+  <div style="color:var(--mut);font-size:13px;line-height:1.5;margin-bottom:12px">Import a Wyscout / Hudl teamsheet — upload the PDF, or paste the text. Both line-ups are filled: starters on the pitch by formation, subs on the bench.</div>
+  <input type="file" id="wy-pdf-input" accept="application/pdf,.pdf" style="display:none" onchange="wyPdfFile(event)">
+  <button class="btn primary" id="wy-pdf-btn" style="width:100%;justify-content:center;margin-bottom:6px" onclick="wyPickPDF()"><span style="font-size:16px;margin-right:2px">⭳</span> Upload Wyscout PDF</button>
+  <div style="text-align:center;color:var(--mut2);font-size:11.5px;margin-bottom:10px">First time needs internet · works offline afterwards</div>
+  <div style="text-align:center;color:var(--mut2);font-size:12px;margin-bottom:10px">or paste the text below</div>
+  <textarea class="inp" id="wy-text" oninput="wyPreview()" style="min-height:120px;font-size:12.5px" placeholder="Spain U17 3 - 0 Andorra U17&#10;4 - 3 - 3     5 - 4 - 1&#10;SPAIN U17: TITULARES&#10;1 GR Guillermo Ponce ('09)&#10;2 DEF Raul Martinez ('09)&#10;…&#10;SPAIN U17: BANCO&#10;…&#10;ANDORRA U17: TITULARES&#10;…"></textarea>
+  <div id="wy-preview" style="margin-top:12px"></div>
+  <div class="sheet-actions" style="gap:8px;margin-top:14px">
+    <button class="btn" onclick="closeWyscout()">Cancel</button>
+    <button class="btn primary" id="wy-apply" style="flex:1;justify-content:center" onclick="doApplyWyscout()" disabled>Fill both teams</button>
+  </div>
+</div>
+
 <!-- ====== CLUB / NT DETAILS SHEET ====== -->
 <div class="sheet-bg" id="details-bg" onclick="closeTeamDetails()"></div>
 <div class="sheet" id="details-sheet">
@@ -1229,53 +1199,6 @@ body.noTabs .tabbar{display:none}
 </div>
 
 <!-- ====== COMPETITIONS: LIST ====== -->
-<!-- ====== QUICK LINKS: FOLDER VIEW ====== -->
-<div class="sheet-bg" id="lf-bg" onclick="closeLinkFolder()"></div>
-<div class="sheet" id="lf-sheet">
-  <div class="grip"></div>
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:13px">
-    <div style="font-weight:800;font-size:17px;flex:1" id="lf-title"></div>
-    <button class="btn" onclick="openLinkEdit(activeLinkFolder&&activeLinkFolder.id,null)"><span style="font-size:16px">+</span> Add link</button>
-    <button class="btn" onclick="closeLinkFolder();openLinkFolderEdit(activeLinkFolder&&activeLinkFolder.id)">✎</button>
-  </div>
-  <div id="lf-body" style="max-height:60dvh;overflow-y:auto"></div>
-  <div class="sheet-actions" style="margin-top:10px"><button class="btn primary" onclick="closeLinkFolder()">Done</button></div>
-</div>
-
-<!-- ====== QUICK LINKS: FOLDER EDIT ====== -->
-<div class="sheet-bg" id="lfe-bg" onclick="closeLinkFolderEdit()"></div>
-<div class="sheet" id="lfe-sheet">
-  <div class="grip"></div>
-  <div style="font-weight:800;font-size:17px;margin-bottom:13px" id="lfe-title">New folder</div>
-  <div class="field"><label class="flbl">Name</label><input class="inp" id="lfe-name" placeholder="e.g. Portugal" autocomplete="off"></div>
-  <div class="field" style="margin-top:11px"><label class="flbl">Emoji</label><input class="inp" id="lfe-emoji" placeholder="🔗" style="max-width:80px" autocomplete="off"></div>
-  <div style="margin-top:14px;display:flex;align-items:center;gap:10px">
-    <div id="lfe-img-preview"></div>
-    <div style="display:flex;flex-direction:column;gap:7px">
-      <button class="btn" onclick="lfImgChoose()">📷 Choose image</button>
-      <button class="btn" onclick="removeLfImg()" style="color:var(--danger)">Remove image</button>
-    </div>
-  </div>
-  <input type="file" id="lf-img-input" accept="image/*" style="display:none" onchange="lfImgUpload(event)">
-  <div class="sheet-actions" style="gap:8px;margin-top:16px">
-    <button class="btn" id="lfe-del" style="color:var(--danger)" onclick="deleteLinkFolder()">Delete</button>
-    <button class="btn primary" style="flex:1;justify-content:center" onclick="saveLinkFolderEdit()">Save</button>
-  </div>
-</div>
-
-<!-- ====== QUICK LINKS: LINK EDIT ====== -->
-<div class="sheet-bg" id="le-bg" onclick="closeLinkEdit()"></div>
-<div class="sheet" id="le-sheet">
-  <div class="grip"></div>
-  <div style="font-weight:800;font-size:17px;margin-bottom:13px" id="le-title">New link</div>
-  <div class="field"><label class="flbl">Name</label><input class="inp" id="le-name" placeholder="e.g. FPF" autocomplete="off"></div>
-  <div class="field" style="margin-top:11px"><label class="flbl">URL</label><input class="inp" id="le-url" placeholder="https://…" autocomplete="off" inputmode="url"></div>
-  <div class="sheet-actions" style="gap:8px;margin-top:16px">
-    <button class="btn" id="le-del" style="color:var(--danger)" onclick="deleteLink()">Delete</button>
-    <button class="btn primary" style="flex:1;justify-content:center" onclick="saveLinkEdit()">Save</button>
-  </div>
-</div>
-
 <div class="sheet-bg" id="comp-bg" onclick="closeCompetitions()"></div>
 <div class="sheet" id="comp-sheet">
   <div class="grip"></div>
@@ -1388,34 +1311,12 @@ body.noTabs .tabbar{display:none}
 </div>
 <div id="match">
   <div class="teamhead">
-    <div class="thalf" id="thalf-home">
-      <div class="trow1">
-        <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
-        <input class="tname" id="home-name" placeholder="Home team" oninput="renameTeam('home',this.value)" autocomplete="off">
-      </div>
-      <div class="tkind-row" id="tkind-home">
-        <button class="tkind-btn on" id="tkb-home-club" onclick="setTeamKind('home','club')">🏟 Club</button>
-        <button class="tkind-btn" id="tkb-home-nt" onclick="setTeamKind('home','nt')">🌍 NT</button>
-      </div>
-      <div class="tsugg" id="tsugg-home"></div>
-    </div>
+    <span class="tswatch" id="sw-home" onclick="openColor('home')"></span>
+    <input class="tname" id="home-name" list="dl-teamnames" placeholder="Home team" oninput="renameTeam('home',this.value)">
     <span class="vs">VS</span>
-    <div class="thalf" id="thalf-away">
-      <div class="trow1">
-        <input class="tname" id="away-name" placeholder="Away team" oninput="renameTeam('away',this.value)" autocomplete="off">
-        <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
-      </div>
-      <div class="tkind-row" id="tkind-away">
-        <button class="tkind-btn on" id="tkb-away-club" onclick="setTeamKind('away','club')">🏟 Club</button>
-        <button class="tkind-btn" id="tkb-away-nt" onclick="setTeamKind('away','nt')">🌍 NT</button>
-      </div>
-      <div class="tsugg" id="tsugg-away"></div>
-    </div>
-  </div>
-  <div class="comp-bar" id="comp-bar" onclick="openCompPicker()">
-    <span class="comp-bar-ic">🏆</span>
-    <span class="comp-bar-lbl" id="comp-bar-lbl">Select competition…</span>
-    <span class="comp-bar-clear" id="comp-bar-clear" onclick="event.stopPropagation();clearMatchComp()" style="display:none">✕</span>
+    <input class="tname" id="away-name" list="dl-teamnames" placeholder="Away team" oninput="renameTeam('away',this.value)">
+    <datalist id="dl-teamnames"></datalist>
+    <span class="tswatch" id="sw-away" onclick="openColor('away')"></span>
   </div>
 
   <div class="tabs">
@@ -1599,22 +1500,23 @@ body.noTabs .tabbar{display:none}
 <div class="sheet-bg" id="form-bg" onclick="closeFormation()"></div>
 <div class="sheet" id="form-sheet">
   <div class="grip"></div>
-  <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Lineup</div>
-  <div style="max-height:72dvh;overflow-y:auto;padding-right:2px">
-    <div id="form-player-list" style="margin-bottom:14px"></div>
-    <div style="color:var(--mut);font-size:12.5px;margin-bottom:10px">Formation — reposition players by dragging on the pitch.</div>
-    <div class="poschips" id="form-chips" style="margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <div class="pchip" data-f="4-3-3" onclick="applyFormation('4-3-3')">4-3-3</div>
-      <div class="pchip" data-f="4-4-2" onclick="applyFormation('4-4-2')">4-4-2</div>
-      <div class="pchip" data-f="4-2-3-1" onclick="applyFormation('4-2-3-1')">4-2-3-1</div>
-      <div class="pchip" data-f="3-4-3" onclick="applyFormation('3-4-3')">3-4-3</div>
-      <div class="pchip" data-f="3-5-2" onclick="applyFormation('3-5-2')">3-5-2</div>
-      <div class="pchip" data-f="4-1-2-1-2" onclick="applyFormation('4-1-2-1-2')">4-1-2-1-2</div>
-    </div>
-    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:8px" onclick="closeFormation();openLoadSquad()">Load players from database</button>
-    <button class="btn" style="width:100%;justify-content:center" onclick="closeFormation();openImportList()">Import player list (paste)</button>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px" id="form-team-lbl">Starting eleven</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:16px">Pick a system. Players reposition; number, name and notes are kept where possible.</div>
+  <div class="poschips" id="form-chips" style="margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div class="pchip" data-f="4-3-3" onclick="applyFormation('4-3-3')">4-3-3</div>
+    <div class="pchip" data-f="4-4-2" onclick="applyFormation('4-4-2')">4-4-2</div>
+    <div class="pchip" data-f="4-2-3-1" onclick="applyFormation('4-2-3-1')">4-2-3-1</div>
+    <div class="pchip" data-f="3-4-3" onclick="applyFormation('3-4-3')">3-4-3</div>
+    <div class="pchip" data-f="3-5-2" onclick="applyFormation('3-5-2')">3-5-2</div>
+    <div class="pchip" data-f="4-1-2-1-2" onclick="applyFormation('4-1-2-1-2')">4-1-2-1-2</div>
   </div>
-  <div class="sheet-actions" style="margin-top:10px">
+  <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin-bottom:14px">
+    You have <b id="form-current-count" style="color:var(--txt)">0</b> players on the pitch for this team.
+  </div>
+  <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openLoadSquad()">Load players from my clubs</button>
+  <button class="btn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openWyscout()">Import Wyscout teamsheet (both teams)</button>
+  <button class="btn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="openImportList()">Import player list (paste)</button>
+  <div class="sheet-actions">
     <button class="btn" onclick="closeFormation()">Close</button>
   </div>
 </div>
@@ -1880,6 +1782,43 @@ const FORMATIONS = {
     {x:25,y:47,pos:'MID'},{x:75,y:47,pos:'MID'},
     {x:50,y:35,pos:'MID'},
     {x:37,y:23,pos:'FWD'},{x:63,y:23,pos:'FWD'}
+  ],
+  '5-4-1': [
+    {x:50,y:91,pos:'GK'},
+    {x:8,y:71,pos:'DEF'},{x:29,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:71,y:76,pos:'DEF'},{x:92,y:71,pos:'DEF'},
+    {x:13,y:49,pos:'MID'},{x:38,y:53,pos:'MID'},{x:62,y:53,pos:'MID'},{x:87,y:49,pos:'MID'},
+    {x:50,y:25,pos:'FWD'}
+  ],
+  '5-3-2': [
+    {x:50,y:91,pos:'GK'},
+    {x:8,y:71,pos:'DEF'},{x:29,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:71,y:76,pos:'DEF'},{x:92,y:71,pos:'DEF'},
+    {x:25,y:53,pos:'MID'},{x:50,y:58,pos:'MID'},{x:75,y:53,pos:'MID'},
+    {x:37,y:26,pos:'FWD'},{x:63,y:26,pos:'FWD'}
+  ],
+  '4-5-1': [
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:11,y:53,pos:'MID'},{x:33,y:57,pos:'MID'},{x:50,y:49,pos:'MID'},{x:67,y:57,pos:'MID'},{x:89,y:53,pos:'MID'},
+    {x:50,y:25,pos:'FWD'}
+  ],
+  '4-1-4-1': [
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:50,y:61,pos:'MID'},
+    {x:13,y:45,pos:'MID'},{x:38,y:47,pos:'MID'},{x:62,y:47,pos:'MID'},{x:87,y:45,pos:'MID'},
+    {x:50,y:24,pos:'FWD'}
+  ],
+  '4-4-1-1': [
+    {x:50,y:91,pos:'GK'},
+    {x:13,y:73,pos:'DEF'},{x:38,y:77,pos:'DEF'},{x:62,y:77,pos:'DEF'},{x:87,y:73,pos:'DEF'},
+    {x:13,y:53,pos:'MID'},{x:38,y:55,pos:'MID'},{x:62,y:55,pos:'MID'},{x:87,y:53,pos:'MID'},
+    {x:50,y:37,pos:'FWD'},{x:50,y:23,pos:'FWD'}
+  ],
+  '3-4-2-1': [
+    {x:50,y:91,pos:'GK'},
+    {x:25,y:76,pos:'DEF'},{x:50,y:78,pos:'DEF'},{x:75,y:76,pos:'DEF'},
+    {x:12,y:55,pos:'MID'},{x:38,y:57,pos:'MID'},{x:62,y:57,pos:'MID'},{x:88,y:55,pos:'MID'},
+    {x:33,y:37,pos:'FWD'},{x:67,y:37,pos:'FWD'},{x:50,y:22,pos:'FWD'}
   ]
 };
 const DEFAULT_FORMATION = '4-3-3';
@@ -1943,7 +1882,7 @@ function idbOpen(){
 function idbGet(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const rq=tx.objectStore(IDB_STORE).get(key); rq.onsuccess=()=>res(rq.result==null?null:rq.result); rq.onerror=()=>rej(rq.error); })); }
 function idbSet(key,val){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(val,key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error); })); }
 function idbDel(key){ return idbOpen().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).delete(key); tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); })); }
-function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, ntLogos:{}, ntInfo:{}, clubs:[], notDup:[], events:[], competitions:[], linkFolders:[] }; }
+function emptyDB(){ return { folders:[], matches:[], players:[], shadows:[], clubLogos:{}, ntLogos:{}, ntInfo:{}, clubs:[], notDup:[], events:[], competitions:[] }; }
 
 let DB = emptyDB();
 let activeMatch = null;   // match object
@@ -1989,7 +1928,7 @@ function migrateMatches(matches){
   }));
 }
 function normalizeProfile(p){
-  p.name = p.name||''; p.birth = p.birth||''; p.nationality = p.nationality||''; p.nationality2 = p.nationality2||'';
+  p.name = p.name||''; p.birth = p.birth||''; p.nationality = p.nationality||'';
   p.club = p.club||''; p.level = p.level||''; p.number = p.number||'';
   p.nt = p.nt||''; p.ntLevel = p.ntLevel||'';
   p.pos1 = p.pos1||''; p.pos2 = p.pos2||''; p.pos3 = p.pos3||'';
@@ -2069,10 +2008,8 @@ let activeLevel = null;
 let viewNoClub = false;
 let teamsTab = 'clubs';
 let activeNT = null;
-let activeNTLevel = null;
 let selMode = false;
 let selIds = new Set();
-let teamsSearch = '';
 let editingProfile = null;
 let filters = { club:'', nt:'', level:'', foot:'', status:'', posSet:[], ratingSet:[], yearMin:'', yearMax:'' };
 let dbView = 'all';          // 'all' | 'watch'
@@ -2134,7 +2071,6 @@ function renderDashboard(){
       </div>`;
     }).join('');
   } else rc.innerHTML='';
-  renderQuickLinks();
 }
 function dashNewMatch(){ currentFolder=null; newMatch(); }
 function goWatchlist(){ showSection('database'); setDbView('watch'); }
@@ -2181,6 +2117,7 @@ function renderCalHead(){
         <button class="${calView==='week'?'on':''}" onclick="setCalView('week')">Week</button>
       </div>
       <div style="display:flex;gap:8px">
+        <button class="cal-comp" onclick="openCompetitions()" title="Competitions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v3a6 6 0 0 1-12 0z"/><path d="M6 5H4a2 2 0 0 0 0 4h2M18 5h2a2 2 0 0 1 0 4h-2M9 18h6M10 14v4M14 14v4M8 21h8"/></svg></button>
         <button class="cal-add" onclick="openEvent()"><span>+</span> Event</button>
       </div>
     </div>
@@ -2374,55 +2311,6 @@ function doLoadComp(id){
   loadSquadInto(players, c.team||c.name||'Squad', null);
 }
 
-/* ---- Competition picker inside match report ---- */
-function openCompPicker(){
-  const comps=DB.competitions||[];
-  if(!comps.length){ openCompetitions(); return; } // se não há, abre o gestor
-  // reutilizar o loadsquad sheet mas abrir directo na tab comps
-  closeFormation(); loadSquadClub=null; loadSquadNT=null; loadSquadTab='comps';
-  renderLoadSquad();
-  document.getElementById('loadsquad-bg').classList.add('show');
-  document.getElementById('loadsquad-sheet').classList.add('show');
-}
-function pickMatchComp(id){
-  const c=DB.competitions.find(x=>x.id===id); if(!c||!activeMatch) return;
-  activeMatch.compId=id; save();
-  renderCompBar();
-  closeLoadSquad();
-  // carregar a convocatória para a equipa activa
-  const players=(c.squad||[]).map(pid=>DB.players.find(p=>p.id===pid)).filter(Boolean);
-  if(players.length){
-    const name=c.team||c.name||'Squad';
-    loadSquadInto(players, name, null);
-  } else {
-    // nenhum jogador ainda — só define o nome
-    activeMatch[activeTeam].name = c.team||c.name||'Squad'; save();
-    const inp=document.getElementById(activeTeam+'-name'); if(inp) inp.value=activeMatch[activeTeam].name;
-    renderTabs();
-    toast('Competition linked — add players to the squad first');
-  }
-}
-function clearMatchComp(){
-  if(!activeMatch) return;
-  activeMatch.compId=null; save(); renderCompBar();
-}
-function renderCompBar(){
-  if(!activeMatch) return;
-  const bar=document.getElementById('comp-bar'); if(!bar) return;
-  const lbl=document.getElementById('comp-bar-lbl');
-  const clr=document.getElementById('comp-bar-clear');
-  const c=activeMatch.compId? (DB.competitions||[]).find(x=>x.id===activeMatch.compId) : null;
-  if(c){
-    lbl.textContent='🏆 '+(c.name||'Untitled competition')+((c.squad||[]).length?` · ${(c.squad||[]).length} called up`:'');
-    bar.classList.add('linked');
-    clr.style.display='';
-  } else {
-    lbl.textContent='Select competition…';
-    bar.classList.remove('linked');
-    clr.style.display='none';
-  }
-}
-
 /* ---------- Database ---------- */
 function matchesFilters(p, q){
   if(q){
@@ -2565,11 +2453,6 @@ function clearFilters(){ filters={ club:'', nt:'', level:'', foot:'', status:'',
 /* ---------- Teams ---------- */
 /* ---------- Clubs & teams ---------- */
 function clubObj(name){ return DB.clubs.find(c=>c.name===name); }
-function setClubCountry(name, val){
-  const c=ensureClub(name); c.country=val.trim(); save();
-  // re-render só se mudou (para não perder foco enquanto escreve)
-  if(val.trim()) renderTeams();
-}
 function ensureClub(name){
   let c=clubObj(name);
   if(!c){ c={id:uid(),name,logo:'',color:'',levels:[],createdAt:new Date().toISOString()}; DB.clubs.push(c); }
@@ -2577,41 +2460,6 @@ function ensureClub(name){
 }
 function clubLogoOf(name){ const c=clubObj(name); if(c&&c.logo) return c.logo; return (DB.clubLogos&&DB.clubLogos[name])||''; }
 function clubColorOf(name){ const c=clubObj(name); return (c&&c.color)||''; }
-function clubCard(name){
-  const total=clubPlayerCount(name); const lv=clubLevels(name).length;
-  const obj=clubObj(name); const country=obj&&obj.country?countryFlag(obj.country)||obj.country:'';
-  return `<div class="tcard" onclick="openClub('${esc(name).replace(/'/g,"\\'")}')">
-    ${clubCrest(name,44)}
-    <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${[country,`${total} player${total!==1?'s':''}`,lv?`${lv} age group${lv!==1?'s':''}`:null].filter(Boolean).join(' · ')}</div></div>
-    <span style="color:var(--mut2);font-size:20px">›</span>
-  </div>`;
-}
-function inferClubCountry(name){
-  const obj = clubObj(name);
-  if(obj && obj.country) return obj.country;
-  // fallback: last part of location field
-  if(obj && obj.location){ const l=(obj.location||'').split(',').pop().trim(); if(l) return l; }
-  // fallback: majority player nationality
-  const players=DB.players.filter(p=>p.club===name&&p.nationality);
-  if(!players.length) return '';
-  const freq={};
-  players.forEach(p=>{ freq[p.nationality]=(freq[p.nationality]||0)+1; });
-  return Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0];
-}
-const NT_CONFEDERATIONS = {
-  UEFA:['Portugal','Spain','England','France','Germany','Italy','Netherlands','Belgium','Croatia','Denmark','Poland','Austria','Switzerland','Sweden','Norway','Scotland','Wales','Ireland','Czech Republic','Hungary','Romania','Greece','Turkey','Serbia','Ukraine','Slovakia','Slovenia','Finland','Albania','Bosnia and Herzegovina','North Macedonia','Montenegro','Kosovo','Iceland','Georgia','Armenia','Azerbaijan','Luxembourg','Moldova','Lithuania','Latvia','Estonia','Cyprus','Malta','Andorra','Liechtenstein','San Marino','Faroe Islands','Gibraltar'],
-  CONMEBOL:['Brazil','Argentina','Uruguay','Colombia','Chile','Paraguay','Ecuador','Peru','Bolivia','Venezuela'],
-  CONCACAF:['United States','Mexico','Canada','Costa Rica','Honduras','Panama','Jamaica','Trinidad and Tobago','El Salvador','Guatemala','Haiti','Cuba','Curaçao'],
-  CAF:['Senegal','Morocco','Egypt','Nigeria','Cameroon','Ghana','Ivory Coast','Mali','Tunisia','Algeria','South Africa','Zambia','DR Congo','Uganda','Tanzania','Kenya','Ethiopia','Angola','Mozambique','Zimbabwe'],
-  AFC:['Japan','South Korea','Australia','Saudi Arabia','Iran','Qatar','UAE','China','Iraq','Uzbekistan','Jordan','Oman','Bahrain','Kuwait','India','Vietnam','Thailand','Indonesia'],
-  OFC:['New Zealand','Fiji','Papua New Guinea','Solomon Islands','Tahiti','Vanuatu','New Caledonia']
-};
-function ntConfederation(country){
-  for(const [conf,countries] of Object.entries(NT_CONFEDERATIONS)){
-    if(countries.includes(country)) return conf;
-  }
-  return 'Other';
-}
 function allClubNames(){
   const set=new Set();
   DB.clubs.forEach(c=>{ if(c.name) set.add(c.name); });
@@ -2842,7 +2690,7 @@ function renderTeams(){
     const levels = clubLevels(activeClub);
     const noLevel = DB.players.filter(p=>p.club===activeClub && !(p.level||'').trim()).length;
     const total = clubPlayerCount(activeClub);
-    const palette = ['#1d6fe0','#1a8fe0','#0ea5e9','#2ba96b','#16a34a','#15803d','#e5484d','#dc2626','#f97316','#f5a623','#eab308','#7c3aed','#9333ea','#c026d3','#db2777','#e11d48','#64748b','#475569','#374151','#15181c','#78350f','#065f46','#1e3a5f','#1a1a2e'];
+    const palette = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
     const cn = esc(activeClub).replace(/'/g,"\\'");
     top.innerHTML = `<div class="backrow"><button class="backlink" onclick="exitClub()"><span class="chev">‹</span> Clubs</button></div>
       <div class="team-head">
@@ -2854,12 +2702,6 @@ function renderTeams(){
       </div>
       <div class="club-tools">
         <span class="club-colors">${palette.map(col=>`<span class="cdot ${clubColorOf(activeClub)===col?'on':''}" style="background:${col}" onclick="setClubColor('${cn}','${col}')"></span>`).join('')}</span>
-      </div>
-      <div class="club-tools" style="margin-top:6px;gap:6px">
-        <div style="flex:1;min-width:0;position:relative">
-          <input class="inp" id="club-country-inp" list="dl-countries" placeholder="🌍 Country…" value="${esc((c&&c.country)||'')}" oninput="setClubCountry('${cn}',this.value)" autocomplete="off" style="width:100%;font-size:13px;padding:7px 10px">
-          <datalist id="dl-countries">${['Portugal','Spain','England','France','Germany','Italy','Netherlands','Belgium','Brazil','Argentina','Croatia','Denmark','Poland','Scotland','Wales','Ireland','Switzerland','Austria','Sweden','Norway','United States','Mexico','Japan','South Korea','Australia',...new Set((DB.clubs||[]).map(c=>c.country||'').filter(Boolean))].filter((v,i,a)=>a.indexOf(v)===i).sort().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
-        </div>
         <button class="btn" onclick="openTeamDetails('club','${cn}')">Details</button>
         <button class="btn" onclick="renameClub('${cn}')">Rename</button>
         <button class="btn" onclick="deleteClub('${cn}')">Delete</button>
@@ -2888,46 +2730,25 @@ function renderTeams(){
   }
 
   // STATE A: clubs list
-  const noClub = DB.players.filter(p=>!(p.club||'').trim()).length;
+  top.innerHTML = teamsToggle('clubs')+`<div class="sec-title">Clubs</div><div class="sec-sub">Create clubs and age groups, then assign players and reports to them.</div>
+    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="newClub()"><span style="font-size:17px">+</span> New club</button>`;
   const names = allClubNames();
-  const q = teamsSearch.trim().toLowerCase();
-  const filtered = q ? names.filter(n=>n.toLowerCase().includes(q)) : names;
-
-  top.innerHTML = teamsToggle('clubs')+
-    `<div style="display:flex;gap:8px;margin-bottom:10px">
-      <button class="btn primary" style="flex:0 0 auto" onclick="newClub()"><span style="font-size:17px">+</span> New</button>
-      <div class="searchbar" style="flex:1"><input id="teams-search-inp" placeholder="Search clubs…" value="${esc(teamsSearch)}" oninput="teamsSearch=this.value;renderTeams()" autocomplete="off"></div>
-    </div>`;
-
+  const noClub = DB.players.filter(p=>!(p.club||'').trim()).length;
   let aHtml = '';
   if(!names.length){
-    aHtml = `<div class="empty"><div class="et">No clubs yet</div><div>Tap "New" to create one.</div></div>`;
-  } else if(!filtered.length){
-    aHtml = `<div class="empty"><div class="et">No clubs match "“${esc(q)}”</div></div>`;
-  } else if(q){
-    aHtml = filtered.map(name=>clubCard(name)).join('');
+    aHtml = `<div class="empty"><div class="et">No clubs yet</div><div>Tap “New club” to create one, or add players with a club in the Database.</div></div>`;
   } else {
-    // grouped by country
-    const grouped = {};
-    filtered.forEach(name=>{
-      const obj = clubObj(name)||{};
-      let country = (obj.location||'').split(',').pop().trim() || inferClubCountry(name);
-      if(!country) country = 'Other';
-      if(!grouped[country]) grouped[country]=[];
-      grouped[country].push(name);
-    });
-    const countries = Object.keys(grouped).sort((a,b)=>a==='Other'?1:b==='Other'?-1:a.localeCompare(b,'pt'));
-    if(countries.length===1 && countries[0]==='Other'){
-      aHtml = filtered.map(name=>clubCard(name)).join('');
-    } else {
-      countries.forEach(country=>{
-        const flag = countryFlag(country);
-        aHtml += `<div class="section-lbl" style="margin-top:16px">${flag?flag+' ':''}${esc(country)}</div>`;
-        aHtml += grouped[country].map(name=>clubCard(name)).join('');
-      });
-    }
+    aHtml = names.map(name=>{
+      const total = clubPlayerCount(name);
+      const lv = clubLevels(name).length;
+      return `<div class="tcard" onclick="openClub('${esc(name).replace(/'/g,"\\'")}')">
+        ${clubCrest(name,44)}
+        <div class="pc-main"><div class="pc-name">${esc(name)}</div><div class="pc-meta">${total} player${total!==1?'s':''}${lv?` · ${lv} age group${lv!==1?'s':''}`:''}</div></div>
+        <span style="color:var(--mut2);font-size:20px">›</span>
+      </div>`;
+    }).join('');
   }
-  if(noClub && !q){
+  if(noClub){
     aHtml += `<div class="section-lbl" style="margin-top:18px">Unassigned</div>
       <div class="tcard" onclick="openNoClub()" style="border-style:dashed">
         <span class="lvl-badge" style="background:var(--surf2);color:var(--mut)">?</span>
@@ -2936,7 +2757,6 @@ function renderTeams(){
       </div>`;
   }
   list.innerHTML = aHtml;
-  if(q){ const inp=document.getElementById('teams-search-inp'); if(inp){ inp.focus(); inp.setSelectionRange(q.length,q.length); } }
 }
 
 function teamsToggle(active){
@@ -2945,119 +2765,33 @@ function teamsToggle(active){
     <button class="${active==='nt'?'on':''}" onclick="setTeamsTab('nt')">National teams</button>
   </div>`;
 }
-function setTeamsTab(t){ teamsTab=t; activeClub=null; activeLevel=null; viewNoClub=false; activeNT=null; activeNTLevel=null; selMode=false; teamsSearch=''; renderTeams(); }
+function setTeamsTab(t){ teamsTab=t; activeClub=null; activeLevel=null; viewNoClub=false; activeNT=null; selMode=false; renderTeams(); }
 function renderTeamsNT(top,list){
-  const ntpal = ['#1d6fe0','#1a8fe0','#0ea5e9','#2ba96b','#16a34a','#15803d','#e5484d','#dc2626','#f97316','#f5a623','#eab308','#7c3aed','#9333ea','#c026d3','#db2777','#e11d48','#64748b','#475569','#374151','#15181c','#78350f','#065f46','#1e3a5f','#1a1a2e'];
-
-  // STATE C: NT + level -> players
-  if(activeNT && activeNTLevel!==null){
-    const isAll = activeNTLevel===ALL_LVL;
-    const players = DB.players.filter(p=>p.nt===activeNT && (isAll||(p.ntLevel||'')===activeNTLevel))
-      .sort((a,b)=>(a.name||'~').localeCompare(b.name||'~','pt'));
-    const nn=esc(activeNT).replace(/'/g,"\'"); const nl=esc(activeNTLevel).replace(/'/g,"\'");
-    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNTLevel=null;renderTeams()"><span class="chev">‹</span> ${esc(activeNT)}</button></div>
-      <div class="team-head">
-        <span class="team-crest" onclick="ntLevelLogoChoose('${nn}','${nl}')">${ntLevelCrest(activeNT,activeNTLevel,52)}<span class="crest-edit">✎</span></span>
-        <div style="flex:1;min-width:0">
-          <div class="sec-title" style="font-size:20px">${isAll?'All players':esc(activeNTLevel||'No level')}</div>
-          <div class="sec-sub" style="margin:2px 0 0">${esc(activeNT)} · ${players.length} player${players.length!==1?'s':''}</div>
-        </div>
-      </div>`;
-    list.innerHTML = players.map(p=>playerCard(p)).join('')
-      || `<div class="empty"><div class="et">No players in this level</div><div>Add players via "Add players" in the national team page.</div></div>`;
-    return;
-  }
-
-  // STATE B: NT -> levels
   if(activeNT){
-    const players=DB.players.filter(p=>p.nt===activeNT);
-    const total=players.length;
-    const nn=esc(activeNT).replace(/'/g,"\'");
-    const lvls=ntLevels(activeNT);
-    const noLevel=DB.players.filter(p=>p.nt===activeNT && !(p.ntLevel||'').trim()).length;
-    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNT=null;activeNTLevel=null;renderTeams()"><span class="chev">‹</span> National teams</button></div>
-      <div class="team-head">
-        <span class="team-crest" onclick="ntLogoChoose('${nn}')">${ntCrest(activeNT,64)}<span class="crest-edit">✎</span></span>
-        <div style="flex:1;min-width:0">
-          <div class="sec-title" style="font-size:21px">${esc(activeNT)}</div>
-          <div class="sec-sub" style="margin:2px 0 0">${total} player${total!==1?'s':''} · ${lvls.length} level${lvls.length!==1?'s':''}</div>
-        </div>
-      </div>
+    const players=DB.players.filter(p=>p.nt===activeNT).sort((a,b)=>(a.ntLevel||'~').localeCompare(b.ntLevel||'~')||(a.name||'~').localeCompare(b.name||'~','pt'));
+    const nn=esc(activeNT).replace(/'/g,"\\'");
+    const ntpal = ['#1d6fe0','#2ba96b','#e5484d','#f5a623','#7c3aed','#15181c'];
+    top.innerHTML = `<div class="backrow"><button class="backlink" onclick="activeNT=null;renderTeams()"><span class="chev">‹</span> National teams</button></div>
+      <div class="team-head"><span class="team-crest" onclick="ntLogoChoose('${nn}')">${ntCrest(activeNT,64)}<span class="crest-edit">✎</span></span>
+        <div style="flex:1;min-width:0"><div class="sec-title" style="font-size:21px">${esc(activeNT)}</div>
+        <div class="sec-sub" style="margin:2px 0 0">${players.length} player${players.length!==1?'s':''}</div></div></div>
       <div class="club-tools">
         <span class="club-colors">${ntpal.map(col=>`<span class="cdot ${ntColorOf(activeNT)===col?'on':''}" style="background:${col}" onclick="setNTColor('${nn}','${col}')"></span>`).join('')}</span>
         <button class="btn" onclick="openTeamDetails('nt','${nn}')">Details</button>
-        <button class="btn" onclick="renameNT('${nn}')">Rename</button>
-        <button class="btn" onclick="deleteNT('${nn}')">Delete</button>
       </div>
       ${teamDetailsBlock('nt',activeNT)}
-      ${total?`<button class="btn" style="width:100%;justify-content:center;margin-top:10px" onclick="activeNTLevel=ALL_LVL;renderTeams()"><span style="font-size:15px">≡</span> View all players (${total})</button>`:''}
-      <div style="display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap">
-        <button class="btn primary" onclick="openBulk('nt','${nn}')"><span style="font-size:16px">+</span> Add players</button>
-        ${ntLogoOf(activeNT)?`<button class="btn" onclick="ntLogoReset('${nn}')">Remove image</button>`:''}
-      </div>
-      <div class="section-lbl" style="margin-top:18px">Levels</div>`;
-    let html = lvls.map(lvl=>{
-      const n=DB.players.filter(p=>p.nt===activeNT&&(p.ntLevel||'')===lvl).length;
-      const nl=esc(lvl).replace(/'/g,"\'");
-      return `<div class="tcard" onclick="activeNTLevel='${nl}';renderTeams()">
-        <span class="team-crest" style="position:relative" onclick="event.stopPropagation();ntLevelLogoChoose('${nn}','${nl}')">${ntLevelCrest(activeNT,lvl,44)}<span class="crest-edit" style="width:16px;height:16px;font-size:9px">✎</span></span>
-        <div class="pc-main"><div class="pc-name">${esc(lvl)}</div><div class="pc-meta">${n} player${n!==1?'s':''}</div></div>
-        <span style="color:var(--mut2);font-size:20px">›</span>
-      </div>`;
-    }).join('');
-    if(noLevel){
-      html += `<div class="tcard" onclick="activeNTLevel='';renderTeams()">
-        <span class="lvl-badge" style="background:var(--surf2);color:var(--mut)">—</span>
-        <div class="pc-main"><div class="pc-name">No level</div><div class="pc-meta">${noLevel} player${noLevel!==1?'s':''}</div></div>
-        <span style="color:var(--mut2);font-size:20px">›</span>
-      </div>`;
-    }
-    list.innerHTML = html || `<div class="empty"><div class="et">No players yet</div><div>Tap "Add players" to add a squad.</div></div>`;
+      <div class="club-tools" style="margin-top:10px"><button class="btn primary" onclick="openBulk('nt','${nn}')"><span style="font-size:16px">+</span> Add players</button>${ntLogoOf(activeNT)?`<button class="btn" onclick="ntLogoReset('${nn}')">Remove image</button>`:''}</div>`;
+    list.innerHTML = players.length? players.map(p=>playerCard(p)).join('') : `<div class="empty"><div class="et">No players yet</div><div>Use “Add players” to paste a squad.</div></div>`;
     return;
   }
-
-  // STATE A: NT list
-  const nts=allNTNames();
-  const qnt = teamsSearch.trim().toLowerCase();
-  const filteredNT = qnt ? nts.filter(n=>n.toLowerCase().includes(qnt)) : nts;
-
-  top.innerHTML = teamsToggle('nt')+
-    `<div style="display:flex;gap:8px;margin-bottom:10px">
-      <button class="btn primary" style="flex:0 0 auto" onclick="newNT()"><span style="font-size:17px">+</span> New</button>
-      <button class="btn" onclick="openBulk('nt')" style="flex:0 0 auto"><span style="font-size:15px">+</span> Bulk</button>
-      <div class="searchbar" style="flex:1"><input id="teams-search-inp" placeholder="Search…" value="${esc(teamsSearch)}" oninput="teamsSearch=this.value;renderTeams()" autocomplete="off"></div>
-    </div>`;
-
-  let ntHtml = '';
-  const ntCard = n => {
+  top.innerHTML = teamsToggle('nt')+`<div class="sec-sub" style="margin:0 0 12px">Add a whole national team at once — the country and level apply to everyone, and you can set their nationality too.</div>
+    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:6px" onclick="openBulk('nt')"><span style="font-size:17px">+</span> Add players to a national team</button>`;
+  const nts=distinct('nt');
+  list.innerHTML = nts.length? nts.map(n=>{
     const cnt=ntPlayerCount(n); const lvls=ntLevels(n);
-    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\'")}';activeNTLevel=null;renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?' · '+esc(lvls.join(', ')):''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
-  };
-  if(!nts.length){
-    ntHtml = `<div class="empty"><div class="et">No national teams yet</div><div>Tap "New" to create one.</div></div>`;
-  } else if(!filteredNT.length){
-    ntHtml = `<div class="empty"><div class="et">No national teams match "${esc(qnt)}"</div></div>`;
-  } else if(qnt){
-    ntHtml = filteredNT.map(ntCard).join('');
-  } else {
-    // grouped by confederation
-    const grouped = {};
-    filteredNT.forEach(n=>{ const c=ntConfederation(n); if(!grouped[c]) grouped[c]=[]; grouped[c].push(n); });
-    const confOrder = ['UEFA','CONMEBOL','CONCACAF','CAF','AFC','OFC','Other'];
-    const confs = confOrder.filter(c=>grouped[c]);
-    if(confs.length===1){
-      ntHtml = filteredNT.map(ntCard).join('');
-    } else {
-      confs.forEach(conf=>{
-        ntHtml += `<div class="section-lbl" style="margin-top:16px">${conf}</div>`;
-        ntHtml += grouped[conf].map(ntCard).join('');
-      });
-    }
-  }
-  list.innerHTML = ntHtml;
-  if(qnt){ const inp=document.getElementById('teams-search-inp'); if(inp){ inp.focus(); inp.setSelectionRange(qnt.length,qnt.length); } }
+    return `<div class="tcard" onclick="activeNT='${esc(n).replace(/'/g,"\\'")}';renderTeams()">${ntCrest(n,44)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${cnt} player${cnt!==1?'s':''}${lvls.length?` · ${esc(lvls.join(', '))}`:''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`;
+  }).join('') : `<div class="empty"><div class="et">No national teams yet</div><div>Tap the button above to create one and paste its players.</div></div>`;
 }
-
 
 /* ---------- Bulk add players (paste) ---------- */
 const BULK_SKIP = /^(plantel|guarda[- ]?redes?|defesas?|m[ée]dios?|avan[çc]ados?|treinador(es)?|jogador(es)?|idade|n[ºo.]|nome|posi[çc][ãa]o|nacionalidade|valor|valor de mercado|equipa|squad|goalkeepers?|defenders?|midfielders?|forwards?|coach|players?|age|pos|nat|market value|total|#|--+)$/i;
@@ -3272,10 +3006,9 @@ function renderProfile(){
       </div>
       <div class="pf-row">
         <div class="pf-f"><label>Nationality</label><input class="pf-in" list="dl-nats" placeholder="e.g. Portugal" value="${esc(p.nationality)}" oninput="pfField('nationality',this.value)"></div>
-        <div class="pf-f"><label>2nd nationality</label><input class="pf-in" list="dl-nats" placeholder="optional" value="${esc(p.nationality2||'')}" oninput="pfField('nationality2',this.value)"></div>
+        <div class="pf-f"><label>Height (cm)</label><input class="pf-in" type="number" inputmode="numeric" placeholder="ex: 178" value="${esc(p.height)}" oninput="pfField('height',this.value)"></div>
       </div>
       <div class="pf-row">
-        <div class="pf-f"><label>Height (cm)</label><input class="pf-in" type="number" inputmode="numeric" placeholder="ex: 178" value="${esc(p.height)}" oninput="pfField('height',this.value)"></div>
         <div class="pf-f"><label>Body type</label><input class="pf-in" list="dl-bio" placeholder="e.g. Mesomorph" value="${esc(p.biotype)}" oninput="pfField('biotype',this.value)"></div>
       </div>
       <datalist id="dl-clubs">${allClubNames().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
@@ -3392,16 +3125,12 @@ function renderProfileView(){
   const p = editingProfile; if(!p) return;
   const yr = birthYear(p.birth), age = ageFromBirth(p.birth);
   const flag = countryFlag(p.nationality);
-  const flag2 = p.nationality2 ? countryFlag(p.nationality2) : '';
   const positions = profilePositions(p);
   const w = isWatch(p);
   const meta = [p.club, p.level].filter(Boolean).map(esc).join('  ·  ') || 'Set club & age group';
   const clubLogo = p.club && DB.clubLogos && DB.clubLogos[p.club];
   const ageStr = yr ? `${yr}${age!=null?` · ${age} yrs`:''}` : '';
-  const natStr = [
-    p.nationality ? `${flag?flag+' ':''}${esc(p.nationality)}` : '',
-    p.nationality2 ? `${flag2?flag2+' ':''}${esc(p.nationality2)}` : ''
-  ].filter(Boolean).join(' · ');
+  const natStr = p.nationality ? `${flag?flag+' ':''}${esc(p.nationality)}` : '';
 
   const chips = positions.map((c,i)=>`<span class="pv-pos">${c}</span>`).join('');
   const stat = (l,v)=> v? `<div class="pv-stat"><div class="pv-stat-l">${l}</div><div class="pv-stat-v">${v}</div></div>` : '';
@@ -3567,22 +3296,11 @@ function delObs(id){
 
 /* ---------- Profile photo ---------- */
 function photoClick(){
-  const p = editingProfile || STATE.profile;
-  if(!editingProfile && p && p.photo){
-    document.getElementById('photo-lb-img').src = p.photo;
-    document.getElementById('photo-lb').classList.add('open');
-    return;
-  }
   if(editingProfile && editingProfile.photo){
     if(confirm('Remove this player photo?')){ editingProfile.photo=''; save(); renderProfile(); return; }
+    // if they cancel removal, still allow choosing a new one
   }
   document.getElementById('photo-input').click();
-}
-function closePhotoLb(ev){
-  if(ev && ev.target===document.getElementById('photo-lb-img')) return;
-  const lb = document.getElementById('photo-lb');
-  lb.classList.remove('open');
-  setTimeout(()=>{ document.getElementById('photo-lb-img').src=''; },220);
 }
 function photoUpload(ev){
   const file = ev.target.files && ev.target.files[0]; ev.target.value='';
@@ -3924,75 +3642,7 @@ function exportDB(){
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   toast('Database exported');
 }
-function exportExcel(){
-  // Build XLS XML (Excel 2003 format — no dependencies, opens natively)
-  const esc2 = v => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  const row = (...cells) => `<Row>${cells.map(c=>`<Cell><Data ss:Type="${typeof c==='number'?'Number':'String'}">${esc2(c)}</Data></Cell>`).join('')}</Row>`;
-  const sheet = (name, rows) => `<Worksheet ss:Name="${esc2(name)}"><Table>${rows.join('')}</Table></Worksheet>`;
-
-  // Sheet 1 — Players
-  const pRows = [row('Name','Birth','Age','Nationality','2nd Nationality','Club','Age Group','NT','NT Level','Position 1','Position 2','Position 3','Foot','Height','Body Type','Rating','Status','Watch','Links ZeroZero','Links Transfermarkt','Links FPF','Notes')];
-  DB.players.forEach(p=>{
-    const age = ageFromBirth(p.birth);
-    pRows.push(row(p.name||'',p.birth||'',age!=null?age:'',p.nationality||'',p.nationality2||'',p.club||'',p.level||'',p.nt||'',p.ntLevel||'',p.pos1||'',p.pos2||'',p.pos3||'',p.foot||'',p.height||'',p.biotype||'',p.rating||'',p.status||'',isWatch(p)?'Yes':'No',(p.links&&p.links.zerozero)||'',(p.links&&p.links.transfermarkt)||'',(p.links&&p.links.fpf)||'',p.notes||''));
-  });
-
-  // Sheet 2 — Match Reports
-  const mRows = [row('Date','Home','Away','Competition','Venue','Stage','Home Score','Away Score','Notes')];
-  DB.matches.forEach(m=>{
-    const d = m.date||m.createdAt||'';
-    mRows.push(row(d,m.home&&m.home.name||'',m.away&&m.away.name||'',m.competition||'',m.venue||'',m.stage||'',m.home&&m.home.score!=null?m.home.score:'',m.away&&m.away.score!=null?m.away.score:'',m.notes||''));
-  });
-
-  // Sheet 3 — Clubs
-  const cRows = [row('Club','Players','Age Groups','Location','Contacts','Notes')];
-  allClubNames().forEach(name=>{
-    const obj = clubObj(name)||{};
-    cRows.push(row(name,clubPlayerCount(name),clubLevels(name).length,obj.location||'',obj.contacts||'',obj.notes||''));
-  });
-
-  // Sheet 4 — National Teams
-  const ntRows = [row('Country','Players','Levels','Location','Contacts','Notes')];
-  allNTNames().forEach(name=>{
-    const info = ntInfoOf(name)||{};
-    ntRows.push(row(name,ntPlayerCount(name),ntLevels(name).length,info.location||'',info.contacts||'',info.notes||''));
-  });
-
-  // Sheet 5 — Observations (obs[] on each player)
-  const oRows = [row('Player','Club','Level','Date','Type','Match','Notes')];
-  DB.players.forEach(p=>{
-    (p.obs||[]).forEach(o=>{
-      oRows.push(row(p.name||'',p.club||'',p.level||'',o.date||'',o.type||'',o.match||'',o.text||''));
-    });
-  });
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<?mso-application progid="Excel.Sheet"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
-  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
-  <Styles><Style ss:ID="h"><Font ss:Bold="1"/></Style></Styles>
-  ${sheet('Players',pRows)}
-  ${sheet('Match Reports',mRows)}
-  ${sheet('Clubs',cRows)}
-  ${sheet('National Teams',ntRows)}
-  ${sheet('Observations',oRows)}
-</Workbook>`;
-
-  const stamp = new Date().toISOString().slice(0,10);
-  const fname = `scoutreport-${stamp}.xls`;
-  const blob = new Blob([xml], {type:'application/vnd.ms-excel;charset=utf-8'});
-  try{
-    const file = new File([blob], fname, {type:'application/vnd.ms-excel'});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({files:[file], title:'ScoutReport — export'}).catch(()=>{});
-      return;
-    }
-  }catch(e){}
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download=fname;
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  toast('Export done — opens in Excel or Numbers');
-}
+let pendingImport = null;
 function importClick(){ document.getElementById('import-input').click(); }
 function importFile(ev){
   const file = ev.target.files && ev.target.files[0];
@@ -4013,183 +3663,6 @@ function importFile(ev){
   reader.onerror = ()=>toast('Could not read the file');
   reader.readAsText(file);
 }
-/* ================================================================
-   QUICK LINKS
-   ================================================================ */
-function defaultLinkFolders(){
-  return [
-    { id:uid(), name:'Streams', emoji:'📺', image:'', links:[
-      {id:uid(),name:'YouTube FPF',url:'https://www.youtube.com/@fpfoficial'},
-      {id:uid(),name:'UEFA TV',url:'https://www.youtube.com/@UEFA'},
-      {id:uid(),name:'LaLiga YouTube',url:'https://www.youtube.com/@LaLiga'},
-      {id:uid(),name:'DAZN Portugal',url:'https://www.dazn.com'},
-    ]},
-    { id:uid(), name:'Portugal', emoji:'🇵🇹', image:'', links:[
-      {id:uid(),name:'FPF',url:'https://www.fpf.pt'},
-      {id:uid(),name:'Liga Portugal',url:'https://www.ligaportugal.pt'},
-      {id:uid(),name:'Zerozero',url:'https://www.zerozero.pt'},
-      {id:uid(),name:'Sporting CP',url:'https://www.sporting.pt'},
-      {id:uid(),name:'SL Benfica',url:'https://www.slbenfica.pt'},
-      {id:uid(),name:'FC Porto',url:'https://www.fcporto.pt'},
-    ]},
-    { id:uid(), name:'España', emoji:'🇪🇸', image:'', links:[
-      {id:uid(),name:'RFEF',url:'https://rfef.es'},
-      {id:uid(),name:'Real Madrid',url:'https://www.realmadrid.com'},
-      {id:uid(),name:'FC Barcelona',url:'https://www.fcbarcelona.com'},
-      {id:uid(),name:'Atlético de Madrid',url:'https://www.atleticodemadrid.com'},
-    ]},
-    { id:uid(), name:'Competitions', emoji:'🏆', image:'', links:[
-      {id:uid(),name:'Liga Revelação (Sub23)',url:'https://www.ligaportugal.pt'},
-      {id:uid(),name:'CN Sub19 PT',url:'https://www.fpf.pt'},
-      {id:uid(),name:'CN Sub17 PT',url:'https://www.fpf.pt'},
-      {id:uid(),name:'División Honor Sub19 ES',url:'https://rfef.es'},
-      {id:uid(),name:'UEFA Youth League',url:'https://www.uefa.com/uefayouthl\eague'},
-    ]},
-    { id:uid(), name:'Databases', emoji:'🔍', image:'', links:[
-      {id:uid(),name:'Transfermarkt',url:'https://www.transfermarkt.pt'},
-      {id:uid(),name:'Sofascore',url:'https://www.sofascore.com'},
-      {id:uid(),name:'Soccerway',url:'https://int.soccerway.com'},
-      {id:uid(),name:'Wyscout',url:'https://www.wyscout.com'},
-    ]},
-  ];
-}
-
-let activeLinkFolder = null;
-let editingLinkFolder = null;
-let editingLink = null;
-
-function renderQuickLinks(){
-  const el = document.getElementById('dash-links'); if(!el) return;
-  const folders = DB.linkFolders||[];
-  if(!folders.length){
-    el.innerHTML=`<div class="ql-empty">No link folders yet. <button class="btn" style="display:inline;padding:2px 8px;font-size:12px" onclick="openLinkFolderEdit(null)">Add one</button></div>`;
-    return;
-  }
-  el.innerHTML = folders.map(f=>{
-    const img = f.image ? `<img src="${f.image}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">` : `<span style="font-size:22px">${esc(f.emoji||'🔗')}</span>`;
-    return `<div class="ql-card" onclick="openLinkFolder('${f.id}')">
-      <div class="ql-img">${img}</div>
-      <div class="ql-name">${esc(f.name)}</div>
-      <div class="ql-count">${(f.links||[]).length}</div>
-    </div>`;
-  }).join('');
-}
-
-function openLinkFolder(id){
-  activeLinkFolder = (DB.linkFolders||[]).find(f=>f.id===id); if(!activeLinkFolder) return;
-  renderLinkFolderSheet();
-  document.getElementById('lf-bg').classList.add('show');
-  document.getElementById('lf-sheet').classList.add('show');
-}
-function closeLinkFolder(){
-  document.getElementById('lf-bg').classList.remove('show');
-  document.getElementById('lf-sheet').classList.remove('show');
-  activeLinkFolder=null;
-}
-function renderLinkFolderSheet(){
-  const f=activeLinkFolder; if(!f) return;
-  const img = f.image ? `<img src="${f.image}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">` : `<span style="font-size:28px">${esc(f.emoji||'🔗')}</span>`;
-  document.getElementById('lf-title').textContent = f.name;
-  const body = document.getElementById('lf-body');
-  const links = f.links||[];
-  body.innerHTML = links.map(l=>`
-    <div class="lf-row">
-      <a class="lf-link" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}<span class="lf-ext">↗</span></a>
-      <button class="lf-edit-btn" onclick="openLinkEdit('${f.id}','${l.id}')">✎</button>
-    </div>`).join('')
-    || `<div class="ql-empty">No links yet.</div>`;
-}
-
-/* ---- Folder edit sheet ---- */
-function openLinkFolderEdit(id){
-  editingLinkFolder = id ? (DB.linkFolders||[]).find(f=>f.id===id) : null;
-  const isNew = !editingLinkFolder;
-  if(isNew) editingLinkFolder = {id:uid(),name:'',emoji:'🔗',image:'',links:[]};
-  document.getElementById('lfe-title').textContent = isNew?'New folder':'Edit folder';
-  document.getElementById('lfe-name').value = editingLinkFolder.name;
-  document.getElementById('lfe-emoji').value = editingLinkFolder.emoji||'🔗';
-  const img = document.getElementById('lfe-img-preview');
-  img.innerHTML = editingLinkFolder.image ? `<img src="${editingLinkFolder.image}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">` : '';
-  document.getElementById('lfe-del').style.display = isNew?'none':'';
-  document.getElementById('lfe-bg').classList.add('show');
-  document.getElementById('lfe-sheet').classList.add('show');
-}
-function closeLinkFolderEdit(){
-  document.getElementById('lfe-bg').classList.remove('show');
-  document.getElementById('lfe-sheet').classList.remove('show');
-  editingLinkFolder=null;
-}
-function saveLinkFolderEdit(){
-  const name=document.getElementById('lfe-name').value.trim();
-  const emoji=document.getElementById('lfe-emoji').value.trim()||'🔗';
-  if(!name){ toast('Name is required'); return; }
-  editingLinkFolder.name=name; editingLinkFolder.emoji=emoji;
-  if(!DB.linkFolders) DB.linkFolders=[];
-  if(!DB.linkFolders.find(f=>f.id===editingLinkFolder.id)) DB.linkFolders.push(editingLinkFolder);
-  save(); closeLinkFolderEdit(); renderQuickLinks();
-}
-function deleteLinkFolder(){
-  if(!editingLinkFolder||!confirm('Delete this folder and all its links?')) return;
-  DB.linkFolders=(DB.linkFolders||[]).filter(f=>f.id!==editingLinkFolder.id);
-  save(); closeLinkFolderEdit(); closeLinkFolder(); renderQuickLinks();
-}
-let pendingLfImg=null;
-function lfImgChoose(){ pendingLfImg='folder'; document.getElementById('lf-img-input').click(); }
-function lfImgUpload(ev){
-  const file=ev.target.files&&ev.target.files[0]; ev.target.value='';
-  if(!file||!editingLinkFolder) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const tmp=new Image(); tmp.onload=()=>{
-      const max=200,c=document.createElement('canvas');
-      const sc=Math.min(max/tmp.width,max/tmp.height,1);
-      c.width=Math.round(tmp.width*sc); c.height=Math.round(tmp.height*sc);
-      c.getContext('2d').drawImage(tmp,0,0,c.width,c.height);
-      editingLinkFolder.image=c.toDataURL('image/jpeg',0.85);
-      const prev=document.getElementById('lfe-img-preview');
-      prev.innerHTML=`<img src="${editingLinkFolder.image}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`;
-    };
-    tmp.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-function removeLfImg(){ if(editingLinkFolder){editingLinkFolder.image=''; document.getElementById('lfe-img-preview').innerHTML='';} }
-
-/* ---- Link edit sheet ---- */
-function openLinkEdit(folderId, linkId){
-  const folder=(DB.linkFolders||[]).find(f=>f.id===folderId); if(!folder) return;
-  activeLinkFolder=folder;
-  editingLink = linkId ? (folder.links||[]).find(l=>l.id===linkId) : null;
-  const isNew=!editingLink;
-  if(isNew) editingLink={id:uid(),name:'',url:''};
-  document.getElementById('le-title').textContent=isNew?'New link':'Edit link';
-  document.getElementById('le-name').value=editingLink.name;
-  document.getElementById('le-url').value=editingLink.url;
-  document.getElementById('le-del').style.display=isNew?'none':'';
-  document.getElementById('le-bg').classList.add('show');
-  document.getElementById('le-sheet').classList.add('show');
-}
-function closeLinkEdit(){
-  document.getElementById('le-bg').classList.remove('show');
-  document.getElementById('le-sheet').classList.remove('show');
-  editingLink=null;
-}
-function saveLinkEdit(){
-  const name=document.getElementById('le-name').value.trim();
-  const url=document.getElementById('le-url').value.trim();
-  if(!name||!url){ toast('Name and URL are required'); return; }
-  if(!url.startsWith('http')) { toast('URL must start with http:// or https://'); return; }
-  editingLink.name=name; editingLink.url=url;
-  if(!activeLinkFolder.links) activeLinkFolder.links=[];
-  if(!activeLinkFolder.links.find(l=>l.id===editingLink.id)) activeLinkFolder.links.push(editingLink);
-  save(); closeLinkEdit(); renderLinkFolderSheet(); renderQuickLinks();
-}
-function deleteLink(){
-  if(!editingLink||!activeLinkFolder||!confirm('Delete this link?')) return;
-  activeLinkFolder.links=(activeLinkFolder.links||[]).filter(l=>l.id!==editingLink.id);
-  save(); closeLinkEdit(); renderLinkFolderSheet(); renderQuickLinks();
-}
-
 function normalizeDB(d){
   d.folders = Array.isArray(d.folders)? d.folders : [];
   d.matches = Array.isArray(d.matches)? d.matches : [];
@@ -4202,8 +3675,6 @@ function normalizeDB(d){
   if(!Array.isArray(d.notDup)) d.notDup = [];
   if(!Array.isArray(d.events)) d.events = [];
   if(!Array.isArray(d.competitions)) d.competitions = [];
-  if(!Array.isArray(d.linkFolders)) d.linkFolders = [];
-  if(d.linkFolders.length===0) d.linkFolders = defaultLinkFolders();
   d.matches.forEach(m=>{ if(m.folderId===undefined)m.folderId=null; if(m.title===undefined)m.title=''; });
   migrateMatches(d.matches);
   d.players.forEach(normalizeProfile);
@@ -4251,9 +3722,6 @@ function openMatch(id){
   activeMatch = DB.matches.find(m=>m.id===id);
   if(!activeMatch) return;
   migrate(activeMatch);
-  // ensure kind field exists
-  if(!activeMatch.home.kind) activeMatch.home.kind='club';
-  if(!activeMatch.away.kind) activeMatch.away.kind='club';
   activeTeam='home';
   ['dashboard','home','teams','database','profile','shadow','shadowview'].forEach(s=>document.getElementById(s).classList.remove('show'));
   document.getElementById('match').classList.add('show');
@@ -4261,8 +3729,8 @@ function openMatch(id){
   setHeader('match');
   document.getElementById('home-name').value = activeMatch.home.name;
   document.getElementById('away-name').value = activeMatch.away.name;
-  initTeamHeader();
-  renderCompBar();
+  const dlt=document.getElementById('dl-teamnames');
+  if(dlt) dlt.innerHTML = allClubNames().map(c=>`<option value="${esc(c)}">`).join('');
   switchTeam('home');
   renderTabs();
 }
@@ -4294,7 +3762,6 @@ function renderHome(){
       </div>
       <div class="home-sub">Reports in this folder.</div>
       <div class="home-bar">
-        <button class="btn" onclick="openCompetitions()">🏆 Competitions</button>
         <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Edit folder</button>
         <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
       </div>`;
@@ -4309,7 +3776,6 @@ function renderHome(){
     <div class="home-title">My reports</div>
     <div class="home-sub">Organise into folders (e.g. tournaments) or create a loose report.</div>
     <div class="home-bar">
-      <button class="btn" onclick="openCompetitions()">🏆 Competitions</button>
       <button class="btn" onclick="newFolder()"><span style="font-size:17px;line-height:1">＋</span> New folder</button>
       <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
     </div>`;
@@ -4470,58 +3936,13 @@ function migrate(m){
 /* ---------- Team / tabs ---------- */
 function renameTeam(team, val){
   activeMatch[team].name = val; save();
-  applyTeamColorByName(team);
-  renderTeamSuggestions(team);
+  applyClubColorToTeam(team);
   renderTabs();
 }
-function setTeamKind(team, kind){
-  if(!activeMatch[team].kind) activeMatch[team].kind = 'club';
-  activeMatch[team].kind = kind; save();
-  renderTeamKindUI(team);
-  renderTeamSuggestions(team);
-}
-function renderTeamKindUI(team){
-  const kind = (activeMatch[team]&&activeMatch[team].kind)||'club';
-  ['club','nt'].forEach(k=>{
-    const btn=document.getElementById('tkb-'+team+'-'+k);
-    if(btn) btn.classList.toggle('on', kind===k);
-  });
-}
-function renderTeamSuggestions(team){
-  const el=document.getElementById('tsugg-'+team); if(!el) return;
-  const kind=(activeMatch[team]&&activeMatch[team].kind)||'club';
-  const val=(activeMatch[team]&&activeMatch[team].name||'').trim().toLowerCase();
-  const names = kind==='nt' ? allNTNames() : allClubNames();
-  const filtered = val ? names.filter(n=>n.toLowerCase().includes(val)).slice(0,5) : names.slice(0,5);
-  el.innerHTML = filtered.map(n=>{
-    const crest = kind==='nt' ? ntCrest(n,18) : clubCrest(n,18);
-    return `<span class="tsugg-chip" onclick="pickTeamName('${team}','${esc(n).replace(/'/g,"\\'")}')">${crest}<span style="overflow:hidden;text-overflow:ellipsis">${esc(n)}</span></span>`;
-  }).join('');
-}
-function pickTeamName(team, name){
-  activeMatch[team].name = name; save();
-  const inp=document.getElementById(team+'-name'); if(inp) inp.value=name;
-  applyTeamColorByName(team);
-  renderTeamSuggestions(team);
-  renderTabs();
-}
-function applyTeamColorByName(team){
+function applyClubColorToTeam(team){
   const nm=(activeMatch[team].name||'').trim();
-  const kind=(activeMatch[team].kind)||'club';
-  let col = kind==='nt' ? ntColorOf(nm) : clubColorOf(nm);
-  if(!col && kind==='club') col = clubColorOf(nm); // fallback
-  if(!col && kind==='nt') col = ntColorOf(nm);
+  const col=clubColorOf(nm);
   if(col){ activeMatch[team].color=col; save(); renderTabs(); renderPitch(); }
-}
-function applyClubColorToTeam(team){ applyTeamColorByName(team); }
-function initTeamHeader(){
-  ['home','away'].forEach(team=>{
-    if(activeMatch && activeMatch[team]){
-      if(!activeMatch[team].kind) activeMatch[team].kind='club';
-      renderTeamKindUI(team);
-      renderTeamSuggestions(team);
-    }
-  });
 }
 function switchTeam(team){
   activeTeam = team;
@@ -5003,52 +4424,175 @@ function parseList(text){
   let players = hasNum ? numbered.filter(Boolean) : lines.map(l=>({num:'', name:cleanListName(l)}));
   return players.filter(p=>p.name && p.name.length>1).slice(0,30);
 }
+/* ---------- Import Wyscout teamsheet (both teams) ---------- */
+const WY_POS = { GK:'GK',GR:'GK',POR:'GK',TW:'GK',P:'GK',GOL:'GK',PT:'GK',
+  DEF:'DEF',DIF:'DEF',DF:'DEF',D:'DEF',ZAG:'DEF',LAT:'DEF',DC:'DEF',B:'DEF',
+  MED:'MID',MID:'MID',MF:'MID',CEN:'MID',C:'MID',M:'MID',MC:'MID',MEI:'MID',MZC:'MID',CC:'MID',
+  AT:'FWD',ATT:'FWD',FW:'FWD',A:'FWD',DEL:'FWD',PTA:'FWD',AVA:'FWD',F:'FWD',ATA:'FWD' };
+function wyNormTeam(s){ return _stripDia((s||'').toLowerCase()).replace(/[^a-z0-9]/g,''); }
+function wyCat(tok){ const t=_stripDia((tok||'').toUpperCase()).replace(/[^A-Z]/g,''); return WY_POS[t]||null; }
+function wyYear(y){ if(!y) return ''; if(y.length===4) return y; const n=parseInt(y,10); return (n>=30? '19':'20')+y.padStart(2,'0'); }
+function parseWyscout(text){
+  const lines = (text||'').split(/\r?\n/).map(l=>l.replace(/\s+/g,' ').trim()).filter(Boolean);
+  let hName='',aName='',score=null, forms=[];
+  for(const l of lines){
+    if(/TITULARES|BANCO|STARTER|BENCH|SUBSTIT/i.test(l)) continue;
+    const m=l.match(/^(.+?)\s+(\d{1,2})\s*[-–—]\s*(\d{1,2})\s+(.+)$/);
+    if(m){ hName=m[1].trim(); score={h:+m[2],a:+m[3]}; aName=m[4].trim(); break; }
+  }
+  for(const l of lines){
+    const fs=l.match(/\d(?:\s*-\s*\d){2,4}/g);
+    if(fs && fs.length){ forms=fs.map(f=>f.replace(/\s+/g,'')); if(forms.length>=2) break; }
+  }
+  const teams={}; const order=[];
+  function sideFor(name){
+    const n=wyNormTeam(name);
+    if(hName && n===wyNormTeam(hName)) return 'home';
+    if(aName && n===wyNormTeam(aName)) return 'away';
+    if(!order.includes(n)) order.push(n);
+    return order[0]===n? 'home':'away';
+  }
+  let curSide=null, curBench=false;
+  for(const l of lines){
+    const hm=l.match(/^(.+?):\s*(TITULARES|STARTERS|BANCO|BENCH|SUBSTIT\w*)/i);
+    if(hm){ curSide=sideFor(hm[1]); curBench=/BANCO|BENCH|SUBSTIT/i.test(hm[2]);
+      if(!teams[curSide]) teams[curSide]={name:hm[1].trim(),starters:[],bench:[]}; else if(!teams[curSide].name) teams[curSide].name=hm[1].trim();
+      continue; }
+    if(!curSide) continue;
+    const pm=l.match(/^(\d{1,3})\s+(\S+)\s+(.+)$/);
+    if(!pm) continue;
+    const cat=wyCat(pm[2]); if(!cat) continue;
+    let rest=pm[3], name=rest, birth='';
+    const by=rest.match(/\(\s*'?\s*(\d{2,4})\s*\)/); if(by) birth=wyYear(by[1]);
+    const pIdx=name.indexOf('('); if(pIdx>=0) name=name.slice(0,pIdx);
+    else { const mm=name.match(/\s\d{1,3}'/); if(mm) name=name.slice(0,mm.index); }
+    name=name.replace(/[•·]/g,'').replace(/\s+/g,' ').trim();
+    if(!name) continue;
+    const pl={num:pm[1],cat,name,birth};
+    (curBench? teams[curSide].bench : teams[curSide].starters).push(pl);
+  }
+  if(teams.home){ if(!teams.home.name && hName) teams.home.name=hName; teams.home.formation=forms[0]||''; }
+  if(teams.away){ if(!teams.away.name && aName) teams.away.name=aName; teams.away.formation=forms[1]||''; }
+  return { home:teams.home||null, away:teams.away||null, score, hName, aName };
+}
+function applyWyscout(p){
+  if(!activeMatch){ newMatch(); }
+  ['home','away'].forEach(side=>{
+    const src=p[side]; if(!src) return;
+    const t=activeMatch[side];
+    if(src.name) t.name=src.name;
+    const formation = FORMATIONS[src.formation]? src.formation : DEFAULT_FORMATION;
+    const slots = FORMATIONS[formation];
+    // starters: GK first, otherwise keep Wyscout order, then place by slot index
+    let st=src.starters.slice();
+    const gkIdx=st.findIndex(pl=>pl.cat==='GK');
+    if(gkIdx>0){ const gk=st.splice(gkIdx,1)[0]; st.unshift(gk); }
+    const onField=[];
+    slots.forEach((slot,i)=>{
+      const xy=slotToXY(slot,side); const pl=st[i];
+      onField.push({ id:uid(), num:pl?pl.num:'', name:pl?pl.name:'', pos:slot.pos, notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:pl?pl.birth:'' });
+    });
+    const extra=st.slice(slots.length).map(pl=>({num:pl.num,name:pl.name,birth:pl.birth}));
+    const bench=(src.bench||[]).concat(extra).map(pl=>({ id:uid(), num:pl.num||'', name:pl.name||'', pos:'', notes:'', sub:true, x:50, y:50, rate:'', birth:pl.birth||'' }));
+    t.players = onField.concat(bench);
+  });
+  if(p.score && activeMatch.home.name && activeMatch.away.name){
+    activeMatch.title = `${activeMatch.home.name} ${p.score.h}-${p.score.a} ${activeMatch.away.name}`;
+  }
+  save(); closeWyscout(); openMatch(activeMatch.id);
+  const hc=(p.home?(p.home.starters.length+p.home.bench.length):0), ac=(p.away?(p.away.starters.length+p.away.bench.length):0);
+  toast(`Imported · ${hc} + ${ac} players`);
+}
+let wyParsed=null;
+function openWyscout(){
+  closeFormation();
+  document.getElementById('wy-text').value='';
+  document.getElementById('wy-preview').innerHTML='';
+  document.getElementById('wy-apply').disabled=true;
+  wyParsed=null;
+  document.getElementById('wy-bg').classList.add('show');
+  document.getElementById('wy-sheet').classList.add('show');
+}
+function closeWyscout(){ document.getElementById('wy-bg').classList.remove('show'); document.getElementById('wy-sheet').classList.remove('show'); }
+function wyPreview(){
+  const p=parseWyscout(document.getElementById('wy-text').value); wyParsed=p;
+  const box=document.getElementById('wy-preview');
+  const cnt=s=>s?(s.starters.length+s.bench.length):0;
+  if(!p.home && !p.away){ box.innerHTML='<div style="color:var(--mut2);font-size:13px;padding:8px 0">Paste a Wyscout teamsheet above — I\u2019ll detect both teams.</div>'; document.getElementById('wy-apply').disabled=true; return; }
+  const side=(s,label)=>{ if(!s) return ''; return `<div class="wy-side"><div class="wy-side-h">${esc(s.name||label)} <span>${s.formation||'—'}</span></div><div class="wy-side-m">${s.starters.length} starters · ${s.bench.length} bench</div></div>`; };
+  box.innerHTML = `${p.score?`<div style="text-align:center;font-weight:800;margin-bottom:8px">${esc(p.hName||'Home')} ${p.score.h}–${p.score.a} ${esc(p.aName||'Away')}</div>`:''}${side(p.home,'Home')}${side(p.away,'Away')}`;
+  document.getElementById('wy-apply').disabled = !(cnt(p.home)||cnt(p.away));
+}
+function doApplyWyscout(){ if(wyParsed) applyWyscout(wyParsed); }
+
+/* ---- Wyscout PDF import (loads pdf.js on demand; needs internet) ---- */
+const PDFJS_URL='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+const PDFJS_WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+function loadScriptOnce(src){ return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)){ res(); return; } const s=document.createElement('script'); s.src=src; s.onload=()=>res(); s.onerror=()=>rej(new Error('load failed')); document.head.appendChild(s); }); }
+function injectScriptText(txt){ return new Promise((res,rej)=>{ const url=URL.createObjectURL(new Blob([txt],{type:'text/javascript'})); const s=document.createElement('script'); s.src=url; s.onload=()=>res(); s.onerror=()=>rej(new Error('inject failed')); document.head.appendChild(s); }); }
+async function ensurePdfJs(){
+  if(window.pdfjsLib) return window.pdfjsLib;
+  let libTxt=null, wkTxt=null;
+  try{ libTxt=await idbGet('pdfjs_lib'); wkTxt=await idbGet('pdfjs_worker'); }catch(e){}
+  if(!libTxt || !wkTxt){
+    // first time — needs internet; cache for offline use afterwards
+    const [a,b]=await Promise.all([ fetch(PDFJS_URL).then(r=>{if(!r.ok)throw new Error('net');return r.text();}), fetch(PDFJS_WORKER).then(r=>{if(!r.ok)throw new Error('net');return r.text();}) ]);
+    libTxt=a; wkTxt=b;
+    try{ await idbSet('pdfjs_lib',libTxt); await idbSet('pdfjs_worker',wkTxt); }catch(e){}
+  }
+  await injectScriptText(libTxt);
+  if(!window.pdfjsLib) throw new Error('pdfjs missing');
+  try{ window.pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([wkTxt],{type:'text/javascript'})); }catch(e){}
+  return window.pdfjsLib;
+}
+function wyPickPDF(){ document.getElementById('wy-pdf-input').click(); }
+async function wyExtractPDF(file){
+  const lib=await ensurePdfJs();
+  const buf=await file.arrayBuffer();
+  const pdf=await lib.getDocument({data:new Uint8Array(buf)}).promise;
+  let out=[];
+  for(let pn=1; pn<=pdf.numPages; pn++){
+    const page=await pdf.getPage(pn);
+    const vp=page.getViewport({scale:1}); const mid=vp.width/2; const topY=vp.height*0.9;
+    const tc=await page.getTextContent();
+    const items=tc.items.map(it=>({str:it.str, x:it.transform[4], y:it.transform[5]})).filter(it=>it.str && it.str.trim());
+    const top=items.filter(it=>it.y>=topY);
+    const body=items.filter(it=>it.y<topY);
+    const left=body.filter(it=>it.x<mid);
+    const right=body.filter(it=>it.x>=mid);
+    const linesOf=arr=>{
+      arr.sort((a,b)=> (b.y-a.y) || (a.x-b.x));
+      const lines=[]; let cur=null, cy=null;
+      arr.forEach(it=>{ if(cy===null || Math.abs(it.y-cy)>4){ cur=[]; lines.push(cur); cy=it.y; } cur.push(it); });
+      return lines.map(l=> l.sort((a,b)=>a.x-b.x).map(i=>i.str).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean);
+    };
+    out=out.concat(linesOf(top), linesOf(left), linesOf(right));
+  }
+  return out.join('\n');
+}
+async function wyPdfFile(ev){
+  const file=ev.target.files && ev.target.files[0]; ev.target.value='';
+  if(!file) return;
+  const btn=document.getElementById('wy-pdf-btn'); const old=btn.innerHTML;
+  btn.disabled=true; btn.innerHTML='Reading PDF…';
+  try{
+    const text=await wyExtractPDF(file);
+    document.getElementById('wy-text').value=text;
+    wyPreview();
+    const p=wyParsed;
+    if(!p || (!p.home && !p.away)){ toast('Could not read the teams — try pasting the text'); }
+    else { toast('PDF read — check the preview'); }
+  }catch(e){
+    if(!navigator.onLine) toast('First PDF import needs internet — after that it works offline. For now, paste the text.');
+    else toast('Could not read this PDF — paste the text instead');
+  }finally{ btn.disabled=false; btn.innerHTML=old; }
+}
 /* ---------- Load squad from a club ---------- */
 const POS_CAT = {GK:'GK',RB:'DEF',CB:'DEF',LB:'DEF',RWB:'DEF',LWB:'DEF',DM:'MID',CM:'MID',AM:'MID',RW:'FWD',LW:'FWD',ST:'FWD'};
-let loadSquadClub = null, loadSquadNT = null, loadSquadTab = 'clubs';
-function openLoadSquad(){
-  closeFormation(); loadSquadClub=null; loadSquadNT=null;
-  // pre-select tab based on active team kind
-  const kind = (activeMatch&&activeMatch[activeTeam]&&activeMatch[activeTeam].kind)||'club';
-  loadSquadTab = kind==='nt' ? 'nt' : 'clubs';
-  renderLoadSquad();
-  document.getElementById('loadsquad-bg').classList.add('show');
-  document.getElementById('loadsquad-sheet').classList.add('show');
-}
+let loadSquadClub = null, loadSquadNT = null;
+function openLoadSquad(){ closeFormation(); loadSquadClub=null; loadSquadNT=null; renderLoadSquad(); document.getElementById('loadsquad-bg').classList.add('show'); document.getElementById('loadsquad-sheet').classList.add('show'); }
 function closeLoadSquad(){ document.getElementById('loadsquad-bg').classList.remove('show'); document.getElementById('loadsquad-sheet').classList.remove('show'); }
 function ntPlayerCount(nt){ return DB.players.filter(p=>p.nt===nt).length; }
-function allNTNames(){
-  const set=new Set();
-  DB.players.forEach(p=>{ if(p.nt&&p.nt.trim()) set.add(p.nt.trim()); });
-  if(DB.ntInfo) Object.keys(DB.ntInfo).forEach(k=>{ if(k&&k.trim()) set.add(k.trim()); });
-  return [...set].sort((a,b)=>a.localeCompare(b,'pt'));
-}
-function newNT(){
-  const name=(prompt('National team name (e.g. Portugal, Spain):')||'').trim();
-  if(!name) return;
-  if(!DB.ntInfo) DB.ntInfo={};
-  if(!DB.ntInfo[name]) DB.ntInfo[name]={};
-  save(); activeNT=name; activeNTLevel=null; renderTeams();
-}
-function deleteNT(name){
-  if(!confirm(`Remove "${name}" national team entry? Players keep their data; only the team entry and images are removed.`)) return;
-  if(DB.ntInfo) delete DB.ntInfo[name];
-  if(DB.ntLogos){
-    delete DB.ntLogos[name];
-    // remove level logos too
-    Object.keys(DB.ntLogos).forEach(k=>{ if(k.startsWith(name+'__lvl__')) delete DB.ntLogos[k]; });
-  }
-  activeNT=null; activeNTLevel=null; save(); renderTeams();
-}
-function renameNT(name){
-  const nn=(prompt('Rename national team:',name)||'').trim();
-  if(!nn||nn===name) return;
-  if(!DB.ntInfo) DB.ntInfo={};
-  DB.ntInfo[nn]=DB.ntInfo[name]||{}; delete DB.ntInfo[name];
-  if(DB.ntLogos&&DB.ntLogos[name]){ DB.ntLogos[nn]=DB.ntLogos[name]; delete DB.ntLogos[name]; }
-  DB.players.forEach(p=>{ if(p.nt===name) p.nt=nn; });
-  activeNT=nn; save(); renderTeams();
-}
 function ntLevels(nt){ return [...new Set(DB.players.filter(p=>p.nt===nt).map(p=>p.ntLevel||'').filter(Boolean))].sort(); }
 function ntAbbr(n){ return (n||'').replace(/[^A-Za-zÀ-ÿ]/g,'').slice(0,3).toUpperCase(); }
 function ntLogoOf(name){ return (DB.ntLogos&&DB.ntLogos[name])||''; }
@@ -5081,38 +4625,6 @@ function ntLogoReset(name){ if(DB.ntLogos) delete DB.ntLogos[name]; save(); rend
 function ntInfoOf(name){ return (DB.ntInfo&&DB.ntInfo[name])||{}; }
 function ntColorOf(name){ return ntInfoOf(name).color||''; }
 function setNTColor(name,col){ if(!DB.ntInfo) DB.ntInfo={}; if(!DB.ntInfo[name]) DB.ntInfo[name]={}; DB.ntInfo[name].color = (DB.ntInfo[name].color===col?'':col); save(); renderTeams(); }
-
-/* ---- NT level logos (image per country+level) ---- */
-function ntLevelKey(country,level){ return country+'__lvl__'+(level||''); }
-function ntLevelLogoOf(country,level){ return (DB.ntLogos&&DB.ntLogos[ntLevelKey(country,level)])||''; }
-function ntLevelCrest(country,level,size){
-  const logo=ntLevelLogoOf(country,level); const s=`width:${size}px;height:${size}px`;
-  if(logo) return `<span class="nt-badge" style="${s};background:#fff;padding:2px;overflow:hidden"><img src="${logo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
-  // fallback: country logo then colour/abbr
-  const clogo=ntLogoOf(country);
-  if(clogo) return `<span class="nt-badge" style="${s};background:#fff;padding:2px;overflow:hidden"><img src="${clogo}" style="width:100%;height:100%;object-fit:contain" alt=""></span>`;
-  const col=ntColorOf(country);
-  return `<span class="nt-badge" style="${s}${col?`;background:${col};color:#fff`:''}">${esc(level?ntAbbr(country)+' '+level:ntAbbr(country))}</span>`;
-}
-let pendingNTLevelLogoCountry=null, pendingNTLevelLogoLevel=null;
-function ntLevelLogoChoose(country,level){ pendingNTLevelLogoCountry=country; pendingNTLevelLogoLevel=level; document.getElementById('ntlvllogo-input').click(); }
-function ntLevelLogoUpload(ev){
-  const file=ev.target.files && ev.target.files[0]; ev.target.value='';
-  if(!file || !pendingNTLevelLogoCountry) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const tmp=new Image();
-    tmp.onload=()=>{
-      const max=140; let w=tmp.width,h=tmp.height; const sc=Math.min(max/w,max/h,1); w=Math.round(w*sc); h=Math.round(h*sc);
-      const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(tmp,0,0,w,h);
-      let out; try{ out=c.toDataURL('image/png'); }catch(err){ toast('Invalid image'); return; }
-      if(!DB.ntLogos) DB.ntLogos={}; DB.ntLogos[ntLevelKey(pendingNTLevelLogoCountry,pendingNTLevelLogoLevel)]=out; save(); renderTeams(); toast('Level image updated');
-    };
-    tmp.onerror=()=>toast('Could not read the image');
-    tmp.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
 function setClubColor2(name,col){ const c=ensureClub(name); c.color=(c.color===col?'':col); save(); renderTeams(); }
 
 const ALL_LVL='\u0000ALL';
@@ -5157,38 +4669,29 @@ function renderLoadSquad(){
       lvls.map(l=>{const n=DB.players.filter(p=>p.club===loadSquadClub&&(p.level||'')===l).length; return `<button class="pf-chip" onclick="doLoadSquad('${esc(l).replace(/'/g,"\\'")}')">${esc(l)} (${n})</button>`;}).join('')+
       `<button class="pf-chip" onclick="doLoadSquad(null)">All (${clubPlayerCount(loadSquadClub)})</button></div>`+
       `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="loadSquadClub=null;renderLoadSquad()"><span class="chev" style="font-size:16px">‹</span> Back</button>`;
-    return;
-  }
-  if(loadSquadNT){
+  } else if(loadSquadNT){
     const lvls=ntLevels(loadSquadNT);
     body.innerHTML = `<div class="section-lbl" style="margin-top:0">${esc(loadSquadNT)} — choose level</div>`+
       `<div style="display:flex;flex-wrap:wrap;gap:8px">`+
       lvls.map(l=>{const n=DB.players.filter(p=>p.nt===loadSquadNT&&(p.ntLevel||'')===l).length; return `<button class="pf-chip" onclick="doLoadSquadNT('${esc(l).replace(/'/g,"\\'")}')">${esc(l)} (${n})</button>`;}).join('')+
       `<button class="pf-chip" onclick="doLoadSquadNT(null)">All (${ntPlayerCount(loadSquadNT)})</button></div>`+
       `<button class="btn" style="width:100%;justify-content:center;margin-top:12px" onclick="loadSquadNT=null;renderLoadSquad()"><span class="chev" style="font-size:16px">‹</span> Back</button>`;
-    return;
-  }
-  const names=allClubNames(); const nts=allNTNames(); const comps=DB.competitions||[];
-  // tabs
-  const tabs=[
-    {id:'clubs',label:'Clubs',count:names.length},
-    {id:'nt',label:'NT',count:nts.length},
-    {id:'comps',label:'Competitions',count:comps.length}
-  ].filter(t=>t.count>0||t.id==='clubs'||t.id==='nt');
-  let html=`<div class="cal-seg" style="margin-bottom:12px;max-width:100%">${
-    tabs.map(t=>`<button class="${loadSquadTab===t.id?'on':''}" onclick="loadSquadTab='${t.id}';renderLoadSquad()">${t.label}${t.count?` (${t.count})`:''}</button>`).join('')
-  }</div>`;
-  if(loadSquadTab==='clubs'){
-    html += names.length? names.map(n=>`<div class="tcard" onclick="loadSquadPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${clubPlayerCount(n)} player${clubPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
-      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs yet.</div>`;
-  } else if(loadSquadTab==='nt'){
-    html += nts.length? nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')">${ntCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
-      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No national teams yet.</div>`;
   } else {
-    html += comps.length? comps.map(c=>`<div class="tcard" onclick="${activeMatch?'pickMatchComp':'doLoadComp'}('${c.id}')"><span class="nt-badge" style="background:rgba(245,166,35,.15);color:#b5790a">🏆</span><div class="pc-main"><div class="pc-name">${esc(c.name||'Untitled')}</div><div class="pc-meta">${(c.squad||[]).length} called up${c.team?` · ${esc(c.team)}`:''}</div></div>${activeMatch&&activeMatch.compId===c.id?'<span style="color:var(--ok);font-size:16px">✓</span>':'<span style="color:var(--mut2);font-size:20px">›</span>'}</div>`).join('')
-      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No competitions yet. <button class="btn" style="display:inline;padding:3px 8px;font-size:12px" onclick="closeLoadSquad();openCompetitions()">Create one</button></div>`;
+    const names=allClubNames(); const nts=distinct('nt');
+    let html=`<div class="section-lbl" style="margin-top:0">Clubs</div>`;
+    html += names.length? names.map(n=>`<div class="tcard" onclick="loadSquadPickClub('${esc(n).replace(/'/g,"\\'")}')">${clubCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${clubPlayerCount(n)} player${clubPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('')
+      : `<div style="color:var(--mut2);font-size:13px;padding:6px 2px">No clubs with players yet.</div>`;
+    if(nts.length){
+      html += `<div class="section-lbl" style="margin-top:18px">National teams</div>`+
+        nts.map(n=>`<div class="tcard" onclick="loadSquadPickNT('${esc(n).replace(/'/g,"\\'")}')">${ntCrest(n,34)}<div class="pc-main"><div class="pc-name">${esc(n)}</div><div class="pc-meta">${ntPlayerCount(n)} player${ntPlayerCount(n)!==1?'s':''}</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('');
+    }
+    const comps=DB.competitions||[];
+    if(comps.length){
+      html += `<div class="section-lbl" style="margin-top:18px">Competitions</div>`+
+        comps.map(c=>`<div class="tcard" onclick="doLoadComp('${c.id}')"><span class="nt-badge" style="background:rgba(245,166,35,.15);color:#b5790a">🏆</span><div class="pc-main"><div class="pc-name">${esc(c.name||'Untitled')}</div><div class="pc-meta">${(c.squad||[]).length} called up</div></div><span style="color:var(--mut2);font-size:20px">›</span></div>`).join('');
+    }
+    body.innerHTML=html;
   }
-  body.innerHTML=html;
 }
 function loadSquadPickClub(n){ loadSquadClub=n; loadSquadNT=null; renderLoadSquad(); }
 function loadSquadPickNT(n){ loadSquadNT=n; loadSquadClub=null; renderLoadSquad(); }
@@ -5244,55 +4747,14 @@ function openFormation(){
   const t = team();
   const tname = (activeTeam==='home'? (activeMatch.home.name||'Home') : (activeMatch.away.name||'Away'));
   document.getElementById('form-team-lbl').textContent = 'Lineup — ' + tname;
+  document.getElementById('form-current-count').textContent = t.players.filter(p=>!p.sub).length;
   document.querySelectorAll('#form-chips .pchip').forEach(c=>c.classList.remove('on'));
-  renderLineupList();
   document.getElementById('form-bg').classList.add('show');
   document.getElementById('form-sheet').classList.add('show');
-}
-function renderLineupList(){
-  const el=document.getElementById('form-player-list'); if(!el) return;
-  const t=team(); const players=t.players;
-  if(!players.length){
-    el.innerHTML=`<div class="lu-empty">No players loaded yet.<br>Use "Load players" below or paste a list.</div>`;
-    return;
-  }
-  const starters=players.filter(p=>!p.sub);
-  const bench=players.filter(p=>p.sub);
-  let html=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-    <div style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px">Players · ${starters.length} starting · ${bench.length} bench</div>
-  </div>`;
-  // starters first, then bench
-  const sorted=[...starters,...bench];
-  html+=sorted.map(p=>{
-    const isSub=!!p.sub;
-    const num=p.num||'—';
-    return `<div class="lu-row">
-      <span class="lu-num">${esc(num)}</span>
-      <span class="lu-name">${esc(p.name||'No name')}</span>
-      <span class="lu-pos">${esc(p.pos||'')}</span>
-      <div class="lu-seg">
-        <button class="${!isSub?'on':''}" onclick="toggleLineupSub('${p.id}',false)">▶ Start</button>
-        <button class="${isSub?'on bench':''}" onclick="toggleLineupSub('${p.id}',true)">⬜ Bench</button>
-      </div>
-    </div>`;
-  }).join('');
-  el.innerHTML=html;
 }
 function closeFormation(){
   document.getElementById('form-bg').classList.remove('show');
   document.getElementById('form-sheet').classList.remove('show');
-}
-function toggleLineupSub(pid, toSub){
-  const t=team(); const p=t.players.find(x=>x.id===pid); if(!p) return;
-  p.sub=toSub;
-  if(!toSub){
-    // moving to field — place in a reasonable position if still at default
-    if(p.x===50 && p.y===50){
-      const slots=FORMATIONS[DEFAULT_FORMATION]; const used=t.players.filter(x=>!x.sub&&x.id!==pid).length;
-      if(slots[used]){ const xy=slotToXY(slots[used],activeTeam); p.x=xy.x; p.y=xy.y; if(!p.pos) p.pos=slots[used].pos; }
-    }
-  }
-  save(); renderLineupList(); renderPitch(); renderBench(); renderTabs();
 }
 function applyFormation(formation){
   const t = team();
@@ -5423,6 +4885,7 @@ const ABOUT_GUIDE = [
 ];
 const ABOUT_NEWS = [
   ['1.1', 'June 2026', [
+    'Import Wyscout teamsheets: in a match report, open Lineup → “Import Wyscout teamsheet”, then upload the Wyscout/Hudl PDF or paste the text. Both line-ups are filled automatically — starters on the pitch in the detected formation (4-3-3, 5-4-1, and more), subs on the bench, with names, numbers and birth years. (PDF upload needs an internet connection; pasting works offline.)',
     'Club & national-team profiles: give each a colour, a crest or flag image, a location, contacts and notes — and view every player in the team in one tap.',
     'Nationality flags now recognise Portuguese country names and nationalities (e.g. Espanhol, Inglês, Brasileiro), with or without accents.',
     'National teams: a player can belong to a club and a national team (e.g. Spain U19) in one record — no duplicates. Manage them in Teams → National teams: add a whole squad in bulk with the country, level and nationality applied to everyone. Filter the database by national team and load one onto a match report.',
@@ -5713,9 +5176,5 @@ async function bootData(){
   showSection('dashboard');
 }
 </script>
-<div id="photo-lb" onclick="closePhotoLb(event)">
-  <button id="photo-lb-close" onclick="closePhotoLb(null)">✕</button>
-  <img id="photo-lb-img" src="" alt="">
-</div>
 </body>
 </html>
