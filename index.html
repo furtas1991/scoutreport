@@ -4442,7 +4442,8 @@ function parseWyscout(text){
   }
   for(const l of lines){
     const fs=l.match(/\d(?:\s*-\s*\d){2,4}/g);
-    if(fs && fs.length){ forms=fs.map(f=>f.replace(/\s+/g,'')); if(forms.length>=2) break; }
+    if(fs){ fs.forEach(f=>{ const c=f.replace(/\s+/g,''); const parts=c.split('-').map(Number); if(parts.length>=3 && parts.length<=5 && parts.reduce((a,b)=>a+b,0)===10) forms.push(c); }); }
+    if(forms.length>=2) break;
   }
   const teams={}; const order=[];
   function sideFor(name){
@@ -4475,26 +4476,37 @@ function parseWyscout(text){
   if(teams.away){ if(!teams.away.name && aName) teams.away.name=aName; teams.away.formation=forms[1]||''; }
   return { home:teams.home||null, away:teams.away||null, score, hName, aName };
 }
+function wyGenFormation(def,mid,fwd){
+  const row=(n,y,pos)=>{ const o=[]; if(n<=0) return o; if(n===1){ o.push({x:50,y,pos}); } else { const L=12,R=88; for(let i=0;i<n;i++) o.push({x:L+(R-L)*i/(n-1),y,pos}); } return o; };
+  return [{x:50,y:91,pos:'GK'}].concat(row(def, def>=5?72:75,'DEF'), row(mid,52,'MID'), row(fwd, fwd===1?27:26,'FWD'));
+}
 function applyWyscout(p){
   if(!activeMatch){ newMatch(); }
   ['home','away'].forEach(side=>{
     const src=p[side]; if(!src) return;
     const t=activeMatch[side];
     if(src.name) t.name=src.name;
-    const formation = FORMATIONS[src.formation]? src.formation : DEFAULT_FORMATION;
-    const slots = FORMATIONS[formation];
-    // starters: GK first, otherwise keep Wyscout order, then place by slot index
-    let st=src.starters.slice();
-    const gkIdx=st.findIndex(pl=>pl.cat==='GK');
-    if(gkIdx>0){ const gk=st.splice(gkIdx,1)[0]; st.unshift(gk); }
-    const onField=[];
-    slots.forEach((slot,i)=>{
-      const xy=slotToXY(slot,side); const pl=st[i];
-      onField.push({ id:uid(), num:pl?pl.num:'', name:pl?pl.name:'', pos:slot.pos, notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:pl?pl.birth:'' });
-    });
-    const extra=st.slice(slots.length).map(pl=>({num:pl.num,name:pl.name,birth:pl.birth}));
-    const bench=(src.bench||[]).concat(extra).map(pl=>({ id:uid(), num:pl.num||'', name:pl.name||'', pos:'', notes:'', sub:true, x:50, y:50, rate:'', birth:pl.birth||'' }));
-    t.players = onField.concat(bench);
+    const mk=(pl,pos,xy,sub)=>({ id:uid(), num:pl?(pl.num||''):'', name:pl?(pl.name||''):'', pos:pos||'', notes:'', sub:!!sub, x:xy?xy.x:50, y:xy?xy.y:50, rate:'', birth:pl?(pl.birth||''):'' });
+    const onField=[]; let leftover=[];
+    if(src.formation && FORMATIONS[src.formation]){
+      // explicit formation from the sheet: place in listed order (GK first)
+      const slots=FORMATIONS[src.formation];
+      let st=src.starters.slice(); const gi=st.findIndex(x=>x.cat==='GK'); if(gi>0) st.unshift(st.splice(gi,1)[0]);
+      slots.forEach((slot,i)=>{ onField.push(mk(st[i],slot.pos,slotToXY(slot,side),false)); });
+      leftover=st.slice(slots.length);
+    } else {
+      // no formation on the sheet: infer it from the position counts, fill each line right-to-left
+      const pools={GK:[],DEF:[],MID:[],FWD:[]};
+      src.starters.forEach(pl=>{ (pools[pl.cat]||pools.MID).push(pl); });
+      const slots=wyGenFormation(pools.DEF.length,pools.MID.length,pools.FWD.length);
+      const byCat={GK:[],DEF:[],MID:[],FWD:[]}; slots.forEach(s=>byCat[s.pos].push(s));
+      ['GK','DEF','MID','FWD'].forEach(cat=>{
+        const line=byCat[cat].slice().sort((a,b)=>a.x-b.x); const pool=pools[cat];
+        line.forEach((slot,i)=>{ const pl = cat==='GK'? pool[0] : pool[line.length-1-i]; onField.push(mk(pl,cat,slotToXY(slot,side),false)); });
+      });
+    }
+    const bench=(src.bench||[]).concat(leftover).map(pl=>mk(pl,'',null,true));
+    t.players=onField.concat(bench);
   });
   if(p.score && activeMatch.home.name && activeMatch.away.name){
     activeMatch.title = `${activeMatch.home.name} ${p.score.h}-${p.score.a} ${activeMatch.away.name}`;
@@ -4546,27 +4558,34 @@ async function ensurePdfJs(){
   return window.pdfjsLib;
 }
 function wyPickPDF(){ document.getElementById('wy-pdf-input').click(); }
+function wyColumnBoundary(items, pageW){
+  let xs=items.filter(it=>/TITULARES|BANCO|STARTERS|BENCH|SUBSTIT/i.test(it.str)).map(it=>it.x);
+  if(xs.length<2) xs=items.filter(it=>/^\d{1,2}$/.test((it.str||'').trim())).map(it=>it.x);
+  if(xs.length<2) return pageW;
+  xs=xs.slice().sort((a,b)=>a-b);
+  let gap=0, at=pageW;
+  for(let i=1;i<xs.length;i++){ const g=xs[i]-xs[i-1]; if(g>gap){ gap=g; at=(xs[i]+xs[i-1])/2; } }
+  return gap > pageW*0.18 ? at : pageW;
+}
 async function wyExtractPDF(file){
   const lib=await ensurePdfJs();
   const buf=await file.arrayBuffer();
   const pdf=await lib.getDocument({data:new Uint8Array(buf)}).promise;
+  const linesOf=arr=>{
+    arr.sort((a,b)=> (b.y-a.y) || (a.x-b.x));
+    const lines=[]; let cur=null, cy=null;
+    arr.forEach(it=>{ if(cy===null || Math.abs(it.y-cy)>4){ cur=[]; lines.push(cur); cy=it.y; } cur.push(it); });
+    return lines.map(l=> l.sort((a,b)=>a.x-b.x).map(i=>i.str).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean);
+  };
   let out=[];
   for(let pn=1; pn<=pdf.numPages; pn++){
     const page=await pdf.getPage(pn);
-    const vp=page.getViewport({scale:1}); const mid=vp.width/2; const topY=vp.height*0.9;
+    const vp=page.getViewport({scale:1});
     const tc=await page.getTextContent();
     const items=tc.items.map(it=>({str:it.str, x:it.transform[4], y:it.transform[5]})).filter(it=>it.str && it.str.trim());
-    const top=items.filter(it=>it.y>=topY);
-    const body=items.filter(it=>it.y<topY);
-    const left=body.filter(it=>it.x<mid);
-    const right=body.filter(it=>it.x>=mid);
-    const linesOf=arr=>{
-      arr.sort((a,b)=> (b.y-a.y) || (a.x-b.x));
-      const lines=[]; let cur=null, cy=null;
-      arr.forEach(it=>{ if(cy===null || Math.abs(it.y-cy)>4){ cur=[]; lines.push(cur); cy=it.y; } cur.push(it); });
-      return lines.map(l=> l.sort((a,b)=>a.x-b.x).map(i=>i.str).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean);
-    };
-    out=out.concat(linesOf(top), linesOf(left), linesOf(right));
+    const bound=wyColumnBoundary(items, vp.width);
+    if(bound>=vp.width){ out=out.concat(linesOf(items)); }
+    else { out=out.concat(linesOf(items.filter(it=>it.x<bound)), linesOf(items.filter(it=>it.x>=bound))); }
   }
   return out.join('\n');
 }
