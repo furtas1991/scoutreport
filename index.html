@@ -1580,14 +1580,19 @@ body.noTabs .tabbar{display:none}
   <div class="grip"></div>
   <div style="font-weight:800;font-size:16px;margin-bottom:4px">Import list</div>
   <div style="color:var(--mut);font-size:13px;margin-bottom:12px" id="implist-team">For the team…</div>
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <button class="btn" style="flex:1;justify-content:center" onclick="document.getElementById('implist-pdf-input').click()">📄 Upload PDF</button>
+    <input type="file" id="implist-pdf-input" accept="application/pdf" style="display:none" onchange="importPDF(event)">
+  </div>
+  <div style="color:var(--mut);font-size:12px;text-align:center;margin:-4px 0 10px">— or paste below —</div>
   <div class="field" style="margin-bottom:10px">
     <textarea class="inp" id="implist-text" placeholder="Paste the list here, one player per line. E.g.:
 1. Afonso Meira
 2. Afonso Pereira
-3. Rodrigo Maia" style="min-height:170px"></textarea>
+3. Rodrigo Maia" style="min-height:140px"></textarea>
   </div>
   <div style="background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:11px 13px;font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.55">
-    <b style="color:var(--txt)">Tip:</b> on iPhone, open the photo of the team sheet, press and hold over the names, tap "Copy text" and paste here. The first 11 go on the pitch; the rest to the bench.
+    <b style="color:var(--txt)">Tip:</b> upload the Wyscout PDF directly, or on iPhone open the photo of the team sheet, press and hold over the names, tap "Copy text" and paste here.
   </div>
   <div class="sheet-actions">
     <button class="btn" onclick="closeImportList()">Cancel</button>
@@ -4986,8 +4991,63 @@ function openImportList(){
   document.getElementById('implist-text').value='';
   const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'Home':'Away');
   document.getElementById('implist-team').textContent = 'For the team: ' + tname;
+  document.getElementById('implist-pdf-input').value='';
   document.getElementById('implist-bg').classList.add('show');
   document.getElementById('implist-sheet').classList.add('show');
+}
+function importPDF(ev){
+  const file = ev.target.files&&ev.target.files[0]; ev.target.value='';
+  if(!file) return;
+  toast('Reading PDF…');
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const raw = new Uint8Array(e.target.result);
+      const text = extractPDFText(raw);
+      if(!text.trim()){ toast('No text found in PDF — try pasting manually'); return; }
+      document.getElementById('implist-text').value = text;
+      toast('PDF loaded — check the list and tap Import');
+    } catch(err) {
+      toast('Could not read PDF — try pasting manually');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+function extractPDFText(bytes){
+  // Extract text from PDF binary without external libraries
+  // Decodes stream content and finds text strings (BT...ET blocks)
+  const str = Array.from(bytes).map(b=>String.fromCharCode(b)).join('');
+  const chunks = [];
+  // Extract text from BT/ET blocks (PDF text operators)
+  const btEt = str.match(/BT[\s\S]*?ET/g)||[];
+  btEt.forEach(block=>{
+    // Find Tj/TJ operators
+    const tj = block.match(/\(([^)]*)\)\s*Tj/g)||[];
+    tj.forEach(t=>{ const m=t.match(/\(([^)]*)\)/); if(m) chunks.push(m[1]); });
+    const tJ = block.match(/\[([^\]]*)\]\s*TJ/g)||[];
+    tJ.forEach(t=>{ const m=t.match(/\[([^\]]*)\]/); if(m) chunks.push(m[1].replace(/\(([^)]*)\)/g,'$1').replace(/-?\d+/g,'')); });
+  });
+  // Also try to find plain text streams (some PDFs)
+  if(!chunks.length){
+    const streams = str.match(/stream[\r\n]([\s\S]*?)endstream/g)||[];
+    streams.forEach(s=>{
+      const content = s.replace(/^stream[\r\n]/,'').replace(/endstream$/,'');
+      if(content.match(/[A-Za-zÀ-ÿ]{3,}/)) chunks.push(content);
+    });
+  }
+  const raw = chunks.join(' ')
+    .replace(/\\n/g,'\n').replace(/\\r/g,'')
+    .replace(/\\([0-7]{3})/g,(_,o)=>String.fromCharCode(parseInt(o,8)))
+    .replace(/\\/g,'');
+  // Split into lines and clean — keep lines that look like player names
+  const lines = raw.split(/[\n\r]+/).map(l=>l.trim()).filter(l=>l.length>1);
+  // Filter: keep lines with at least 2 words or a number+name pattern
+  const playerLines = lines.filter(l=>{
+    if(l.match(/^\d{1,3}[.\s\-)]?\s*[A-Za-zÀ-ÿ]{2}/)) return true; // numbered
+    if(l.match(/^[A-ZÁÉÍÓÚÀÃÕÂÊÔÇ][a-záéíóúàãõâêôç]{1,}(\s[A-Za-záéíóúàãõâêôç]{1,})+/)) return true; // Name Surname
+    return false;
+  });
+  return (playerLines.length > 2 ? playerLines : lines).join('\n');
 }
 function closeImportList(){
   document.getElementById('implist-bg').classList.remove('show');
