@@ -5014,40 +5014,42 @@ function importPDF(ev){
   reader.readAsArrayBuffer(file);
 }
 function extractPDFText(bytes){
-  // Extract text from PDF binary without external libraries
-  // Decodes stream content and finds text strings (BT...ET blocks)
   const str = Array.from(bytes).map(b=>String.fromCharCode(b)).join('');
   const chunks = [];
-  // Extract text from BT/ET blocks (PDF text operators)
+  // Extract BT/ET text blocks
   const btEt = str.match(/BT[\s\S]*?ET/g)||[];
   btEt.forEach(block=>{
-    // Find Tj/TJ operators
     const tj = block.match(/\(([^)]*)\)\s*Tj/g)||[];
-    tj.forEach(t=>{ const m=t.match(/\(([^)]*)\)/); if(m) chunks.push(m[1]); });
+    tj.forEach(t=>{ const m=t.match(/\(([^)]*)\)/); if(m) chunks.push({text:m[1],nl:false}); });
     const tJ = block.match(/\[([^\]]*)\]\s*TJ/g)||[];
-    tJ.forEach(t=>{ const m=t.match(/\[([^\]]*)\]/); if(m) chunks.push(m[1].replace(/\(([^)]*)\)/g,'$1').replace(/-?\d+/g,'')); });
+    tJ.forEach(t=>{ const m=t.match(/\[([^\]]*)\]/); if(m){
+      const txt=m[1].replace(/\(([^)]*)\)/g,'$1').replace(/-?\d+/g,'');
+      chunks.push({text:txt,nl:false});
+    }});
+    // Td/T* operators = new line
+    if(block.match(/T\*|Td|TD/)) chunks.push({text:'',nl:true});
   });
-  // Also try to find plain text streams (some PDFs)
-  if(!chunks.length){
-    const streams = str.match(/stream[\r\n]([\s\S]*?)endstream/g)||[];
-    streams.forEach(s=>{
-      const content = s.replace(/^stream[\r\n]/,'').replace(/endstream$/,'');
-      if(content.match(/[A-Za-zÀ-ÿ]{3,}/)) chunks.push(content);
-    });
-  }
-  const raw = chunks.join(' ')
+  // Reconstruct text with line breaks
+  let out='', line='';
+  chunks.forEach(c=>{
+    if(c.nl){ if(line.trim()) out+=line.trim()+'\n'; line=''; }
+    else line+=c.text;
+  });
+  if(line.trim()) out+=line.trim();
+  // Decode escape sequences
+  out = out
     .replace(/\\n/g,'\n').replace(/\\r/g,'')
     .replace(/\\([0-7]{3})/g,(_,o)=>String.fromCharCode(parseInt(o,8)))
-    .replace(/\\/g,'');
-  // Split into lines and clean — keep lines that look like player names
-  const lines = raw.split(/[\n\r]+/).map(l=>l.trim()).filter(l=>l.length>1);
-  // Filter: keep lines with at least 2 words or a number+name pattern
-  const playerLines = lines.filter(l=>{
-    if(l.match(/^\d{1,3}[.\s\-)]?\s*[A-Za-zÀ-ÿ]{2}/)) return true; // numbered
-    if(l.match(/^[A-ZÁÉÍÓÚÀÃÕÂÊÔÇ][a-záéíóúàãõâêôç]{1,}(\s[A-Za-záéíóúàãõâêôç]{1,})+/)) return true; // Name Surname
-    return false;
-  });
-  return (playerLines.length > 2 ? playerLines : lines).join('\n');
+    .replace(/\\\\/g,'\\').replace(/\\([^\\])/g,'$1');
+  // If we got nothing useful, try raw stream extraction
+  if(out.replace(/\s/g,'').length<20){
+    const streams=str.match(/stream[\r\n]([\s\S]*?)endstream/g)||[];
+    streams.forEach(s=>{
+      const c=s.replace(/^stream[\r\n]/,'').replace(/endstream$/,'');
+      if(c.match(/[A-Za-zÀ-ÿ]{3,}/)) out+=c+'\n';
+    });
+  }
+  return out.trim();
 }
 function closeImportList(){
   document.getElementById('implist-bg').classList.remove('show');
@@ -5283,20 +5285,89 @@ function doLoadSquadNT(level){
   const players=DB.players.filter(p=>p.nt===loadSquadNT && (level==null||(p.ntLevel||'')===level));
   loadSquadInto(players, level? `${loadSquadNT} ${level}` : loadSquadNT, null);
 }
+function cleanListName(s){
+  return s.replace(/\s*\(\s*(?:c|cap|capit[ãa]o|gr)\s*\)\s*$/i,'').replace(/\s+/g,' ').trim();
+}
+// Wyscout position codes → app positions
+const WY_POS = {
+  'GR':'GK','GK':'GK','POR':'GK',
+  'DEF':'CB','DF':'CB','DC':'CB','DD':'RB','DE':'LB',
+  'MÉD':'CM','MED':'CM','MF':'CM','MC':'CM','MI':'CM',
+  'MD':'CM','ME':'CM','MDC':'DM','MO':'AM','MAL':'AM',
+  'AT':'ST','AV':'ST','FW':'ST','EX':'RW','EXD':'RW','EXE':'LW','CA':'ST'
+};
+function parseWyscout(text){
+  // Detects Wyscout format: "7 MÉD I. Izquierdo ('09)"
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const results = { starters:[], bench:[], isBanco:false, detected:false };
+  for(const line of lines){
+    // Wyscout line: NUM POS Name ('YY) [events...]
+    // Format: NUM POS Name ('YY) [optional events]
+    const m = line.match(/^(\d{1,3})\s+([A-Z\u00C0-\u00FF]{2,5})\s+(.+?)(?:\s+\('?(\d{2,4})'?\))?(?:\s+\d.*)?$/);
+    if(m){
+      results.detected = true;
+      const pos = WY_POS[m[2].toUpperCase().replace('É','E').replace('Ó','O')]||m[2];
+      const birth = m[4] ? (m[4].length===2 ? '20'+m[4] : m[4]) : '';
+      const player = { num:m[1], pos, name:cleanListName(m[3].trim()), birth, sub:results.isBanco };
+      if(results.isBanco) results.bench.push(player);
+      else results.starters.push(player);
+      continue;
+    }
+    // Banco/bench marker
+    if(line.match(/BANCO|BENCH|RESERVAS|SUBSTITUT/i)){ results.isBanco=true; continue; }
+    // TITULARES marker
+    if(line.match(/TITULARES|STARTERS|ONZE|ELEVEN/i)){ results.isBanco=false; continue; }
+  }
+  return results;
+}
+function parseList(text){
+  // Try Wyscout format first
+  const wy = parseWyscout(text);
+  if(wy.detected && (wy.starters.length+wy.bench.length)>0){
+    return [...wy.starters, ...wy.bench];
+  }
+  // Fallback: generic numbered/plain list
+  const lines = (text||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const numbered = lines.map(l=>{ const m=l.match(/^(\d{1,3})\s*[.)\-:º°]?\s+(.+)$/); return m?{num:m[1],name:cleanListName(m[2]),pos:'',birth:'',sub:false}:null; });
+  const hasNum = numbered.some(Boolean);
+  let players = hasNum ? numbered.filter(Boolean) : lines.map(l=>({num:'',name:cleanListName(l),pos:'',birth:'',sub:false}));
+  return players.filter(p=>p.name&&p.name.length>1).slice(0,30);
+}
 function doImportList(){
-  const list = parseList(document.getElementById('implist-text').value);
+  const raw = document.getElementById('implist-text').value;
+  const list = parseList(raw);
   if(!list.length){ toast('No names found in the list'); return; }
-  const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'da casa':'de fora');
-  if(!confirm(`Import ${list.length} player(s) into the ${tname} team?\nThe current players of this team will be replaced.`)) return;
+  const onField = list.filter(p=>!p.sub);
+  const bench   = list.filter(p=>p.sub);
+  const tname = activeMatch[activeTeam].name || (activeTeam==='home'?'Home':'Away');
+  if(!confirm(`Import ${onField.length} starters + ${bench.length} bench into ${tname}?\nCurrent players will be replaced.`)) return;
   const slots = FORMATIONS[DEFAULT_FORMATION];
-  activeMatch[activeTeam].players = list.map((p,i)=>{
-    const onField = i<11;
-    const base = { id:uid(), num:p.num||'', name:p.name, pos:'', notes:'', rate:'', birth:'', sub:!onField, x:50, y:50 };
-    if(onField){ const xy=slotToXY(slots[i], activeTeam); base.x=xy.x; base.y=xy.y; base.pos=slots[i].pos; }
-    return base;
+  // Map positions to field slots
+  const posSlotMap = {}; // pos -> [slotIndexes]
+  slots.forEach((s,i)=>{ if(!posSlotMap[s.pos]) posSlotMap[s.pos]=[]; posSlotMap[s.pos].push(i); });
+  const usedSlots = new Set();
+  function getSlot(pos){
+    const cat = POS_CAT[pos]||'MID';
+    // Try exact pos first, then category
+    const candidates = (posSlotMap[pos]||[]).concat(
+      Object.entries(POS_CAT).filter(([p,c])=>c===cat).flatMap(([p])=>posSlotMap[p]||[])
+    ).filter(i=>!usedSlots.has(i));
+    if(candidates.length){ usedSlots.add(candidates[0]); return candidates[0]; }
+    // Any unused slot
+    const any=[...Array(slots.length).keys()].filter(i=>!usedSlots.has(i));
+    if(any.length){ usedSlots.add(any[0]); return any[0]; }
+    return null;
+  }
+  activeMatch[activeTeam].players = list.map(p=>{
+    if(p.sub){
+      return {id:uid(),num:p.num||'',name:p.name,pos:p.pos||'',birth:p.birth||'',notes:'',rate:'',sub:true,x:50,y:50};
+    }
+    const si = getSlot(p.pos);
+    const xy = si!=null ? slotToXY(slots[si],activeTeam) : {x:50,y:50};
+    return {id:uid(),num:p.num||'',name:p.name,pos:p.pos||(si!=null?slots[si].pos:''),birth:p.birth||'',notes:'',rate:'',sub:false,x:xy.x,y:xy.y};
   });
   save(); closeImportList(); switchTeam(activeTeam); renderTabs();
-  toast(`${list.length} players imported`);
+  toast(`${onField.length} on pitch · ${bench.length} on bench`);
 }
 
 /* ---------- Formation ---------- */
