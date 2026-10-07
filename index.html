@@ -326,6 +326,35 @@ textarea.inp{resize:none;min-height:96px;line-height:1.5;font-size:15px}
   background:var(--surf2);color:var(--mut);font-size:13px;font-weight:700;cursor:pointer;transition:all .12s;
 }
 .pchip.on{background:var(--accent);color:#1a1405;border-color:var(--accent)}
+.poschips.wrap{flex-wrap:wrap}
+.posgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.posgrid .pchip{padding:9px 0}
+.poschips.wrap .pchip{flex:0 0 auto;min-width:46px;padding:8px 9px}
+.pchip.sm{padding:8px 3px;font-size:12px}
+.vchip.on[data-v="T"]{background:#2ba96b;border-color:#2ba96b;color:#fff}
+.vchip.on[data-v="MN"]{background:#1d6fe0;border-color:#1d6fe0;color:#fff}
+.vchip.on[data-v="S"]{background:#f5a623;border-color:#f5a623;color:#1a1405}
+.vchip.on[data-v="NGE"]{background:#e5484d;border-color:#e5484d;color:#fff}
+.notebar{display:flex;gap:6px;overflow-x:auto;padding:7px 0 2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.notebar::-webkit-scrollbar{display:none}
+.nb{flex:0 0 auto;border:1px solid var(--line2);background:var(--surf2);color:var(--txt);border-radius:8px;padding:7px 10px;font-size:12.5px;font-weight:700;white-space:nowrap;cursor:pointer}
+.nb.sign{min-width:38px;font-size:16px;padding:4px 10px}
+.nb.plus{color:#2ba96b}.nb.minus{color:#e5484d}
+.nb.tag{font-weight:600;color:var(--mut)}
+.mininp{width:62px;text-align:center;font-weight:800;font-size:16px;padding:8px 6px}
+.minrow{display:flex;gap:8px;align-items:center}
+.minrow .lbl{font-size:12px;font-weight:700;color:var(--mut)}
+.clockpill{border:1px solid var(--line2);background:var(--surf2);color:var(--txt);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer;font-variant-numeric:tabular-nums}
+.clockpill.warn{border-color:var(--accent);color:var(--accent)}
+.cl-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.cl-row{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:9px 11px}
+.cl-row .cl-main{flex:1;min-width:0}
+.cl-row .cl-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cl-row .cl-meta{font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cl-h{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:2px 0 8px}
+.backup-warn{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1px solid var(--accent);border-radius:12px;padding:11px 13px;margin-bottom:12px;font-size:13px;cursor:pointer}
+.backup-warn b{color:var(--accent)}
+.tok-grade{position:absolute;bottom:-3px;left:-5px;font-size:8.5px;font-weight:800;padding:1px 3px;border-radius:4px;color:#fff;line-height:1.2}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;
   background:var(--surf2);border:1px solid var(--line2);border-radius:10px;padding:11px 14px;margin-bottom:13px}
 .toggle-lbl{font-size:14px;font-weight:600}
@@ -1380,6 +1409,7 @@ body.noTabs .tabbar{display:none}
   <div class="bench">
     <div class="bench-head">
       <span class="bench-title">Substitutes / subs on</span>
+      <button class="clockpill" id="clock-pill" onclick="openInfo()">Match info</button>
     </div>
     <div class="bench-strip" id="bench-strip"></div>
   </div>
@@ -1441,25 +1471,40 @@ body.noTabs .tabbar{display:none}
   </div>
   <div class="field" style="margin-bottom:13px">
     <label class="flbl">Position</label>
-    <div class="poschips" id="ed-pos">
-      <div class="pchip" data-p="GK" onclick="setPos('GK')">GK</div>
-      <div class="pchip" data-p="DEF" onclick="setPos('DEF')">DEF</div>
-      <div class="pchip" data-p="MID" onclick="setPos('MID')">MID</div>
-      <div class="pchip" data-p="FWD" onclick="setPos('FWD')">FWD</div>
+    <div class="posgrid" id="ed-dpos"></div>
+  </div>
+  <div class="field" style="margin-bottom:13px">
+    <label class="flbl">Notes <span style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--mut2)">· + strength · − area to consider</span></label>
+    <textarea class="inp" id="ed-notes" placeholder="+ breaking-line passes&#10;− 1v1 defending…" oninput="edChange()" onblur="edCaret=this.selectionStart"></textarea>
+    <div class="notebar" id="ed-notebar"></div>
+  </div>
+  <div class="field" style="margin-bottom:13px">
+    <label class="flbl">NUFC grade · Squad tier → Verdict</label>
+    <div class="poschips" id="ed-tier"></div>
+    <div class="poschips" id="ed-verdict" style="margin-top:7px"></div>
+  </div>
+  <div class="sheet-row" style="align-items:flex-end">
+    <div class="field">
+      <label class="flbl">Foot</label>
+      <div class="poschips" id="ed-foot"></div>
+    </div>
+    <div class="field">
+      <label class="flbl">Rating</label>
+      <div class="poschips" id="ed-rate">
+        <div class="pchip rchip sm" data-r="A" onclick="setRate('A')">A</div>
+        <div class="pchip rchip sm" data-r="B" onclick="setRate('B')">B</div>
+        <div class="pchip rchip sm" data-r="C" onclick="setRate('C')">C</div>
+        <div class="pchip rchip sm" data-r="D" onclick="setRate('D')">D</div>
+      </div>
     </div>
   </div>
   <div class="field" style="margin-bottom:13px">
-    <label class="flbl">Rating</label>
-    <div class="poschips" id="ed-rate">
-      <div class="pchip rchip" data-r="A" onclick="setRate('A')">A</div>
-      <div class="pchip rchip" data-r="B" onclick="setRate('B')">B</div>
-      <div class="pchip rchip" data-r="C" onclick="setRate('C')">C</div>
-      <div class="pchip rchip" data-r="D" onclick="setRate('D')">D</div>
+    <label class="flbl">Minutes</label>
+    <div class="minrow">
+      <div class="pchip sm" id="ed-full" style="flex:0 0 58px" onclick="setFull90()">Full</div>
+      <span class="lbl">On</span><input class="inp mininp" id="ed-min-in" inputmode="numeric" maxlength="3" placeholder="—" onfocus="minFocus(this)" oninput="minChange()">
+      <span class="lbl">Off</span><input class="inp mininp" id="ed-min-out" inputmode="numeric" maxlength="3" placeholder="—" onfocus="minFocus(this)" oninput="minChange()">
     </div>
-  </div>
-  <div class="field" style="margin-bottom:13px">
-    <label class="flbl">Notes</label>
-    <textarea class="inp" id="ed-notes" placeholder="Quick notes about the player…" oninput="edChange()"></textarea>
   </div>
   <div class="toggle-row" onclick="toggleSub()">
     <span class="toggle-lbl" id="ed-sub-lbl">On bench</span>
@@ -1481,6 +1526,28 @@ body.noTabs .tabbar{display:none}
   <div class="sheet-actions"><button class="btn" onclick="closeEdPicker()">Cancel</button></div>
 </div>
 
+<!-- ====== MATCH INFO SHEET ====== -->
+<div class="sheet-bg" id="info-bg" onclick="closeInfo()"></div>
+<div class="sheet" id="info-sheet">
+  <div class="grip"></div>
+  <div style="font-weight:800;font-size:16px;margin-bottom:4px">Match info</div>
+  <div style="color:var(--mut);font-size:13px;margin-bottom:14px">Shared by every player in this report and sent with “Copy for Claude”.</div>
+  <div class="sheet-row">
+    <div class="field" style="flex:0 0 46%"><label class="flbl">Match date</label><input class="inp" type="date" id="mi-date" onchange="miField('date',this.value)"></div>
+    <div class="field"><label class="flbl">Watched</label><div class="poschips" id="mi-mode"></div></div>
+  </div>
+  <div class="field" style="margin-bottom:13px"><label class="flbl">Competition</label><input class="inp" id="mi-comp" list="dl-comps" placeholder="e.g. EURO U17 Qualifying" autocomplete="off" oninput="miField('competition',this.value)"><datalist id="dl-comps"></datalist></div>
+  <div class="field" style="margin-bottom:13px"><label class="flbl">Age group</label><div class="poschips wrap" id="mi-level"></div></div>
+  <div class="sheet-row">
+    <div class="field"><label class="flbl" id="mi-hlbl">Home</label>
+      <div style="display:flex;gap:7px"><input class="inp mininp" id="mi-sh" inputmode="numeric" maxlength="2" placeholder="–" oninput="miScore()"><input class="inp" id="mi-fh" list="dl-forms" placeholder="System" autocomplete="off" oninput="miForm('home',this.value)"></div></div>
+    <div class="field"><label class="flbl" id="mi-albl">Away</label>
+      <div style="display:flex;gap:7px"><input class="inp mininp" id="mi-sa" inputmode="numeric" maxlength="2" placeholder="–" oninput="miScore()"><input class="inp" id="mi-fa" list="dl-forms" placeholder="System" autocomplete="off" oninput="miForm('away',this.value)"></div></div>
+    <datalist id="dl-forms"></datalist>
+  </div>
+  <div class="sheet-actions"><button class="btn primary" onclick="closeInfo()">Done</button></div>
+</div>
+
 <!-- ====== EXPORT MODAL ====== -->
 <div class="modal-bg" id="export-bg">
   <div class="modal">
@@ -1488,7 +1555,11 @@ body.noTabs .tabbar{display:none}
       <span class="modal-title">Report</span>
       <button class="iconbtn" onclick="closeExport()">✕</button>
     </div>
-    <div class="modal-body"><pre class="report-pre" id="report-text"></pre></div>
+    <div class="modal-body">
+      <div id="claude-box"></div>
+      <div class="cl-h">Full match report</div>
+      <pre class="report-pre" id="report-text"></pre>
+    </div>
     <div class="modal-foot">
       <button class="btn" onclick="copyReport()">Copy</button>
       <button class="btn" onclick="printPDF()">PDF</button>
@@ -2086,7 +2157,7 @@ function renderDashboard(){
   const rc = document.getElementById('dash-recent');
   if(recent.length){
     rc.innerHTML = `<div class="dash-lbl">Recent reports</div>` + recent.map(m=>{
-      const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short'});
+      const d = matchDate(m).toLocaleDateString('pt-PT',{day:'numeric',month:'short'});
       return `<div class="dash-recent-card" onclick="openMatch('${m.id}')">
         <span class="rec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span>
         <div style="flex:1;min-width:0"><div class="pc-name">${esc(matchLabel(m))}</div><div class="pc-meta">${d}</div></div>
@@ -2094,8 +2165,10 @@ function renderDashboard(){
       </div>`;
     }).join('');
   } else rc.innerHTML='';
+  const bw = backupWarning();
+  if(bw) rc.innerHTML = bw + rc.innerHTML;
 }
-function dashNewMatch(){ currentFolder=null; newMatch(); }
+function dashNewMatch(){ currentFolder=null; newMatch(true); }
 function goWatchlist(){ showSection('database'); setDbView('watch'); }
 
 /* ===================== CALENDAR / FIXTURES ===================== */
@@ -3127,7 +3200,7 @@ function playerMatchRatings(pid){
       (m[side].players||[]).forEach(pl=>{
         if(pl.srcId===pid && pl.rate){
           const opp = side==='home' ? (m.away.name||'') : (m.home.name||'');
-          out.push({ rate:pl.rate, date:m.createdAt, opp, matchId:m.id });
+          out.push({ rate:pl.rate, date:(m.date||m.createdAt), opp, matchId:m.id });
         }
       });
     });
@@ -3648,7 +3721,9 @@ function addToSlot(id){
 /* ===================== EXPORT / IMPORT (cópia de segurança) ===================== */
 function exportDB(){
   const payload = { app:'ScoutReport', version:1, exportedAt:new Date().toISOString(),
-    data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows, clubLogos:DB.clubLogos||{}, clubs:DB.clubs||[] } };
+    data:{ folders:DB.folders, matches:DB.matches, players:DB.players, shadows:DB.shadows, clubLogos:DB.clubLogos||{}, clubs:DB.clubs||[],
+           ntLogos:DB.ntLogos||{}, ntInfo:DB.ntInfo||{}, notDup:DB.notDup||[], events:DB.events||[], competitions:DB.competitions||[], quickTags:DB.quickTags||null } };
+  try{ localStorage.setItem(BACKUP_KEY, String(Date.now())); }catch(e){}
   const json = JSON.stringify(payload);
   const stamp = new Date().toISOString().slice(0,10);
   const fname = `scoutreport-backup-${stamp}.json`;
@@ -3723,6 +3798,10 @@ function doImport(mode){
     DB.matches.forEach(m=>{ if(m.folderId && !allF.has(m.folderId)) m.folderId=null; });
     if(pendingImport.clubLogos) DB.clubLogos = Object.assign({}, pendingImport.clubLogos, DB.clubLogos);
     if(Array.isArray(pendingImport.clubs)){ const have=new Set(DB.clubs.map(c=>c.id)); pendingImport.clubs.forEach(c=>{ if(!have.has(c.id)) DB.clubs.push(c); }); }
+    ['events','competitions'].forEach(k=>{ if(!Array.isArray(DB[k])) DB[k]=[]; const have=new Set(DB[k].map(x=>x.id)); (pendingImport[k]||[]).forEach(x=>{ if(!have.has(x.id)) DB[k].push(x); }); });
+    DB.ntLogos = Object.assign({}, pendingImport.ntLogos||{}, DB.ntLogos||{});
+    DB.ntInfo = Object.assign({}, pendingImport.ntInfo||{}, DB.ntInfo||{});
+    if(!DB.quickTags && pendingImport.quickTags) DB.quickTags = pendingImport.quickTags;
   }
   pendingImport = null;
   save(); closeImport(); currentFolder=null; activeClub=null; activeLevel=null; viewNoClub=false;
@@ -3731,15 +3810,19 @@ function doImport(mode){
 }
 
 /* ---------- Match management ---------- */
-function newMatch(){
+function newMatch(withInfo){
   const m = {
     id: uid(), createdAt: new Date().toISOString(), h:true,
-    title:'', folderId: currentFolder,
-    home:{ name:'', color:DEFAULT_HOME_COLOR, players:buildEleven(DEFAULT_FORMATION,'home') },
-    away:{ name:'', color:DEFAULT_AWAY_COLOR, players:buildEleven(DEFAULT_FORMATION,'away') }
+    title:'', folderId: currentFolder, date: ymd(new Date()),
+    competition:'', level:'', mode:'',
+    home:{ name:'', color:DEFAULT_HOME_COLOR, formation:DEFAULT_FORMATION, players:buildEleven(DEFAULT_FORMATION,'home') },
+    away:{ name:'', color:DEFAULT_AWAY_COLOR, formation:DEFAULT_FORMATION, players:buildEleven(DEFAULT_FORMATION,'away') }
   };
+  const fromCal = prefillFromCalendar(m);
   DB.matches.unshift(m); save();
   openMatch(m.id);
+  if(fromCal){ ['home','away'].forEach(tk=>{ if(m[tk].name) applyClubColorToTeam(tk); }); toast('Filled from calendar'); }
+  if(withInfo) setTimeout(openInfo, 180);
 }
 function openMatch(id){
   activeMatch = DB.matches.find(m=>m.id===id);
@@ -3756,6 +3839,7 @@ function openMatch(id){
   if(dlt) dlt.innerHTML = allClubNames().map(c=>`<option value="${esc(c)}">`).join('');
   switchTeam('home');
   renderTabs();
+  updateClockPill();
 }
 function goHome(){
   showSection('reports');
@@ -3786,7 +3870,7 @@ function renderHome(){
       <div class="home-sub">Reports in this folder.</div>
       <div class="home-bar">
         <button class="btn" onclick="openItemActions('folder','${f.id}',event)">Edit folder</button>
-        <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
+        <button class="btn primary" onclick="newMatch(true)"><span style="font-size:18px;line-height:1">+</span> New match</button>
       </div>`;
     const inside = DB.matches.filter(m=>m.folderId===currentFolder);
     list.innerHTML = inside.length ? inside.map(matchCard).join('')
@@ -3800,7 +3884,7 @@ function renderHome(){
     <div class="home-sub">Organise into folders (e.g. tournaments) or create a loose report.</div>
     <div class="home-bar">
       <button class="btn" onclick="newFolder()"><span style="font-size:17px;line-height:1">＋</span> New folder</button>
-      <button class="btn primary" onclick="newMatch()"><span style="font-size:18px;line-height:1">+</span> New match</button>
+      <button class="btn primary" onclick="newMatch(true)"><span style="font-size:18px;line-height:1">+</span> New match</button>
     </div>`;
 
   const loose = DB.matches.filter(m=>!m.folderId);
@@ -3838,7 +3922,7 @@ function folderCard(f){
 
 function matchCard(m){
   const tot = m.home.players.length + m.away.players.length;
-  const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'});
+  const d = matchDate(m).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'});
   return `<div class="mcard" onclick="openMatch('${m.id}')">
     <div class="mcard-main">
       <div class="mcard-teams">${esc(matchLabel(m))}</div>
@@ -4018,7 +4102,7 @@ function renderPitch(){
       el.className = `token ${tk}` + (p.notes.trim()?' hasnote':'') + (p.id===editingId?' sel':'');
       el.style.left = p.x+'%'; el.style.top = p.y+'%';
       el.dataset.id = p.id;
-      const badge = p.rate? `<span class="rbadge-mini rbadge-${p.rate}">${p.rate}</span>`:'';
+      const badge = (p.rate? `<span class="rbadge-mini rbadge-${p.rate}">${p.rate}</span>`:'') + (p.verdict? `<span class="tok-grade" style="background:${VERDICT_COL[p.verdict]}">${esc(gradeShort(p))}</span>`:'');
       let labels = '';
       if(p.name) labels += `<div class="tlabel">${esc(shortName(p.name))}</div>`;
       if(p.birth) labels += `<div class="tyear">${esc(p.birth)}</div>`;
@@ -4095,7 +4179,7 @@ function attachDrag(el, p){
     el.classList.remove('dragging');
     try{el.releasePointerCapture(pid);}catch(_){}
     pid=undefined;
-    if(moved){ save(); }
+    if(moved){ if(p.codeAuto || !p.code) refreshCode(p); save(); }
     else { openEditor(p.id,false); }
   });
   el.addEventListener('pointercancel', ()=>{ el.classList.remove('dragging'); pid=undefined; });
@@ -4112,6 +4196,9 @@ function openEditor(id, focusNum){
   document.querySelectorAll('#ed-pos .pchip').forEach(c=>c.classList.toggle('on', c.dataset.p===p.pos));
   document.querySelectorAll('#ed-rate .rchip').forEach(c=>c.classList.toggle('on', c.dataset.r===(p.rate||'')));
   setSubSwitch(p.sub);
+  if(p.code && !POS_LIST.includes(p.code)){ const n=normCode(p.code); p.code=n; if(!n) p.codeAuto=true; }
+  if(!p.code) refreshCode(p);
+  renderEdExtra();
   // pick-from-club button
   const club=teamClub(); const btn=document.getElementById('ed-pickclub');
   if(btn){
@@ -4155,6 +4242,7 @@ function edPickRender(q){
 function edPick(id){
   const src=DB.players.find(x=>x.id===id); const p=findPlayer(editingId); if(!src||!p) return;
   p.name=src.name||''; p.birth=birthYear(src.birth)||''; p.rate=src.rating||''; if(src.number) p.num=src.number; p.srcId=src.id;
+  if(!p.foot && FOOT_FROM_PROFILE[src.foot]) p.foot=FOOT_FROM_PROFILE[src.foot];
   if(!p.pos){ p.pos=POS_CAT[src.pos1]||''; }
   save(); closeEdPicker();
   document.getElementById('ed-name').value=p.name;
@@ -4165,7 +4253,7 @@ function edPick(id){
   // refresh pick button availability
   const club=teamClub(); const btn=document.getElementById('ed-pickclub');
   if(btn && club){ const avail=DB.players.filter(x=>x.club===club && !usedSrcIds().has(x.id)).length; btn.textContent=`Pick from ${club} (${avail})`; btn.style.display=avail?'flex':'none'; }
-  renderPitch(); renderBench();
+  renderEdExtra(); renderPitch(); renderBench();
   toast((p.name||'Player')+' added');
 }
 function closeSheet(){
@@ -4188,6 +4276,8 @@ function setPos(pos){
   const p = findPlayer(editingId); if(!p) return;
   p.pos = (p.pos===pos)? '' : pos;
   document.querySelectorAll('#ed-pos .pchip').forEach(c=>c.classList.toggle('on', c.dataset.p===p.pos));
+  if(p.codeAuto || !p.code || POS_OF_CODE[p.code]!==p.pos){ p.code=''; refreshCode(p); }
+  renderEdExtra();
   save();
 }
 function setRate(r){
@@ -4204,7 +4294,9 @@ function toggleSub(){
     p.x = (tk==='home') ? (16 + Math.round(Math.random()*22)) : (62 + Math.round(Math.random()*22));
     p.y = 28 + Math.round(Math.random()*44);
   }
-  setSubSwitch(p.sub); save();
+  setSubSwitch(p.sub);
+  if(p.codeAuto || !p.code) refreshCode(p);
+  renderEdExtra(); save();
 }
 function playerTeam(id){
   if(activeMatch.home.players.some(p=>p.id===id)) return 'home';
@@ -4213,7 +4305,7 @@ function playerTeam(id){
 }
 function setSubSwitch(on){
   document.getElementById('ed-sub-switch').classList.toggle('on', on);
-  document.getElementById('ed-sub-lbl').textContent = on? 'On bench' : 'Em campo';
+  document.getElementById('ed-sub-lbl').textContent = on? 'On bench' : 'On pitch';
 }
 function deletePlayer(){
   const t = team();
@@ -4237,7 +4329,7 @@ function findPlayer(id){
 function buildReport(){
   const m = activeMatch;
   const h = m.home.name || 'Home', a = m.away.name || 'Away';
-  const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
+  const d = matchDate(m).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
   let out = `RELATÓRIO DE JOGO\n${h}  vs  ${a}\n${d}\n`;
   out += '═'.repeat(38)+'\n';
   if(m.gnotes && m.gnotes.trim()){
@@ -4259,13 +4351,15 @@ function fmtP(p){
   const pos = p.pos? ` (${p.pos})` : '';
   const yr = p.birth? ` · ${p.birth}` : '';
   const rate = p.rate? `  [${p.rate}]` : '';
-  let s = `    ${num} ${p.name||'No name'}${pos}${yr}${rate}\n`;
+  const gr = gradeLabel(p); const mins = minutesLabel(p);
+  let s = `    ${num} ${p.name||'No name'}${pos}${yr}${rate}${gr?'  · '+gr:''}${mins?'  · '+mins:''}\n`;
   if(p.notes.trim()){
     s += p.notes.trim().split('\n').map(l=>`        › ${l}`).join('\n')+'\n';
   }
   return s;
 }
 function openExport(){
+  renderClaudeBox();
   document.getElementById('report-text').textContent = buildReport();
   document.getElementById('export-bg').classList.add('show');
 }
@@ -4290,7 +4384,7 @@ function buildPrintReport(){
   const m = activeMatch;
   const h = m.home.name || 'Home', a = m.away.name || 'Away';
   const ch = teamColor('home'), ca = teamColor('away');
-  const d = new Date(m.createdAt).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
+  const d = matchDate(m).toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
 
   // pitch tokens (both teams)
   let toks = '';
@@ -4630,7 +4724,7 @@ function scPlace(list, side){
     const k=pl.pos||'?'; used[k]=(used[k]||0)+1;
     if(used[k]>1) slot={x:Math.max(6,Math.min(94, slot.x + (used[k]%2? 14:-14)*Math.ceil((used[k]-1)/2))), y:slot.y};
     const xy=slotToXY(slot, side);
-    out.push({ id:uid(), num:pl.num||'', name:pl.name||'', pos:SC_CAT[pl.pos]||'', notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:'' });
+    out.push({ id:uid(), num:pl.num||'', name:pl.name||'', pos:SC_CAT[pl.pos]||'', code:normCode(pl.pos), codeAuto:!normCode(pl.pos), notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:'' });
   });
   return out;
 }
@@ -4641,7 +4735,7 @@ function applyScoutastic(p){
     const t=activeMatch[side];
     if(src.name) t.name=src.name;
     const onField=scPlace(src.starters, side);
-    const bench=src.bench.map(pl=>({ id:uid(), num:pl.num||'', name:pl.name||'', pos:SC_CAT[pl.pos]||'', notes:'', sub:true, x:50, y:50, rate:'', birth:'' }));
+    const bench=src.bench.map(pl=>({ id:uid(), num:pl.num||'', name:pl.name||'', pos:SC_CAT[pl.pos]||'', code:normCode(pl.pos), codeAuto:false, notes:'', sub:true, x:50, y:50, rate:'', birth:'' }));
     t.players=onField.concat(bench);
   });
   save(); closeScoutastic(); openMatch(activeMatch.id);
@@ -4928,6 +5022,8 @@ function applyFormation(formation){
       t.players.push({ id:uid(), num:'', name:'', pos:slots[i].pos, notes:'', sub:false, x:xy.x, y:xy.y, rate:'', birth:'' });
     }
   }
+  t.formation = formation;
+  t.players.forEach(p=>{ if(p.codeAuto || !p.code) refreshCode(p); });
   save(); renderPitch(); renderBench(); renderTabs();
   document.getElementById('form-current-count').textContent = t.players.filter(p=>!p.sub).length;
   document.querySelectorAll('#form-chips .pchip').forEach(c=>c.classList.toggle('on', c.dataset.f===formation));
@@ -5027,11 +5123,11 @@ function closeSettings(){
   document.getElementById('settings-sheet').classList.remove('show');
 }
 /* ---------- About / guide / what's new ---------- */
-const APP_VERSION = '1.1';
+const APP_VERSION = '1.2';
 const ABOUT_GUIDE = [
   ['Home', 'Quick actions, your watchlist and section shortcuts on one screen. Tap the gear for settings.'],
   ['Calendar', 'Plan the games you intend to scout. Switch between Year, Month and Week. Add events as live matches, video scouting or travel days. The trophy button manages Competitions — a fixed called-up squad you can load into every match report.'],
-  ['Match reports', 'Build a game report on a pitch with formations. Drag players, rate them (A–D), add notes, and export a clean PDF. Name a team after one of your clubs to load its squad or pick players position by position.'],
+  ['Match reports', 'Build a game report on a pitch with formations. Fill Match info once (date, competition, age group, live/video, score, systems). For each player: position (one of eleven), notes with + / − and quick tags, NUFC grade (tier + verdict), foot and minutes. Export → “Copy for Claude” gives a ready block per player; PDF and full report are still there.'],
   ['Player database', 'A profile for each player: photo, positions, foot, ratings, links and observations. Search and filter by club, age group, position, birth-year range and rating. Paste a whole squad to add players in bulk.'],
   ['Clubs & age groups', 'Organise players by club, then by age group. Use “Select players” to move many players to an age group at once.'],
   ['Shadow teams', 'Build depth charts by position with colour coding and notes, and export them to PDF.'],
@@ -5040,6 +5136,15 @@ const ABOUT_GUIDE = [
   ['Backup & storage', 'Export everything to a file (save to iCloud/Files) and import it on another device. The storage meter shows how full this browser is.']
 ];
 const ABOUT_NEWS = [
+  ['1.2', 'October 2026', [
+    'NUFC grading in every match report: Squad Tier (Starter, Squad, Potential, Youth) and Verdict (Target, Monitor Now, Scouting, Not Good Enough), shown as a small badge on the pitch.',
+    'Match info sheet: real match date, competition, age group (U15–U23), live or video, score and both systems. A new report opens it automatically and pre-fills from today\u2019s calendar event.',
+    'One set of eleven positions (GK, RB, RCB, LCB, LB, DM, CM, AM, LW, RW, ST), suggested from where the player stands on the pitch; Scoutastic imports are converted to it.',
+    'Faster notes: + / − buttons for strengths and areas to consider, and editable quick tags.',
+    'Foot and minutes (Full / On / Off) per player.',
+    'Export → “Copy for Claude”: one clean block per player (or all graded/noted players) with the match context, ready for the scouting-report project.',
+    'Backups now include calendar events, competitions and national-team data, and Home reminds you when the last backup is over a week old.'
+  ]],
   ['1.1', 'June 2026', [
     'Import Scoutastic: in a match report, open Lineup → “Import Scoutastic” and paste each team’s line-up (pitch + substitutes). Position codes such as LB, LCB, DM or AML are read exactly, so every player lands on the right spot — no guessing. Works fully offline: use your phone or Mac’s built-in Live Text to copy the text straight from a screenshot.',
     'Import Wyscout teamsheets: in a match report, open Lineup → “Import Wyscout teamsheet”, then upload the Wyscout/Hudl PDF or paste the text. Both line-ups are filled automatically — starters on the pitch in the detected formation (4-3-3, 5-4-1, and more), subs on the bench, with names, numbers and birth years. (PDF upload needs an internet connection; pasting works offline.)',
@@ -5319,6 +5424,228 @@ applyLogo();
 applyHero();
 document.addEventListener('click',e=>{ if(!e.target.closest('.rt-card.has-pop')) document.querySelectorAll('.rt-card.open').forEach(c=>c.classList.remove('open')); });
 bootData();
+/* ===================== v1.2 · NUFC grading, match info, Claude export ===================== */
+const TIERS=[['FTS','Starter','First Team Starter'],['FTSQ','Squad','First Team Squad'],['FTP','Potential','First Team Potential'],['YTH','Youth','Youth']];
+const VERDICTS=[['T','Target','Target'],['MN','Monitor','Monitor Now'],['S','Scouting','Scouting'],['NGE','NGE','Not Good Enough']];
+const VERDICT_COL={T:'#2ba96b',MN:'#1d6fe0',S:'#d48a0b',NGE:'#e5484d'};
+const POS_LIST=['GK','RB','RCB','LCB','LB','DM','CM','AM','LW','RW','ST'];
+const POS_DETAIL={GK:['GK'],DEF:['RB','RCB','LCB','LB'],MID:['DM','CM','AM'],FWD:['LW','RW','ST']};
+const POS_OF_CODE={GK:'GK',RB:'DEF',RCB:'DEF',LCB:'DEF',LB:'DEF',DM:'MID',CM:'MID',AM:'MID',LW:'FWD',RW:'FWD',ST:'FWD'};
+const CODE_NORMALISE={RWB:'RB',LWB:'LB',RCB2:'RCB',LDM:'DM',RDM:'DM',LCM:'CM',RCM:'CM',RM:'RW',LM:'LW',AMC:'AM',AMR:'RW',AML:'LW',CF:'ST',SS:'ST',LS:'ST',RS:'ST',LF:'ST',RF:'ST'};
+const POS_LABEL={GK:'Goalkeeper',RB:'Right Back',RCB:'Right Centre Back',CB:'Centre Back',LCB:'Left Centre Back',LB:'Left Back',RWB:'Right Wing Back',LWB:'Left Wing Back',
+  DM:'Defensive Midfield',LDM:'Left Defensive Midfield',RDM:'Right Defensive Midfield',CM:'Central Midfield',RCM:'Right Central Midfield',LCM:'Left Central Midfield',
+  RM:'Right Midfield',LM:'Left Midfield',AM:'Attacking Midfield',AMC:'Attacking Midfield',AML:'Left Attacking Midfield',AMR:'Right Attacking Midfield',
+  RW:'Right Winger',LW:'Left Winger',CF:'Centre Forward',ST:'Striker',SS:'Second Striker',LS:'Left Striker',RS:'Right Striker',LF:'Left Forward',RF:'Right Forward'};
+const FEET_M=[['R','Right'],['L','Left'],['B','Both']];
+const FOOT_FROM_PROFILE={Right:'R',Left:'L','Two-footed':'B'};
+const AGE_GROUPS=['U15','U16','U17','U18','U19','U20','U21','U23'];
+const DEFAULT_TAGS=['Breaking-line passes','Progressive carries','1v1 defending','Aerial duels','Scanning','Body orientation','Pressing','Recovery pace','Positioning','Decision-making','Weak foot','Composure','Work rate','Crossing','Finishing','Set pieces','Communication','Leadership'];
+const BACKUP_KEY='scoutreport_lastbackup';
+let edCaret=null;
+
+function matchDate(m){ return m.date? parseYMD(m.date) : new Date(m.createdAt); }
+function tierName(k){ const t=TIERS.find(x=>x[0]===k); return t?t[2]:''; }
+function verdictName(k){ const v=VERDICTS.find(x=>x[0]===k); return v?v[2]:''; }
+function gradeLabel(p){ return [tierName(p.tier), verdictName(p.verdict)].filter(Boolean).join(' – '); }
+function gradeShort(p){ const v=VERDICTS.find(x=>x[0]===p.verdict); return v? (v[0]==='MN'?'MN':v[0]) : ''; }
+function minutesLabel(p){
+  const i=parseInt(p.minIn,10), o=parseInt(p.minOut,10);
+  if(!p.sub){ if(!isNaN(o)) return (o>=90&&isNaN(i))? "90'" : `Started, off ${o}'`; return ''; }
+  if(!isNaN(i)) return isNaN(o)? `On ${i}'` : `On ${i}', off ${o}'`;
+  return '';
+}
+function footName(k){ const f=FEET_M.find(x=>x[0]===k); return f? (k==='B'?'Two-footed':f[1]+' foot') : ''; }
+
+/* ---- detailed position suggested from the pitch ---- */
+function suggestCode(p){
+  if(!p || p.sub || !p.pos) return '';
+  if(p.pos==='GK') return 'GK';
+  const tk=playerTeam(p.id);
+  const side = tk==='home'? p.y : 100-p.y;
+  const list=(POS_DETAIL[p.pos]||[]).concat(p.pos==='MID' && Math.abs(side-50)>30 ? ['LW','RW'] : []);
+  if(!list.length) return '';
+  const depth = tk==='home'? (p.x-4)/44 : (96-p.x)/44;
+  const sy = 90 - depth*68;
+  let best='', bd=1e9;
+  list.forEach(c=>{ const sl=SC_SLOT[c]; if(!sl) return; const dd=Math.pow(sl.x-side,2)+Math.pow((sl.y-sy)*0.7,2); if(dd<bd){ bd=dd; best=c; } });
+  return best;
+}
+function refreshCode(p){ const c=suggestCode(p); if(c){ p.code=c; p.codeAuto=true; } else if(p.codeAuto){ p.code=''; } }
+
+/* ---- editor extras ---- */
+function renderEdExtra(){
+  const p=findPlayer(editingId); if(!p) return;
+  document.getElementById('ed-dpos').innerHTML = POS_LIST.map(c=>`<div class="pchip ${p.code===c?'on':''}" title="${esc(POS_LABEL[c]||c)}" onclick="setCode('${c}')">${c}</div>`).join('');
+  document.getElementById('ed-tier').innerHTML = TIERS.map(([k,s])=>`<div class="pchip sm ${p.tier===k?'on':''}" onclick="setTier('${k}')">${s}</div>`).join('');
+  document.getElementById('ed-verdict').innerHTML = VERDICTS.map(([k,s])=>`<div class="pchip sm vchip ${p.verdict===k?'on':''}" data-v="${k}" onclick="setVerdict('${k}')">${s}</div>`).join('');
+  document.getElementById('ed-foot').innerHTML = FEET_M.map(([k,s])=>`<div class="pchip sm ${p.foot===k?'on':''}" onclick="setFoot('${k}')">${s}</div>`).join('');
+  document.getElementById('ed-min-in').value = p.minIn||'';
+  document.getElementById('ed-min-out').value = p.minOut||'';
+  document.getElementById('ed-full').classList.toggle('on', !p.sub && String(p.minOut)==='90' && !p.minIn);
+  const tags=quickTags();
+  document.getElementById('ed-notebar').innerHTML =
+    `<button class="nb sign plus" onmousedown="event.preventDefault()" onclick="noteInsert('+')">+</button>`+
+    `<button class="nb sign minus" onmousedown="event.preventDefault()" onclick="noteInsert('-')">−</button>`+
+    tags.map((t,i)=>`<button class="nb tag" onmousedown="event.preventDefault()" onclick="noteTag(${i})">${esc(t)}</button>`).join('')+
+    `<button class="nb" onclick="editTags()">✎ Tags</button>`;
+}
+function setCode(c){ const p=findPlayer(editingId); if(!p) return; if(p.code===c && !p.codeAuto){ p.code=''; p.codeAuto=false; } else { p.code=c; p.codeAuto=false; p.pos=POS_OF_CODE[c]||p.pos; } save(); renderEdExtra(); renderPitch(); }
+function normCode(c){ c=(c||'').toUpperCase(); c=CODE_NORMALISE[c]||c; return POS_LIST.includes(c)? c : ''; }
+function setTier(k){ const p=findPlayer(editingId); if(!p) return; p.tier=(p.tier===k)?'':k; save(); renderEdExtra(); renderPitch(); }
+function setVerdict(k){ const p=findPlayer(editingId); if(!p) return; p.verdict=(p.verdict===k)?'':k; save(); renderEdExtra(); renderPitch(); }
+function setFoot(k){ const p=findPlayer(editingId); if(!p) return; p.foot=(p.foot===k)?'':k; save(); renderEdExtra(); }
+function setFull90(){ const p=findPlayer(editingId); if(!p) return; const on=!p.sub && String(p.minOut)==='90' && !p.minIn; p.minIn=''; p.minOut= on? '' : '90'; if(p.sub && !on){ p.sub=false; setSubSwitch(false); } save(); renderEdExtra(); }
+function minChange(){
+  const p=findPlayer(editingId); if(!p) return;
+  const a=document.getElementById('ed-min-in'), b=document.getElementById('ed-min-out');
+  a.value=a.value.replace(/[^0-9]/g,'').slice(0,3); b.value=b.value.replace(/[^0-9]/g,'').slice(0,3);
+  p.minIn=a.value; p.minOut=b.value; save();
+  document.getElementById('ed-full').classList.toggle('on', !p.sub && p.minOut==='90' && !p.minIn);
+}
+function minFocus(el){}
+
+/* ---- notes helpers ---- */
+function quickTags(){ return (Array.isArray(DB.quickTags)&&DB.quickTags.length)? DB.quickTags : DEFAULT_TAGS; }
+function editTags(){
+  const cur=quickTags().join(', ');
+  const v=prompt('Quick tags, separated by commas:', cur);
+  if(v===null) return;
+  const list=v.split(',').map(x=>x.trim()).filter(Boolean);
+  DB.quickTags = list.length? list : null; save(); renderEdExtra();
+}
+function noteInsertText(txt, lineStart){
+  const ta=document.getElementById('ed-notes');
+  const focused = document.activeElement===ta;
+  let pos = focused? ta.selectionStart : (edCaret!=null? edCaret : ta.value.length);
+  let end = focused? ta.selectionEnd : pos;
+  pos=Math.min(pos,ta.value.length); end=Math.min(end,ta.value.length);
+  const before=ta.value.slice(0,pos), after=ta.value.slice(end);
+  if(lineStart && before!=='' && !before.endsWith('\n')) txt='\n'+txt;
+  ta.value=before+txt+after;
+  const np=before.length+txt.length;
+  ta.focus(); try{ ta.setSelectionRange(np,np); }catch(e){}
+  edCaret=np; edChange();
+}
+function noteInsert(k){
+  if(k==='+') return noteInsertText('+ ', true);
+  if(k==='-') return noteInsertText('- ', true);
+}
+function noteTag(i){ const t=quickTags()[i]; if(!t) return; const ta=document.getElementById('ed-notes'); const pos=(document.activeElement===ta? ta.selectionStart : (edCaret!=null?edCaret:ta.value.length)); const ch=ta.value.slice(0,pos).slice(-1); noteInsertText((ch&&!/[\s]/.test(ch)?' ':'')+t+' ', false); }
+
+/* ---- match info pill ---- */
+function currentMinute(){ return null; }
+function updateClockPill(){
+  const el=document.getElementById('clock-pill'); if(!el||!activeMatch) return;
+  const missing=!activeMatch.competition || !activeMatch.mode || !activeMatch.level;
+  el.textContent = missing? '● Match info' : 'Match info';
+  el.classList.toggle('warn', missing);
+}
+
+/* ---- match info sheet ---- */
+function prefillFromCalendar(m){
+  const today=ymd(new Date());
+  const evs=(DB.events||[]).filter(e=>e.date===today && (e.type==='live'||e.type==='video') && !e.done).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const ev=evs[0]; if(!ev) return false;
+  m.competition=ev.competition||''; m.mode=ev.type;
+  const parts=(ev.title||'').split(/\s+(?:vs\.?|v|x)\s+/i);
+  if(parts.length===2){ m.home.name=parts[0].trim(); m.away.name=parts[1].trim(); }
+  return true;
+}
+function openInfo(){ if(!activeMatch) return; renderInfo(); document.getElementById('info-bg').classList.add('show'); document.getElementById('info-sheet').classList.add('show'); }
+function closeInfo(){ document.getElementById('info-bg').classList.remove('show'); document.getElementById('info-sheet').classList.remove('show'); updateClockPill(); }
+function renderInfo(){
+  const m=activeMatch; if(!m) return;
+  document.getElementById('mi-date').value = m.date || ymd(new Date(m.createdAt));
+  document.getElementById('mi-comp').value = m.competition||'';
+  const comps=new Set(); (DB.matches||[]).forEach(x=>{ if(x.competition) comps.add(x.competition); }); (DB.competitions||[]).forEach(c=>{ if(c.name) comps.add(c.name); }); (DB.events||[]).forEach(e=>{ if(e.competition) comps.add(e.competition); });
+  document.getElementById('dl-comps').innerHTML=[...comps].sort().map(c=>`<option value="${esc(c)}">`).join('');
+  document.getElementById('dl-forms').innerHTML=Object.keys(FORMATIONS).concat(['4-2-2-2','3-4-2-1','5-3-2','5-4-1','4-5-1','4-3-1-2']).filter((v,i,a)=>a.indexOf(v)===i).map(f=>`<option value="${f}">`).join('');
+  document.getElementById('mi-mode').innerHTML=[['live','Live'],['video','Video']].map(([k,l])=>`<div class="pchip ${m.mode===k?'on':''}" onclick="miMode('${k}')">${l}</div>`).join('');
+  document.getElementById('mi-level').innerHTML=AGE_GROUPS.map(a=>`<div class="pchip ${m.level===a?'on':''}" onclick="miLevel('${a}')">${a}</div>`).join('');
+  document.getElementById('mi-hlbl').textContent = m.home.name||'Home';
+  document.getElementById('mi-albl').textContent = m.away.name||'Away';
+  document.getElementById('mi-sh').value = (m.score&&m.score.h!=null)? m.score.h : '';
+  document.getElementById('mi-sa').value = (m.score&&m.score.a!=null)? m.score.a : '';
+  document.getElementById('mi-fh').value = m.home.formation||'';
+  document.getElementById('mi-fa').value = m.away.formation||'';
+}
+function miField(k,v){ if(!activeMatch) return; activeMatch[k]=v; save(); if(k==='date') renderTabs(); }
+function miMode(k){ activeMatch.mode=(activeMatch.mode===k)?'':k; save(); renderInfo(); updateClockPill(); }
+function miLevel(a){ activeMatch.level=(activeMatch.level===a)?'':a; save(); renderInfo(); updateClockPill(); }
+function miForm(tk,v){ activeMatch[tk].formation=v.trim(); save(); }
+function miScore(){
+  const a=document.getElementById('mi-sh'), b=document.getElementById('mi-sa');
+  a.value=a.value.replace(/[^0-9]/g,'').slice(0,2); b.value=b.value.replace(/[^0-9]/g,'').slice(0,2);
+  activeMatch.score = (a.value===''&&b.value==='')? null : {h:a.value===''?null:+a.value, a:b.value===''?null:+b.value};
+  save();
+}
+
+/* ---- Copy for Claude ---- */
+function claudeMatchBlock(m){
+  const L=[];
+  const d=matchDate(m).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  const h=m.home.name||'Home', a=m.away.name||'Away';
+  const sc=m.score&&m.score.h!=null&&m.score.a!=null? ` ${m.score.h}-${m.score.a} ` : ' v ';
+  L.push('MATCH');
+  L.push(`Fixture: ${h}${sc}${a}`);
+  L.push(`Date: ${d}`);
+  const comp=[m.competition,m.level].filter(Boolean).join(' · ');
+  if(comp) L.push(`Competition: ${comp}`);
+  if(m.mode) L.push(`Watched: ${m.mode==='video'?'Video':'Live'}`);
+  const fs=[m.home.formation?`${h} ${m.home.formation}`:'', m.away.formation?`${a} ${m.away.formation}`:''].filter(Boolean);
+  if(fs.length) L.push(`Systems: ${fs.join(' · ')}`);
+  if(m.gnotes && m.gnotes.trim()) L.push('Match notes:\n'+m.gnotes.trim());
+  return L.join('\n');
+}
+function claudePlayerBlock(m,p,tk){
+  const L=['PLAYER'];
+  const team=m[tk].name||(tk==='home'?'Home':'Away');
+  const head=[(p.num?'#'+p.num+' ':'')+(p.name||'No name')+` (${team})`];
+  const pos=POS_LABEL[p.code]||({GK:'Goalkeeper',DEF:'Defender',MID:'Midfielder',FWD:'Forward'})[p.pos]||'';
+  if(pos) head.push(pos);
+  if(p.birth) head.push(p.birth);
+  if(p.foot) head.push(footName(p.foot));
+  L.push(head.join(' · '));
+  const mins=minutesLabel(p); if(mins) L.push(`Minutes: ${mins}`); else if(p.sub) L.push('Minutes: came off the bench (minute not noted)');
+  const g=gradeLabel(p); if(g) L.push(`Grade: ${g}`);
+  if(p.notes && p.notes.trim()) L.push('Notes:\n'+p.notes.trim());
+  return L.join('\n');
+}
+function claudePlayers(m){
+  const out=[]; ['home','away'].forEach(tk=>m[tk].players.forEach(p=>{ if((p.notes&&p.notes.trim())||p.verdict||p.tier) out.push({p,tk}); }));
+  return out;
+}
+function claudeText(ids){
+  const m=activeMatch; const list=claudePlayers(m).filter(x=>!ids||ids.includes(x.p.id));
+  return claudeMatchBlock(m)+'\n\n'+list.map(x=>claudePlayerBlock(m,x.p,x.tk)).join('\n\n———\n\n');
+}
+function renderClaudeBox(){
+  const m=activeMatch, list=claudePlayers(m), box=document.getElementById('claude-box');
+  const miss=[!m.competition&&'competition', !m.mode&&'live/video', !m.level&&'age group'].filter(Boolean);
+  if(!list.length){ box.innerHTML=`<div class="cl-h">Copy for Claude</div><div style="color:var(--mut);font-size:13px;margin-bottom:14px">Add notes or a grade to a player to copy his report block.</div>`; return; }
+  box.innerHTML = `<div class="cl-h">Copy for Claude</div>
+    ${miss.length?`<div style="font-size:12.5px;color:var(--accent);margin-bottom:8px;cursor:pointer" onclick="closeExport();openInfo()">● Missing in Match info: ${miss.join(', ')} — tap to fill</div>`:''}
+    <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:10px" onclick="copyClaude()">Copy all · ${list.length} player${list.length!==1?'s':''}</button>
+    <div class="cl-list">${list.map(({p,tk})=>{
+      const meta=[p.code||p.pos, p.birth, gradeLabel(p)||'no grade', minutesLabel(p)].filter(Boolean).map(esc).join(' · ');
+      return `<div class="cl-row"><div class="cl-main"><div class="cl-name">${esc((p.num?'#'+p.num+' ':'')+(p.name||'No name'))} <span style="color:var(--mut2);font-weight:600">· ${esc(m[tk].name||(tk==='home'?'Home':'Away'))}</span></div><div class="cl-meta">${meta}</div></div><button class="btn" onclick="copyClaude('${p.id}')">Copy</button></div>`;
+    }).join('')}</div>`;
+}
+function copyClaude(id){
+  const txt=claudeText(id?[id]:null);
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>toast('Copied for Claude')).catch(()=>fallbackCopy(txt)); }
+  else fallbackCopy(txt);
+}
+
+/* ---- backup reminder ---- */
+function backupWarning(){
+  if(!DB.matches.length && !DB.players.length) return '';
+  let last=0; try{ last=parseInt(localStorage.getItem(BACKUP_KEY)||'0',10)||0; }catch(e){}
+  const days=last? Math.floor((Date.now()-last)/86400000) : null;
+  if(days!=null && days<7) return '';
+  return `<div class="backup-warn" onclick="exportDB();renderDashboard()"><span style="font-size:18px">⚠︎</span><div style="flex:1">${days==null?'No backup yet on this device.':`Last backup <b>${days} days ago</b>.`} Your data only lives on this phone.</div><b>Back up</b></div>`;
+}
+
 async function bootData(){
   let raw=null;
   try{ raw=await idbGet(LS_KEY); }catch(e){}
